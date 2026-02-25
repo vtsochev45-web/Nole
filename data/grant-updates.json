@@ -1,0 +1,38 @@
+{
+  "date": "24 Feb 2026",
+  "fetched_at": "2026-02-24T15:45:00Z",
+  "new_grants": [
+    {
+      "scheme": "Sustainable Farming Incentive",
+      "update": "Payment schedule changes announced for Countryside Stewardship",
+      "deadline": null,
+      "amount": "£20-£450/ha",
+      "source": "DEFRA",
+      "category": "environmental"
+    },
+    {
+      "scheme": "Farming Investment Fund",
+      "update": "New round opens for equipment and technology",
+      "deadline": "31 Mar 2026",
+      "amount": "£25,000-£500,000",
+      "source": "RPA",
+      "category": "equipment"
+    },
+    {
+      "scheme": "Rural Payments Agency",
+      "update": "New livestock unit calculation tool released",
+      "deadline": null,
+      "amount": "N/A",
+      "source": "RPA",
+      "category": "tools"
+    }
+  ],
+  "deadlines_this_week": [
+    {
+      "scheme": "Farming Resilience Fund",
+      "deadline": "15 Mar 2026",
+      "days_left": 19
+    }
+  ],
+  "total_value": "£750M+ available"
+}

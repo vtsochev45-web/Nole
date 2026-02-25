@@ -1,0 +1,50 @@
+name: Update Live Data
+
+on:
+  schedule:
+    - cron: '0 */2 * * *'  # Every 2 hours
+  workflow_dispatch:
+
+jobs:
+  update-weather:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      
+      - name: Fetch Weather Data
+        run: |
+          pip install requests
+          python3 scripts/fetch-weather.py
+        env:
+          METOFFICE_API_KEY: ${{ secrets.METOFFICE_API_KEY }}
+      
+      - name: Commit and Push
+        run: |
+          git config user.name "Data Bot"
+          git config user.email "bot@example.com"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update weather $(date)"
+          git push
+
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Fetch Price Data  
+        run: |
+          pip install requests beautifulsoup4
+          python3 scripts/fetch-prices.py
+      
+      - name: Commit and Push
+        run: |
+          git config user.name "Data Bot"
+          git config user.email "bot@example.com"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update prices $(date)"
+          git push

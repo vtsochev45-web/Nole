@@ -1,0 +1,8 @@
+{
+  "swarm_id": "uk-farm-1771947982",
+  "agent": "seasonal-updater",
+  "name": "🗓️ Seasonal Editor",
+  "task": "Update monthly farming checklists based on current season. Include: crop tasks, livestock jobs, machinery prep, grant deadlines. Output: content/seasonal/{month}.md",
+  "model": "openrouter/free",
+  "spawned_at": "2026-02-24T15:46:22+00:00"
+}

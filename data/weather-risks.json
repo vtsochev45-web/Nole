@@ -1,0 +1,51 @@
+{
+  "date": "24 Feb 2026",
+  "fetched_at": "2026-02-24T15:45:00Z",
+  "regions": {
+    "scotland": {
+      "temp": 8,
+      "rain_chance": 85,
+      "rain_mm": 18,
+      "wind_mph": 45,
+      "alerts": [
+        {
+          "type": "heavy_rain",
+          "level": "yellow",
+          "message": "Heavy rain expected across Highlands tomorrow",
+          "farm_impact": "Field work suspended, flooding risk low-lying areas"
+        }
+      ]
+    },
+    "midlands": {
+      "temp": 5,
+      "rain_chance": 20,
+      "rain_mm": 2,
+      "wind_mph": 15,
+      "alerts": [
+        {
+          "type": "frost",
+          "level": "yellow", 
+          "message": "Frost risk overnight, temps down to -1°C",
+          "farm_impact": "Protect tender crops, check livestock housing"
+        }
+      ]
+    },
+    "south_west": {
+      "temp": 11,
+      "rain_chance": 40,
+      "rain_mm": 5,
+      "wind_mph": 25,
+      "alerts": [],
+      "farm_impact": "Good conditions for field work"
+    },
+    "east_anglia": {
+      "temp": 6,
+      "rain_chance": 10,
+      "rain_mm": 0,
+      "wind_mph": 18,
+      "alerts": [],
+      "farm_impact": "Suitable for spraying and field prep"
+    }
+  },
+  "summary": "Scotland facing heavy rain; Midlands frost risk tonight; elsewhere dry"
+}

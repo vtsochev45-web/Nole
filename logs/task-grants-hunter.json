@@ -1,0 +1,8 @@
+{
+  "swarm_id": "uk-farm-1771947982",
+  "agent": "grants-hunter",
+  "name": "💰 Grants Hunter",
+  "task": "Scrape gov.uk, DEFRA, RPA for new grant announcements and deadlines. Look for SIF, FIF, infrastructure grants. Output: data/grant-updates.json",
+  "model": "openrouter/free",
+  "spawned_at": "2026-02-24T15:46:22+00:00"
+}

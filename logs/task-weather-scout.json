@@ -1,0 +1,8 @@
+{
+  "swarm_id": "uk-farm-1771947982",
+  "agent": "weather-scout",
+  "name": "🌦 Weather Scout",
+  "task": "Fetch Met Office weather data for UK farming regions. Check for frost warnings, heavy rain, high winds. Output: data/weather-risks.json with alerts by region.",
+  "model": "openrouter/free",
+  "spawned_at": "2026-02-24T15:46:22+00:00"
+}

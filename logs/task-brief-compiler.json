@@ -1,0 +1,8 @@
+{
+  "swarm_id": "uk-farm-1771947982",
+  "agent": "brief-compiler",
+  "name": "📝 Daily Brief Writer",
+  "task": "Compile weather, grants, and market data into Daily Farm Brief. Format: 3-minute read with emojis, bullet points. Output: content/posts/{date}-daily-brief.md",
+  "model": "openrouter/free",
+  "spawned_at": "2026-02-24T15:46:22+00:00"
+}

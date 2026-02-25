@@ -1,0 +1,102 @@
+{
+  "swarm_name": "UK Farm Content Team",
+  "description": "Multi-agent system for autonomous farming content",
+  "schedule": {
+    "daily": "06:00",
+    "weekly": "Sunday 08:00",
+    "monthly": "1st of month 09:00"
+  },
+  "agents": [
+    {
+      "id": "weather-agent",
+      "name": "Weather Scout",
+      "task": "Fetch Met Office data, identify farm risks",
+      "model": "freeride",
+      "schedule": "daily",
+      "output": "data/weather-risks.json",
+      "cost": 0
+    },
+    {
+      "id": "grants-agent", 
+      "name": "Grants Hunter",
+      "task": "Scrape DEFRA, RPA for new schemes, deadlines",
+      "model": "freeride",
+      "schedule": "daily",
+      "sources": ["gov.uk/grants", "defra", "rpa"],
+      "output": "data/grant-updates.json",
+      "cost": 0
+    },
+    {
+      "id": "markets-agent",
+      "name": "Market Watcher", 
+      "task": "Check AHDB prices, auction reports",
+      "model": "freeride",
+      "schedule": "daily",
+      "output": "data/market-data.json",
+      "cost": 0
+    },
+    {
+      "id": "brief-compiler",
+      "name": "Daily Brief Writer",
+      "task": "Compile agent outputs into Daily Brief",
+      "model": "freeride",
+      "schedule": "daily 06:30",
+      "depends_on": ["weather-agent", "grants-agent", "markets-agent"],
+      "output": "content/posts/{date}-daily-brief.md",
+      "cost": 0
+    },
+    {
+      "id": "seo-researcher",
+      "name": "SEO Researcher",
+      "task": "Find trending farming keywords, competitor gaps",
+      "model": "flashlite",
+      "schedule": "weekly",
+      "output": "data/seo-keywords.json",
+      "cost": 0.15
+    },
+    {
+      "id": "article-writer",
+      "name": "Long-Form Writer",
+      "task": "Write 1500-word SEO article on researched topic",
+      "model": "flashlite",
+      "schedule": "weekly",
+      "depends_on": ["seo-researcher"],
+      "output": "content/posts/{date}-{slug}.md",
+      "cost": 0.30
+    },
+    {
+      "id": "seasonal-updater",
+      "name": "Seasonal Editor",
+      "task": "Update monthly checklists based on current season",
+      "model": "freeride",
+      "schedule": "monthly",
+      "output": "content/seasonal/{month}.md",
+      "cost": 0
+    },
+    {
+      "id": "tool-maintainer",
+      "name": "Tool Developer",
+      "task": "Update calculator prices, add new tools",
+      "model": "freeride",
+      "schedule": "monthly",
+      "output": "tools/",
+      "cost": 0
+    },
+    {
+      "id": "site-builder",
+      "name": "Site Builder",
+      "task": "Compile all content, build HTML, deploy",
+      "model": "freeride",
+      "schedule": "on_change",
+      "depends_on": ["brief-compiler", "article-writer"],
+      "output": "dist/",
+      "deploy": "github-pages",
+      "cost": 0
+    }
+  ],
+  "coordination": {
+    "mode": "dependency_chain",
+    "retry_failed": true,
+    "notify_on_complete": "telegram"
+  }
+}

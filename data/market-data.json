@@ -1,0 +1,55 @@
+{
+  "date": "24 Feb 2026",
+  "fetched_at": "2026-02-24T15:45:00Z",
+  "commodities": {
+    "wheat": {
+      "feed_price": 165.0,
+      "feed_unit": "£/t",
+      "feed_change": 2.5,
+      "feed_trend": "up",
+      "milling_price": 185.0,
+      "milling_unit": "£/t",
+      "milling_change": 2.0,
+      "milling_trend": "up"
+    },
+    "barley": {
+      "feed_price": 155.0,
+      "feed_unit": "£/t",
+      "feed_change": -1.0,
+      "feed_trend": "down"
+    },
+    "rapeseed": {
+      "price": 420.0,
+      "unit": "£/t",
+      "change": 5.0,
+      "trend": "up"
+    },
+    "milk": {
+      "avg_price": 0.38,
+      "unit": "£/L",
+      "change": 0.01,
+      "trend": "up"
+    }
+  },
+  "livestock_markets": [
+    {
+      "location": "Hereford",
+      "species": "cattle",
+      "price": 4.25,
+      "unit": "£/kg",
+      "change": 0.08,
+      "trend": "up",
+      "head_sold": 450
+    },
+    {
+      "location": "Worcester",
+      "species": "sheep",
+      "price": 2.85,
+      "unit": "£/kg",
+      "change": 0.15,
+      "trend": "up",
+      "head_sold": 1200
+    }
+  ],
+  "summary": "Wheat firming, barley easing slightly. Strong lamb prices at Worcester."
+}

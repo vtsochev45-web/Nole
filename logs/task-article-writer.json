@@ -1,0 +1,8 @@
+{
+  "swarm_id": "uk-farm-1771947982",
+  "agent": "article-writer",
+  "name": "✍️ Long-Form Writer",
+  "task": "Write 1500-word SEO article on top researched topic. Include: practical advice, UK-specific examples, CTA. Output: content/posts/{date}-{slug}.md",
+  "model": "google/gemini-2.5-flash-lite",
+  "spawned_at": "2026-02-24T15:46:22+00:00"
+}

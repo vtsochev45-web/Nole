@@ -1,0 +1,86 @@
+{
+  "date": "24 Feb 2026",
+  "research_date": "2026-02-24",
+  "topics": [
+    {
+      "keyword": "spring drilling preparation",
+      "search_volume": "high",
+      "competition": "medium",
+      "relevance": "very_high",
+      "seasonal": "yes",
+      "month": "march"
+    },
+    {
+      "keyword": "SFI payment changes 2026",
+      "search_volume": "medium",
+      "competition": "low",
+      "relevance": "very_high",
+      "seasonal": "no",
+      "trending": "yes"
+    },
+    {
+      "keyword": "lambing shed ventilation",
+      "search_volume": "medium",
+      "competition": "low",
+      "relevance": "high",
+      "seasonal": "yes",
+      "month": "february"
+    },
+    {
+      "keyword": "fertilizer cost calculator",
+      "search_volume": "medium",
+      "competition": "low",
+      "relevance": "high",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "cattle housing design",
+      "search_volume": "medium",
+      "competition": "medium",
+      "relevance": "high",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "grain storage temperatures",
+      "search_volume": "low",
+      "competition": "low",
+      "relevance": "medium",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "AHDB wheat prices",
+      "search_volume": "high",
+      "competition": "high",
+      "relevance": "high",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "farm machinery depreciation",
+      "search_volume": "medium",
+      "competition": "low",
+      "relevance": "high",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "rural business grants",
+      "search_volume": "high",
+      "competition": "medium",
+      "relevance": "very_high",
+      "seasonal": "no"
+    },
+    {
+      "keyword": "soil testing kits",
+      "search_volume": "medium",
+      "competition": "medium",
+      "relevance": "high",
+      "seasonal": "yes",
+      "month": "march"
+    }
+  ],
+  "recommended_article": {
+    "topic": "Complete Guide to Spring Drilling Preparation for UK Farms",
+    "keywords": ["spring drilling", "seed preparation", "soil testing", "fertilizer planning", "machinery maintenance"],
+    "estimated_words": 1500,
+    "target_audience": "arable farmers, mixed farms"
+  }
+}
