@@ -1,0 +1,11 @@
+# GitHub Pages configuration
+title: UK Farm Blog
+description: Daily updates for British farmers
+theme: minima
+url: https://vtsochev45-web.github.io
+baseurl: /Nole
+
+# Exclude
+exclude:
+  - scripts/
+  - content/
