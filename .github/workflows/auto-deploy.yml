@@ -1,4 +1,4 @@
-name: Auto-Deploy to Vercel
+name: Deploy to Vercel
 
 on:
   push:
@@ -9,62 +9,36 @@ permissions:
   contents: write
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+      - uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
-        run: |
-          pip install markdown --quiet || echo "Markdown install optional"
-          npm install -g vercel@latest
+      - name: Install markdown
+        run: pip install markdown --quiet
 
-      - name: Build site
-        run: |
-          cd $GITHUB_WORKSPACE
-          python3 scripts/build-site.py
-        continue-on-error: true
+      - name: Build Site
+        run: python3 scripts/build-site.py
 
-      - name: Verify VERCEL_TOKEN
-        run: |
-          if [ -z "$VERCEL_TOKEN" ]; then
-            echo "❌ VERCEL_TOKEN is not set!"
-            exit 1
-          else
-            echo "✅ VERCEL_TOKEN is configured"
-          fi
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel Environment
+        run: vercel pull --yes --environment=production --token=${VERCEL_TOKEN}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+      - name: Build Project
+        run: vercel build --prod --token=${VERCEL_TOKEN}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
 
       - name: Deploy to Vercel
-        run: |
-          echo "Deploying to Vercel..."
-          vercel --token="${VERCEL_TOKEN}" --prod --yes --cwd="."
+        run: vercel deploy --prebuilt --prod --token=${VERCEL_TOKEN}
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-
-      - name: Notify on Success
-        if: success()
-        run: |
-          echo "✅ Deployed to https://uk-farm-blog.vercel.app"
-          echo "Deployment time: $(date)"
-
-      - name: Commit built files (if changed)
-        if: success()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add _site/ data/ content/ 2>/dev/null || true
-          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-build: $(date -u +'%Y-%m-%d %H:%M')"
-          git push || true
