@@ -17,22 +17,22 @@ type: brief
 ### 💰 Brexit Grants 2026: Complete Guide
 **Step-by-step guide to UK Farm Grants 2026** – ELM schemes, Farming Investment Fund, SFI payments. Application checklists and common pitfalls to avoid.
 
-[Read Full Guide →](/daily-brief/#grants-guide)
+[Read Full Guide →](./grants/)
 
 ### 🌡️ Heatwave Preparation Guide
 **Preparing Your UK Farm for Heatwaves** – Region-specific strategies for Scotland, Midlands, South West, East Anglia. Water management, livestock cooling, soil conservation.
 
-[Read Full Guide →](/weather/)
+[Read Full Guide →](./weather/)
 
 ### 👥 Labour Shortage Solutions
 **Run Your Farm with Fewer Workers** – Post-Brexit workforce strategies. Automation costs (robotic milking £150k-£250k), retention strategies, seasonal worker management.
 
-[Read Full Guide →](/livestock/)
+[Read Full Guide →](./livestock/)
 
 ### 🚁 Farm Drones Guide
 **How to Choose, Where to Fly, What They Cost** – CAA regulations, best drones for different farm sizes, ROI calculator. Legal requirements and getting started steps.
 
-[Read Full Guide →](/equipment/)
+[Read Full Guide →](./equipment/)
 
 ---
 
@@ -48,7 +48,7 @@ type: brief
 - **💰 Farm Cost Calculator** – Calculate operating costs, compare to industry averages, export reports
 - **📊 Value Tracker** – Track money and time saved using this blog
 
-[Try Tools →](/tools/)
+[Try Tools →](./tools/)
 
 ---
 
