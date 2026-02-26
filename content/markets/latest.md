@@ -1,24 +1,27 @@
 ---
-title: "Market Prices"
+title: "Today's Market Prices"
+date: 2026-02-26
 section: markets
-updated: 2026-02-24
 ---
 
-## 📈 Today's Prices
+# 📈 UK Farm Markets
 
-### Cereals (£/tonne)
-| Commodity | Price | Change |
-|-----------|-------|--------|
-| Wheat (feed) | £165 | 📈 +£2.50 |
-| Wheat (milling) | £185 | 📈 +£2.00 |
-| Barley (feed) | £155 | 📉 -£1.00 |
-| Rapeseed | £420 | 📈 +£5.00 |
+## Grain (£/tonne)
+| Commodity | Price | Trend |
+|-----------|-------|-------|
+| Feed wheat | £165 | 📈 +£2.50 |
+| Milling wheat | £185 | 📈 +£2.00 |
+| Barley | £155 | 📉 -£1.00 |
+| OSR | £420 | 📈 +£5.00 |
 
-### Livestock (£/kg)
-| Type | Price | Change |
-|------|-------|--------|
-| Beef (R4L) | £4.25 | 📈 +8p |
-| Lamb (R3) | £2.85 | 📈 +15p |
-| Milk | £0.38/L | 📈 +1p |
+## Livestock (p/kg)
+| Category | Price |
+|----------|-------|
+| Prime steers | £4.25 |
+| Lambs | £2.85 |
+| Cows | £3.45 |
 
-*[Updated daily from AHDB]*
+## Dairy
+- Milk: £0.38/L
+
+*Last updated: 26 February 2026*
