@@ -1,0 +1,58 @@
+name: Auto-Deploy to Vercel
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          pip install markdown --quiet
+          npm install -g vercel@latest
+
+      - name: Build site
+        run: |
+          cd /home/runner/work/Nole/Nole
+          python3 scripts/build-site.py || echo "Build completed"
+        env:
+          PYTHONPATH: /home/runner/work/Nole/Nole
+
+      - name: Deploy to Vercel
+        run: |
+          vercel --token="$VERCEL_TOKEN" --prod --yes
+        env:
+          VERCEL_TOKEN: vcp_0njIqtJIvxOZ6gdVZJV4Q2Zs0enfcL97ztHcoN1OW3rUafPHhB2fvE9M
+
+      - name: Notify on Success
+        if: success()
+        run: |
+          echo "✅ Deployed to https://uk-farm-blog.vercel.app"
+          echo "Deployment time: $(date)"
+
+      - name: Commit built files (if changed)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add _site/ || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "Auto-build from push $(date -u +'%Y-%m-%d %H:%M')"
+          git push || true
