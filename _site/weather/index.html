@@ -4,40 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🌦 Weather Alerts - UK Farm Blog</title>
-    <base href="https://vtsochev45-web.github.io/Nole/">
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; color: #333; line-height: 1.7; }
 header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 60px 20px; text-align: center; }
 header h1 { font-size: 2.5em; margin-bottom: 10px; }
-header p { font-size: 1.2em; opacity: 0.9; max-width: 600px; margin: 0 auto; }
 nav { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
-nav a { color: white; text-decoration: none; margin: 0 10px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
+nav a { color: white; text-decoration: none; margin: 0 8px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
 nav a:hover { background: rgba(255,255,255,0.2); }
 main { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
-.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; box-shadow: 0 10px 40px rgba(45,90,39,0.3); }
-.hero h2 { font-size: 2em; margin-bottom: 20px; }
-.hero-content { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #ffd700; }
-.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; transition: all 0.3s; }
-.btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
-.section-heading { font-size: 1.8em; color: #1e3c72; margin-bottom: 30px; }
-.sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 50px; }
+.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; }
+.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; }
 .section-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
-.section-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-.section-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--card-gradient); border-radius: 16px 16px 0 0; }
-.section-card-icon { font-size: 3em; margin-bottom: 15px; }
-.section-card h3 { color: #1e3c72; margin-bottom: 10px; font-size: 1.4em; }
-.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-size: 0.9em; font-weight: 500; }
+.section-card:hover { transform: translateY(-5px); }
+.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; }
 .content-page { background: white; border-radius: 20px; padding: 50px; max-width: 900px; margin: 40px auto; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
 .content-page h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #eee; padding-bottom: 20px; }
-.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; font-size: 1.6em; }
-.content-page table { width: 100%; border-collapse: collapse; margin: 25px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.content-page th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; }
-.content-page td { padding: 15px; border-bottom: 1px solid #eee; }
-.content-page tr:nth-child(even) { background: #f8f9fa; }
+.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; }
 footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 80px; }
-.updated { font-size: 0.9em; opacity: 0.7; }
-@media (max-width: 768px) { header h1 { font-size: 2em; } .sections-grid { grid-template-columns: 1fr; } .content-page { padding: 25px; } }
 </style>
 </head>
 <body>
@@ -46,23 +30,39 @@ footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: w
         <p>Weather risks & forecasts</p>
     </header>
     <nav>
-        <a href="../">🏠 Home</a> <a href="../daily-brief/">📰 Daily Farm Brief</a> <a href="../grants/">💰 Grants & Funding</a> <a href="../markets/">📈 Market Prices</a> <a href="../equipment/">🚜 Equipment</a> <a href="../livestock/">🐄 Livestock</a> <a href="../crops/">🌾 Crops</a> <a href="../seasonal/">📅 Seasonal Tasks</a> <a href="../tools/">🧰 Tools</a> <a href="../community/">📋 Community</a>
+        <a href="/Nole/">🏠 Home</a> <a href="/Nole/daily-brief/">Daily Farm Brief</a> <a href="/Nole/weather/"><strong>Weather Alerts</strong></a> <a href="/Nole/grants/">Grants & Funding</a> <a href="/Nole/markets/">Market Prices</a> <a href="/Nole/equipment/">Equipment</a> <a href="/Nole/livestock/">Livestock</a> <a href="/Nole/crops/">Crops</a> <a href="/Nole/seasonal/">Seasonal Tasks</a> <a href="/Nole/tools/">Tools</a> <a href="/Nole/community/">Community</a>
     </nav>
     <main>
         <article class="content-page">
-            <p><h1>🌡️ Preparing Your UK Farm for Heatwaves: Complete 2026 Guide</h1></p><p><h2>Climate Reality: UK Heatwaves Are Increasing</h2></p><p>2025 saw record temperatures across Britain. 2026 is forecast to bring more extreme heat events. This guide helps you prepare.</p><p><h2>Region-Specific Heat Risks</h2></p><p><h3>🔥 South-East England (Highest Risk)</h3>
+            <h1>🌡️ Preparing Your UK Farm for Heatwaves: Complete 2026 Guide</h1>
+
+<h2>Climate Reality: UK Heatwaves Are Increasing</h2>
+
+2025 saw record temperatures across Britain. 2026 is forecast to bring more extreme heat events. This guide helps you prepare.
+
+<h2>Region-Specific Heat Risks</h2>
+
+### 🔥 South-East England (Highest Risk)
 - <strong>Risk level:</strong> Very High
 - <strong>Typical peaks:</strong> 35-40°C
 - <strong>Vulnerable:</strong> Horticulture, poultry, dairy
-- <strong>Key prep:</strong> Irrigation, shade structures</p><p><h3>🌡️ Midlands & East Anglia (High Risk)</h3>
+- <strong>Key prep:</strong> Irrigation, shade structures
+
+### 🌡️ Midlands & East Anglia (High Risk)
 - <strong>Risk level:</strong> High
 - <strong>Typical peaks:</strong> 32-38°C
 - <strong>Vulnerable:</strong> Arable, root crops
-- <strong>Key prep:</strong> Soil moisture, early harvesting</p><p><h3>🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland & North (Moderate Risk)</h3>
+- <strong>Key prep:</strong> Soil moisture, early harvesting
+
+### 🏴󠁧󠁢󠁳󠁣󠁴󠁿 Scotland & North (Moderate Risk)
 - <strong>Risk level:</strong> Moderate
 - <strong>Typical peaks:</strong> 28-32°C
 - <strong>Vulnerable:</strong> Livestock (not acclimated)
-- <strong>Key prep:</strong> Ventilation, water access</p><p><h2>Water Management Strategies</h2></p><p><h3>Immediate Actions (Do Now)</h3>
+- <strong>Key prep:</strong> Ventilation, water access
+
+<h2>Water Management Strategies</h2>
+
+### Immediate Actions (Do Now)
 1. <strong>Check water storage</strong> – Clean tanks, repair leaks
 2. <strong>Test pumps</strong> – Ensure backup power
 3. <strong>Map water points</strong> – Ensure livestock access
@@ -70,85 +70,136 @@ footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: w
    - Dairy cows: 100-150L/day each in heat
    - Beef cattle: 40-80L/day
    - Sheep: 4-8L/day
-   - Pigs: 15-30L/day</p><p><h3>Medium-Term (This Month)</h3>
+   - Pigs: 15-30L/day
+
+### Medium-Term (This Month)
 - Install additional troughs
 - Create water redundancy (multiple sources)
 - Consider rainwater harvesting expansion
-- Check abstraction licenses</p><p><h3>Long-Term (Before Summer)</h3>
+- Check abstraction licenses
+
+### Long-Term (Before Summer)
 - Reservoir expansion
 - Drip irrigation for high-value crops
-- Shade infrastructure</p><p><h2>Livestock Cooling Solutions</h2></p><p><h3>Shade Structures</h3>
+- Shade infrastructure
+
+<h2>Livestock Cooling Solutions</h2>
+
+### Shade Structures
 | Type | Cost | Effectiveness | Best For |
 |------|------|---------------|----------|
 | Natural tree belts | Low | High | Pastures |
 | Permanent sheds | £5,000-20,000 | Very High | Dairy yards |
 | Shade cloth | £500-2,000 | Medium | Temporary |
-| Umbrellas | £200-500 | Low | Individual animals |</p><p><h3>Active Cooling</h3>
+| Umbrellas | £200-500 | Low | Individual animals |
+
+### Active Cooling
 - <strong>Misting systems:</strong> £2,000-8,000 (very effective)
 - <strong>Fans:</strong> £100-500 each (barns/poultry)
-- <strong>Wallowing areas:</strong> £500-2,000 (pigs/cattle)</p><p><h3>Species-Specific Tips</h3></p><p><strong>Dairy Cows:</strong>
+- <strong>Wallowing areas:</strong> £500-2,000 (pigs/cattle)
+
+### Species-Specific Tips
+
+<strong>Dairy Cows:</strong>
 - Most vulnerable to heat stress
 - Need shade + ventilation + water
 - Consider night milking in heatwaves
-- Watch for panting, drooling, lethargy</p><p><strong>Sheep:</strong>
+- Watch for panting, drooling, lethargy
+
+<strong>Sheep:</strong>
 - Shear before peak summer
 - Provide shade in afternoon
-- Check flies (heat increases problems)</p><p><strong>Pigs:</strong>
+- Check flies (heat increases problems)
+
+<strong>Pigs:</strong>
 - High risk (can't sweat)
 - Wallowing essential
 - Ventilated housing critical
-- Frozen treats help</p><p><strong>Poultry:</strong>
+- Frozen treats help
+
+<strong>Poultry:</strong>
 - Highest mortality risk in heat
 - Max ventilation
 - Reduce stocking density
-- Provide electrolytes in water</p><p><h2>Crop Protection</h2></p><p><h3>Before Heatwave</h3>
+- Provide electrolytes in water
+
+<h2>Crop Protection</h2>
+
+### Before Heatwave
 - <strong>Irrigate deeply</strong> 2-3 days before (not shallow)
 - <strong>Avoid spraying</strong> – droplets magnify heat
 - <strong>Check mulch</strong> – maintain 5cm+ organic layer
-- <strong>Harvest early</strong> if crops near ready</p><p><h3>During Heatwave</h3>
+- <strong>Harvest early</strong> if crops near ready
+
+### During Heatwave
 - <strong>Morning irrigation only</strong> (5-9 AM)
 - <strong>Shade cloth</strong> for vegetables (£1-2/m²)
 - <strong>Mist systems</strong> for high-value crops
-- <strong>Stop fertilizer</strong> – increases water needs</p><p><h3>After Heatwave</h3>
+- <strong>Stop fertilizer</strong> – increases water needs
+
+### After Heatwave
 - <strong>Assess damage</strong> – photograph for insurance
 - <strong>Water gradually</strong> – don't flood shocked plants
 - <strong>Check for disease</strong> – heat stress = vulnerability
-- <strong>Plan improvements</strong> for next year</p><p><h2>Emergency Response Checklist</h2></p><p><h3>24 Hours Before Forecast Heat</h3>
+- <strong>Plan improvements</strong> for next year
+
+<h2>Emergency Response Checklist</h2>
+
+### 24 Hours Before Forecast Heat
 - [ ] All water troughs full and flowing
 - [ ] Shade structures deployed
 - [ ] Emergency contacts list updated
 - [ ] Vet on standby notice
-- [ ] Check insurance coverage</p><p><h3>During Heatwave</h3>
+- [ ] Check insurance coverage
+
+### During Heatwave
 - [ ] Check animals every 2 hours
 - [ ] Monitor water consumption
 - [ ] Activate cooling systems
 - [ ] Document temperatures
-- [ ] Postpone non-essential work</p><p><h3>Post-Heatwave</h3>
+- [ ] Postpone non-essential work
+
+### Post-Heatwave
 - [ ] Full health check all livestock
 - [ ] Inspect crops for damage
 - [ ] Review what worked/didn't
 - [ ] Update plans for next event
-- [ ] Claim insurance if applicable</p><p><h2>Investment Priorities</h2></p><p><strong>High Priority (Do This Year):</strong>
+- [ ] Claim insurance if applicable
+
+<h2>Investment Priorities</h2>
+
+<strong>High Priority (Do This Year):</strong>
 1. Water redundancy (£500-2,000)
 2. Shade cloth for vulnerable areas (£1,000-3,000)
-3. Ventilation fans (£500-1,500)</p><p><strong>Medium Priority (Next 1-2 Years):</strong>
+3. Ventilation fans (£500-1,500)
+
+<strong>Medium Priority (Next 1-2 Years):</strong>
 1. Permanent shade structures (£5,000-20,000)
 2. Irrigation expansion (£3,000-10,000)
-3. Misting systems (£2,000-8,000)</p><p><strong>Funding Available:</strong>
+3. Misting systems (£2,000-8,000)
+
+<strong>Funding Available:</strong>
 - Farming Investment Fund (equipment)
 - SFI (water efficiency, tree planting)
-- Countryside Stewardship (capital items)</p><p><h2>Get Help</h2></p><p>- <strong>AHDB Weather Hub:</strong> ahdb.org.uk/weather
+- Countryside Stewardship (capital items)
+
+<h2>Get Help</h2>
+
+- <strong>AHDB Weather Hub:</strong> ahdb.org.uk/weather
 - <strong>Met Office Heat Alerts:</strong> metoffice.gov.uk
 - <strong>Vet advice:</strong> Your local practice
-- <strong>NFU support:</strong> nfuonline.com</p><p><em>Prepare now. Heatwaves kill livestock and crops – but preparation saves both.</em></p><p><em>Last updated: 26 February 2026</em></p>
+- <strong>NFU support:</strong> nfuonline.com
+
+*Prepare now. Heatwaves kill livestock and crops – but preparation saves both.*
+
+*Last updated: 26 February 2026*
             <p style="text-align: center; margin-top: 40px;">
-                <a href="../" class="btn">← Back to Home</a>
+                <a href="/Nole/" class="btn">← Back to Home</a>
             </p>
         </article>
     </main>
     <footer>
         <p>🚜 UK Farm Blog - 🌦 Weather Alerts</p>
-        <p class="updated">Last updated: 26 February 2026 at 16:28 UTC</p>
     </footer>
 </body>
 </html>

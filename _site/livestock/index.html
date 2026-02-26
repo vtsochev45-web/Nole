@@ -4,40 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🐄 Livestock - UK Farm Blog</title>
-    <base href="https://vtsochev45-web.github.io/Nole/">
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; color: #333; line-height: 1.7; }
 header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 60px 20px; text-align: center; }
 header h1 { font-size: 2.5em; margin-bottom: 10px; }
-header p { font-size: 1.2em; opacity: 0.9; max-width: 600px; margin: 0 auto; }
 nav { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
-nav a { color: white; text-decoration: none; margin: 0 10px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
+nav a { color: white; text-decoration: none; margin: 0 8px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
 nav a:hover { background: rgba(255,255,255,0.2); }
 main { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
-.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; box-shadow: 0 10px 40px rgba(45,90,39,0.3); }
-.hero h2 { font-size: 2em; margin-bottom: 20px; }
-.hero-content { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #ffd700; }
-.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; transition: all 0.3s; }
-.btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
-.section-heading { font-size: 1.8em; color: #1e3c72; margin-bottom: 30px; }
-.sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 50px; }
+.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; }
+.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; }
 .section-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
-.section-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-.section-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--card-gradient); border-radius: 16px 16px 0 0; }
-.section-card-icon { font-size: 3em; margin-bottom: 15px; }
-.section-card h3 { color: #1e3c72; margin-bottom: 10px; font-size: 1.4em; }
-.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-size: 0.9em; font-weight: 500; }
+.section-card:hover { transform: translateY(-5px); }
+.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; }
 .content-page { background: white; border-radius: 20px; padding: 50px; max-width: 900px; margin: 40px auto; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
 .content-page h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #eee; padding-bottom: 20px; }
-.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; font-size: 1.6em; }
-.content-page table { width: 100%; border-collapse: collapse; margin: 25px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.content-page th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; }
-.content-page td { padding: 15px; border-bottom: 1px solid #eee; }
-.content-page tr:nth-child(even) { background: #f8f9fa; }
+.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; }
 footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 80px; }
-.updated { font-size: 0.9em; opacity: 0.7; }
-@media (max-width: 768px) { header h1 { font-size: 2em; } .sections-grid { grid-template-columns: 1fr; } .content-page { padding: 25px; } }
 </style>
 </head>
 <body>
@@ -46,135 +30,270 @@ footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: w
         <p>Animal health & markets</p>
     </header>
     <nav>
-        <a href="../">🏠 Home</a> <a href="../daily-brief/">📰 Daily Farm Brief</a> <a href="../weather/">🌦 Weather Alerts</a> <a href="../grants/">💰 Grants & Funding</a> <a href="../markets/">📈 Market Prices</a> <a href="../equipment/">🚜 Equipment</a> <a href="../crops/">🌾 Crops</a> <a href="../seasonal/">📅 Seasonal Tasks</a> <a href="../tools/">🧰 Tools</a> <a href="../community/">📋 Community</a>
+        <a href="/Nole/">🏠 Home</a> <a href="/Nole/daily-brief/">Daily Farm Brief</a> <a href="/Nole/weather/">Weather Alerts</a> <a href="/Nole/grants/">Grants & Funding</a> <a href="/Nole/markets/">Market Prices</a> <a href="/Nole/equipment/">Equipment</a> <a href="/Nole/livestock/"><strong>Livestock</strong></a> <a href="/Nole/crops/">Crops</a> <a href="/Nole/seasonal/">Seasonal Tasks</a> <a href="/Nole/tools/">Tools</a> <a href="/Nole/community/">Community</a>
     </nav>
     <main>
         <article class="content-page">
-            <p><h1>👥 How to Efficiently Run Your Farm with Fewer Workers</h1></p><p><h2>The Post-Brexit Labour Challenge</h2></p><p>UK farms have lost access to seasonal EU workers. Wages have risen 15-25%. Many farmers are struggling to find reliable staff. This guide offers practical solutions.</p><p><h2>Understanding the Current Situation</h2></p><p><strong>Labour Statistics:</strong>
+            <h1>👥 How to Efficiently Run Your Farm with Fewer Workers</h1>
+
+<h2>The Post-Brexit Labour Challenge</h2>
+
+UK farms have lost access to seasonal EU workers. Wages have risen 15-25%. Many farmers are struggling to find reliable staff. This guide offers practical solutions.
+
+<h2>Understanding the Current Situation</h2>
+
+<strong>Labour Statistics:</strong>
 - 40% of farms report labour shortages
 - Average wage increases: 20% since 2021
 - Seasonal worker scheme: 45,000 visas (insufficient demand)
-- 25% of farm businesses have reduced output due to labour issues</p><p><strong>Why it's happening:</strong>
+- 25% of farm businesses have reduced output due to labour issues
+
+<strong>Why it's happening:</strong>
 - Brexit ended free movement
 - Competing sectors (logistics, hospitality) offer similar pay
 - Housing costs near farms are unaffordable
-- Young people leaving rural areas</p><p><h2>Automation Solutions</h2></p><p><h3>Robotic Milking Systems</h3></p><p><strong>Cost:</strong> £150,000-£250,000 for 120-cow unit</p><p><strong>Labour saving:</strong>
+- Young people leaving rural areas
+
+<h2>Automation Solutions</h2>
+
+### Robotic Milking Systems
+
+<strong>Cost:</strong> £150,000-£250,000 for 120-cow unit
+
+<strong>Labour saving:</strong>
 - Before: 3 hours/day milking
 - After: 30 minutes/day monitoring
-- <strong>Save: 2.5 hours/day = 912 hours/year</strong></p><p><strong>Payback:</strong> 5-7 years (depending on labour costs)</p><p><strong>Grants available:</strong> Farming Investment Fund up to £25,000</p><p><h3>Autonomous Tractors</h3></p><p><strong>Options:</strong>
+- <strong>Save: 2.5 hours/day = 912 hours/year</strong>
+
+<strong>Payback:</strong> 5-7 years (depending on labour costs)
+
+<strong>Grants available:</strong> Farming Investment Fund up to £25,000
+
+### Autonomous Tractors
+
+<strong>Options:</strong>
 | System | Cost | Best For |
 |--------|------|----------|
 | GPS auto-steer retrofit | £15,000-30,000 | Arable farms |
 | Full autonomous (John Deere 8R) | £400,000+ | Large operations |
-| Small robot tractors | £50,000-80,000 | Specialty crops |</p><p><strong>Labour saving:</strong> 30-50% on tractor operations</p><p><h3>Drone Technology</h3></p><p><strong>See our full guide:</strong> [Farm Drones Guide](/equipment/)</p><p><strong>Quick benefits:</strong>
+| Small robot tractors | £50,000-80,000 | Specialty crops |
+
+<strong>Labour saving:</strong> 30-50% on tractor operations
+
+### Drone Technology
+
+<strong>See our full guide:</strong> [Farm Drones Guide](/equipment/)
+
+<strong>Quick benefits:</strong>
 - Crop scouting: 6 hours → 30 minutes
 - Livestock checks: 2 hours → 20 minutes
-- Mapping: 4 hours → automated</p><p><strong>Cost:</strong> £1,000-£30,000 depending on capability</p><p><h3>Automated Feeding Systems</h3></p><p><strong>For livestock farms:</strong>
+- Mapping: 4 hours → automated
+
+<strong>Cost:</strong> £1,000-£30,000 depending on capability
+
+### Automated Feeding Systems
+
+<strong>For livestock farms:</strong>
 - Automated feed pushers: £20,000-40,000
 - TMR mixers with conveyors: £50,000-100,000
-- Individual cow feeders: £5,000-15,000 per unit</p><p><strong>Labour saving:</strong> 1-2 hours/day</p><p><h3>Weeding/Harvesting Robots</h3></p><p><strong>Emerging technology:</strong>
+- Individual cow feeders: £5,000-15,000 per unit
+
+<strong>Labour saving:</strong> 1-2 hours/day
+
+### Weeding/Harvesting Robots
+
+<strong>Emerging technology:</strong>
 - Small Robot Company: £30,000-60,000 per unit
 - Naïo weeding robots: £20,000-40,000
-- Harvesting still limited for most crops</p><p><h2>Seasonal Worker Management</h2></p><p><h3>Recruitment Strategies</h3></p><p><strong>1. Earlier recruitment</strong>
+- Harvesting still limited for most crops
+
+<h2>Seasonal Worker Management</h2>
+
+### Recruitment Strategies
+
+<strong>1. Earlier recruitment</strong>
 - Start recruiting 6 months before season
 - Contact previous workers by Christmas
-- Offer return bonuses (£200-500)</p><p><strong>2. Expand your search</strong>
+- Offer return bonuses (£200-500)
+
+<strong>2. Expand your search</strong>
 - Partner with agricultural colleges
 - Contact rural job centres
 - Use social media (Facebook groups)
-- Consider non-agricultural workers (training provided)</p><p><strong>3. Improve your offer</strong>
+- Consider non-agricultural workers (training provided)
+
+<strong>3. Improve your offer</strong>
 - Guaranteed hours (minimum 40/week)
 - Overtime paid properly
 - Accommodation provided or subsidised
-- End-of-season bonus</p><p><h3>On-Farm Efficiency</h3></p><p><strong>Job batching:</strong>
+- End-of-season bonus
+
+### On-Farm Efficiency
+
+<strong>Job batching:</strong>
 - Group tasks geographically
 - Minimize travel time
-- Plan routes efficiently</p><p><strong>Better tools:</strong>
+- Plan routes efficiently
+
+<strong>Better tools:</strong>
 - Power tools vs manual
 - Electric fencing vs post-and-wire
-- ATV/UTV vs walking</p><p><strong>Work smarter:</strong>
+- ATV/UTV vs walking
+
+<strong>Work smarter:</strong>
 - Early starts in summer (avoid heat)
 - Flexible hours when possible
-- Job rotation to reduce fatigue</p><p><h2>Technology to Reduce Admin</h2></p><p><h3>Farm Management Software</h3></p><p><strong>Popular options:</strong>
+- Job rotation to reduce fatigue
+
+<h2>Technology to Reduce Admin</h2>
+
+### Farm Management Software
+
+<strong>Popular options:</strong>
 | Software | Cost | Best For |
 |----------|------|----------|
 | Herdwatch | £30/month | Livestock records |
 | Farmplan | £50/month | Accounts + compliance |
 | AgriWebb | £40/month | Grazing management |
-| Fieldmargin | £25/month | Field planning |</p><p><strong>Time saving:</strong> 5-10 hours/week on paperwork</p><p><h3>Automated Compliance</h3></p><p>- Automatic medicine recording
+| Fieldmargin | £25/month | Field planning |
+
+<strong>Time saving:</strong> 5-10 hours/week on paperwork
+
+### Automated Compliance
+
+- Automatic medicine recording
 - Digital field records
 - Online subsidy applications
-- Integrated accounting</p><p><h2>Retention Strategies</h2></p><p><h3>Competitive Pay</h3></p><p><strong>Current rates (2026):</strong>
+- Integrated accounting
+
+<h2>Retention Strategies</h2>
+
+### Competitive Pay
+
+<strong>Current rates (2026):</strong>
 | Role | Hourly Rate | Annual (50hr weeks) |
 |------|-------------|---------------------|
 | General farm worker | £12-14 | £31,000-36,000 |
 | Herdsperson | £14-16 | £36,000-41,000 |
 | Machinery operator | £13-15 | £33,000-39,000 |
-| Farm manager | £18-25 | £47,000-65,000 |</p><p><strong>Additional benefits to offer:</strong>
+| Farm manager | £18-25 | £47,000-65,000 |
+
+<strong>Additional benefits to offer:</strong>
 - Accommodation (worth £6,000-12,000/year)
 - Vehicle for work/personal use
 - Training and qualifications
 - Meat/milk/eggs allowance
-- Pension contributions</p><p><h3>Career Development</h3></p><p><strong>Provide:</strong>
+- Pension contributions
+
+### Career Development
+
+<strong>Provide:</strong>
 - Training opportunities (PA1, PA2, ATV, etc.)
 - Clear progression path
 - Responsibility and autonomy
-- Regular feedback and praise</p><p><h3>Work-Life Balance</h3></p><p><strong>Practical steps:</strong>
+- Regular feedback and praise
+
+### Work-Life Balance
+
+<strong>Practical steps:</strong>
 - Rotating weekend duties
 - Time off during quiet periods
 - Flexible hours where possible
-- Respect personal time</p><p><h2>Cost-Benefit Analysis Framework</h2></p><p><h3>Calculate Your Labour Cost</h3></p><p><strong>Current annual labour cost:</strong>
+- Respect personal time
+
+<h2>Cost-Benefit Analysis Framework</h2>
+
+### Calculate Your Labour Cost
+
+<strong>Current annual labour cost:</strong>
 - Wages: £____
 - Accommodation: £____
 - NI/pension: £____
 - Recruitment: £____
 - Training: £____
-- <strong>Total: £____</strong></p><p><h3>Automation ROI Calculation</h3></p><p><strong>Example: Robotic milking</strong>
+- <strong>Total: £____</strong>
+
+### Automation ROI Calculation
+
+<strong>Example: Robotic milking</strong>
 - Cost: £200,000
 - Grant: £25,000
-- Net cost: £175,000</p><p><strong>Annual savings:</strong>
+- Net cost: £175,000
+
+<strong>Annual savings:</strong>
 - Labour: £35,000
 - Milk quality bonus: £5,000
 - Reduced vet costs: £3,000
-- <strong>Total: £43,000/year</strong></p><p><strong>Payback: 4.1 years</strong></p><p><h3>Decision Matrix</h3></p><p>| Solution | Cost | Labour Saved | Payback | Priority |
+- <strong>Total: £43,000/year</strong>
+
+<strong>Payback: 4.1 years</strong>
+
+### Decision Matrix
+
+| Solution | Cost | Labour Saved | Payback | Priority |
 |----------|------|--------------|---------|----------|
 | Robotic milking | High | Very High | 4-7 years | High (if >80 cows) |
 | Auto-steer | Medium | Medium | 3-5 years | High |
 | Drones | Low | Low | 1-2 years | Medium |
 | Feed automation | Medium | Medium | 5-8 years | Medium |
-| Software | Low | Medium | Immediate | Very High |</p><p><h2>Immediate Actions (This Week)</h2></p><p>1. <strong>Audit current labour usage:</strong>
+| Software | Low | Medium | Immediate | Very High |
+
+<h2>Immediate Actions (This Week)</h2>
+
+1. <strong>Audit current labour usage:</strong>
    - Track time spent on each task
    - Identify biggest time sinks
-   - Spot inefficiencies</p><p>2. <strong>Review recruitment:</strong>
+   - Spot inefficiencies
+
+2. <strong>Review recruitment:</strong>
    - Update job adverts
    - Contact previous workers
-   - Check accommodation standards</p><p>3. <strong>Research grants:</strong>
+   - Check accommodation standards
+
+3. <strong>Research grants:</strong>
    - Farming Investment Fund eligibility
    - SFI productivity actions
-   - Local council schemes</p><p>4. <strong>Technology demo:</strong>
+   - Local council schemes
+
+4. <strong>Technology demo:</strong>
    - Book robotic milking demo
    - Trial farm management software
-   - Attend drone workshop</p><p><h2>Funding Available</h2></p><p><strong>Farming Investment Fund:</strong>
+   - Attend drone workshop
+
+<h2>Funding Available</h2>
+
+<strong>Farming Investment Fund:</strong>
 - Equipment automation
 - Technology upgrades
-- Up to £25,000 grants</p><p><strong>SFI Actions:</strong>
+- Up to £25,000 grants
+
+<strong>SFI Actions:</strong>
 - Precision farming techniques
 - Reduced input approaches
-- Payment for innovation</p><p><strong>Rural Development Programme:</strong>
+- Payment for innovation
+
+<strong>Rural Development Programme:</strong>
 - Training grants
 - Business advice
-- Local schemes vary</p><p><h2>Get Help</h2></p><p>- <strong>AHDB Labour Guide:</strong> ahdb.org.uk/labour
+- Local schemes vary
+
+<h2>Get Help</h2>
+
+- <strong>AHDB Labour Guide:</strong> ahdb.org.uk/labour
 - <strong>NFU Employment Advice:</strong> nfuonline.com
 - <strong>ACAS Helpline:</strong> 0300 123 1100
-- <strong>Agricultural solicitor:</strong> For contracts/compliance</p><p><em>Labour is your biggest cost and biggest challenge. Automation isn't about replacing people – it's about making your farm sustainable with the workforce available.</em></p><p><em>Last updated: 26 February 2026</em></p>
+- <strong>Agricultural solicitor:</strong> For contracts/compliance
+
+*Labour is your biggest cost and biggest challenge. Automation isn't about replacing people – it's about making your farm sustainable with the workforce available.*
+
+*Last updated: 26 February 2026*
             <p style="text-align: center; margin-top: 40px;">
-                <a href="../" class="btn">← Back to Home</a>
+                <a href="/Nole/" class="btn">← Back to Home</a>
             </p>
         </article>
     </main>
     <footer>
         <p>🚜 UK Farm Blog - 🐄 Livestock</p>
-        <p class="updated">Last updated: 26 February 2026 at 16:28 UTC</p>
     </footer>
 </body>
 </html>

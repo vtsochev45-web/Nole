@@ -3,86 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Community - UK Farm Blog</title>
-    <base href="https://vtsochev45-web.github.io/Nole/">
+    <title>👥 Community - UK Farm Blog</title>
     <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); min-height: 100vh; color: #333; line-height: 1.7; }
 header { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; padding: 60px 20px; text-align: center; }
 header h1 { font-size: 2.5em; margin-bottom: 10px; }
-header p { font-size: 1.2em; opacity: 0.9; max-width: 600px; margin: 0 auto; }
 nav { background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
-nav a { color: white; text-decoration: none; margin: 0 10px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
+nav a { color: white; text-decoration: none; margin: 0 8px; padding: 8px 16px; border-radius: 20px; transition: all 0.3s; }
 nav a:hover { background: rgba(255,255,255,0.2); }
 main { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
-.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; box-shadow: 0 10px 40px rgba(45,90,39,0.3); }
-.hero h2 { font-size: 2em; margin-bottom: 20px; }
-.hero-content { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin: 20px 0; border-left: 4px solid #ffd700; }
-.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; transition: all 0.3s; }
-.btn:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(255,215,0,0.4); }
-.section-heading { font-size: 1.8em; color: #1e3c72; margin-bottom: 30px; }
-.sections-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-bottom: 50px; }
+.hero { background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%); color: white; padding: 40px; border-radius: 20px; margin-bottom: 50px; }
+.btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; }
 .section-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
-.section-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0,0,0,0.12); }
-.section-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--card-gradient); border-radius: 16px 16px 0 0; }
-.section-card-icon { font-size: 3em; margin-bottom: 15px; }
-.section-card h3 { color: #1e3c72; margin-bottom: 10px; font-size: 1.4em; }
-.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-size: 0.9em; font-weight: 500; }
+.section-card:hover { transform: translateY(-5px); }
+.card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; }
 .content-page { background: white; border-radius: 20px; padding: 50px; max-width: 900px; margin: 40px auto; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
 .content-page h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #eee; padding-bottom: 20px; }
-.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; font-size: 1.6em; }
-.content-page table { width: 100%; border-collapse: collapse; margin: 25px 0; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-.content-page th { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; text-align: left; }
-.content-page td { padding: 15px; border-bottom: 1px solid #eee; }
-.content-page tr:nth-child(even) { background: #f8f9fa; }
+.content-page h2 { color: #2d5a27; margin: 40px 0 20px; padding-left: 15px; border-left: 4px solid #ffd700; }
 footer { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; text-align: center; padding: 50px 20px; margin-top: 80px; }
-.updated { font-size: 0.9em; opacity: 0.7; }
-@media (max-width: 768px) { header h1 { font-size: 2em; } .sections-grid { grid-template-columns: 1fr; } .content-page { padding: 25px; } }
 </style>
 </head>
 <body>
     <header>
-        <h1>🌾 Community Hub</h1>
-        <p>Connect with fellow UK farmers</p>
+        <h1>👥 👥 Community</h1>
+        <p>Ask questions, share stories</p>
     </header>
     <nav>
-        <a href="../">🏠 Home</a>
-        <a href="./ask-question.html">❓ Ask Question</a>
-        <a href="./share-story.html">📖 Share Story</a>
-        <a href="./utility-tracker.html">💰 Value Tracker</a>
+        <a href="/Nole/">🏠 Home</a> <a href="/Nole/daily-brief/">Daily Farm Brief</a> <a href="/Nole/weather/">Weather Alerts</a> <a href="/Nole/grants/">Grants & Funding</a> <a href="/Nole/markets/">Market Prices</a> <a href="/Nole/equipment/">Equipment</a> <a href="/Nole/livestock/">Livestock</a> <a href="/Nole/crops/">Crops</a> <a href="/Nole/seasonal/">Seasonal Tasks</a> <a href="/Nole/tools/">Tools</a> <a href="/Nole/community/"><strong>Community</strong></a>
     </nav>
     <main>
         <article class="content-page">
-            <p><h1>🌾 UK Farm Community Hub</h1></p><p><h2>Welcome to the UK Farm Community</h2></p><p>This is a space for <strong>real UK farmers</strong> to connect, share knowledge, and help each other succeed.</p><p>---</p><p><h2>💬 What You Can Do Here</h2></p><p><h3>1. Ask a Question</h3>
-Got a farming problem? Ask the community or our farming experts.</p><p>[Ask a Question →](ask-question.html)</p><p><h3>2. Share Your Story</h3>
-Tell us about your farm, your challenges, your wins.</p><p>[Share Your Story →](share-story.html)</p><p><h3>3. Get Expert Advice</h3>
-Submit questions to our panel of farming experts.</p><p>[Ask an Expert →](ask-expert.html)</p><p><h3>4. Read Community Stories</h3>
-Learn from fellow farmers across the UK.</p><p>[Browse Stories →](stories/)</p><p>---</p><p><h2>🔥 This Week's Hot Topics</h2></p><p><em>(Community-driven section - most discussed topics)</em></p><p>1. <strong>Brexit Grant Applications</strong> - Deadline approaching for FIF 2026
-2. <strong>Heatwave Preparation</strong> - Strategies for summer 2026
-3. <strong>Labour Shortages</strong> - Solutions that actually work</p><p>---</p><p><h2>📢 Recent Community Activity</h2></p><p><h3>Latest Questions</h3>
-- How do I calculate my farm's carbon footprint? <em>[3 answers]</em>
-- Best sheep breed for wet Welsh conditions? <em>[5 answers]</em>
-- Is robotic milking worth it for 80 cows? <em>[2 answers]</em></p><p><h3>Latest Stories</h3>
-- <strong>"How I Reduced My Labour Costs by 40%"</strong> - James, Yorkshire
-- <strong>"First Year Farming: What I Wish I'd Known"</strong> - Sarah, Devon
-- <strong>"Building a Profitable Side-Hustle on 5 Acres"</strong> - Tom, Kent</p><p>---</p><p><h2>👥 Why Community Matters</h2></p><p>> <em>"I learned more from this community in 6 months than from 5 years of trial and error."</em>
-> <strong>- Mike, Lincolnshire farmer</strong></p><p>> <em>"When my sheep had foot rot, I got practical advice here in hours, not days."</em>
-> <strong>- Beth, Welsh farmer</strong></p><p>---</p><p><h2>🤝 Community Guidelines</h2></p><p>1. <strong>Be helpful</strong> - We're all here to learn and grow
-2. <strong>Be respectful</strong> - Treat fellow farmers as you'd want to be treated
-3. <strong>Be specific</strong> - Share details that help others understand your situation
-4. <strong>Be honest</strong> - Share real experiences, not theory
-5. <strong>No spam</strong> - Promote products/services only if genuinely helpful</p><p>---</p><p><h2>📧 Submit Offline</h2></p><p>Don't want to use the forms? Email us:
-- Questions: <strong>questions@ukfarm.blog</strong>
-- Stories: <strong>stories@ukfarm.blog</strong>
-- Expert requests: <strong>experts@ukfarm.blog</strong></p><p>---</p><p><em>The UK Farm Blog community is moderated to ensure quality and helpfulness.</em></p>
+            <p>👥 Community content coming soon!</p>
             <p style="text-align: center; margin-top: 40px;">
-                <a href="../" class="btn">← Back to Home</a>
+                <a href="/Nole/" class="btn">← Back to Home</a>
             </p>
         </article>
     </main>
     <footer>
-        <p>🚜 UK Farm Blog - Community</p>
-        <p class="updated">Last updated: 26 February 2026 at 16:28 UTC</p>
+        <p>🚜 UK Farm Blog - 👥 Community</p>
     </footer>
 </body>
 </html>
