@@ -31,6 +31,7 @@ SECTIONS = [
     ("crops", "🌾 Crops", "Crop management & agronomy"),
     ("seasonal", "📅 Seasonal Tasks", "Monthly farming checklists"),
     ("tools", "📊 Tools", "Calculators & resources"),
+    ("community", "👥 Community", "Ask questions, share stories"),
 ]
 
 def md_to_html(text):
@@ -274,6 +275,80 @@ def main():
         page = build_section_page(section_id, title, desc)
         (section_dir / "index.html").write_text(page)
         print(f"  ✅ {title}")
+    
+    # Copy interactive tools
+    tools_src = PROJECT_ROOT / "content" / "tools"
+    if tools_src.exists():
+        tools_dir = OUTPUT_DIR / "tools"
+        for html_file in tools_src.glob("*.html"):
+            dest = tools_dir / html_file.name
+            content = html_file.read_text()
+            # Inject base tag if not present
+            if '<base' not in content:
+                content = content.replace('<head>', f'<head>\n    <base href="{BASE_URL}/">')
+            dest.write_text(content)
+            print(f"  ✅ Tool: {html_file.name}")
+    
+    # Copy community features
+    community_src = PROJECT_ROOT / "content" / "community"
+    if community_src.exists():
+        community_dir = OUTPUT_DIR / "community"
+        community_dir.mkdir(exist_ok=True)
+        
+        # Copy HTML files with base tag injection
+        for html_file in community_src.glob("*.html"):
+            dest = community_dir / html_file.name
+            content = html_file.read_text()
+            # Inject base tag if not present
+            if '<base' not in content:
+                content = content.replace('<head>', f'<head>\n    <base href="{BASE_URL}/">')
+            dest.write_text(content)
+            print(f"  ✅ Community: {html_file.name}")
+        
+        # Convert markdown to HTML
+        for md_file in community_src.glob("*.md"):
+            content = md_file.read_text()
+            if content.startswith('---'):
+                parts = content.split('---', 2)
+                if len(parts) >= 3:
+                    content = parts[2].strip()
+            html_content = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - UK Farm Blog</title>
+    <base href="{BASE_URL}/">
+    <style>{COMMON_CSS}</style>
+</head>
+<body>
+    <header>
+        <h1>🌾 Community Hub</h1>
+        <p>Connect with fellow UK farmers</p>
+    </header>
+    <nav>
+        <a href="../">🏠 Home</a>
+        <a href="./ask-question.html">❓ Ask Question</a>
+        <a href="./share-story.html">📖 Share Story</a>
+        <a href="./utility-tracker.html">💰 Value Tracker</a>
+    </nav>
+    <main>
+        <article class="content-page">
+            {md_to_html(content)}
+            <p style="text-align: center; margin-top: 40px;">
+                <a href="../" class="btn">← Back to Home</a>
+            </p>
+        </article>
+    </main>
+    <footer>
+        <p>🚜 UK Farm Blog - Community</p>
+        <p class="updated">Last updated: {datetime.now().strftime('%d %B %Y at %H:%M UTC')}</p>
+    </footer>
+</body>
+</html>"""
+            dest = community_dir / (md_file.stem + ".html")
+            dest.write_text(html_content)
+            print(f"  ✅ Community: {md_file.stem}.html")
     
     print(f"\n📁 Site built in {OUTPUT_DIR}")
     print(f"   Sections: {len(SECTIONS) + 1} pages")

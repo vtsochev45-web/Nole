@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="https://vtsochev45-web.github.io/Nole/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Your Story - UK Farm Community</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        label .required {
+            color: #e74c3c;
+        }
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #764ba2;
+        }
+        textarea {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .hint {
+            font-size: 0.9em;
+            color: #888;
+            margin-top: 5px;
+        }
+        .story-prompts {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+        }
+        .story-prompts h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+        }
+        .story-prompts ul {
+            padding-left: 20px;
+        }
+        .story-prompts li {
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102,126,234,0.4);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #764ba2;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📖 Share Your Story</h1>
+        <p class="subtitle">Inspire fellow farmers with your experiences, challenges, and wins</p>
+        
+        <div class="story-prompts">
+            <h3>📝 Story Ideas</h3>
+            <ul>
+                <li>How I overcame a major farming challenge</li>
+                <li>What I wish I'd known when I started</li>
+                <li>My experience with a new technology or method</li>
+                <li>How I saved money / increased profits</li>
+                <li>A typical day on my farm</li>
+                <li>How I diversified my farm income</li>
+                <li>Dealing with extreme weather/seasons</li>
+                <li>My farm's journey to sustainability</li>
+            </ul>
+        </div>
+        
+        <form id="storyForm">
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="e.g., Sarah Jones">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com">
+                <p class="hint">For us to contact you about your story</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="farm">Farm Name (optional)</label>
+                <input type="text" id="farm" name="farm" placeholder="e.g., Green Pastures Farm">
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Your Location <span class="required">*</span></label>
+                <input type="text" id="location" name="location" required placeholder="e.g., Devon, South West England">
+            </div>
+            
+            <div class="form-group">
+                <label for="farmType">Type of Farming <span class="required">*</span></label>
+                <select id="farmType" name="farmType" required>
+                    <option value="">Select your farm type...</option>
+                    <option value="arable">Arable (crops)</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="beef">Beef cattle</option>
+                    <option value="sheep">Sheep</option>
+                    <option value="mixed">Mixed livestock</option>
+                    <option value="poultry">Poultry</option>
+                    <option value="horticulture">Horticulture</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Story Title <span class="required">*</span></label>
+                <input type="text" id="title" name="title" required placeholder="e.g., How I Reduced My Feed Costs by 30%" maxlength="150">
+                <p class="hint">Make it catchy and descriptive</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="story">Your Story <span class="required">*</span></label>
+                <textarea id="story" name="story" required placeholder="Share your story here. Be specific and include details that will help other farmers:
+
+• What was your situation before?
+• What challenge did you face?
+• What did you do?
+• What were the results?
+• What would you do differently?
+• What advice would you give others?
+
+Aim for 500-2000 words for best results."></textarea>
+                <p class="hint">Include numbers, costs, timeframes where relevant</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="lessons">Key Lessons Learned</label>
+                <textarea id="lessons" name="lessons" placeholder="Summarize 3-5 key takeaways that other farmers can apply"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="photo">Photo of Your Farm (optional)</label>
+                <input type="file" id="photo" name="photo" accept="image/*">
+                <p class="hint">Images make stories more engaging. Landscape photos work best.</p>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="featured" value="yes">
+                    I'm happy for my story to be featured on the homepage
+                </label>
+            </div>
+            
+            <button type="submit" class="btn">Share My Story</button>
+            <p class="hint">All stories are reviewed before publication. We'll contact you within 48 hours.</p>
+        </form>
+        
+        <a href="index.html" class="back-link">← Back to Community Hub</a>
+    </div>
+    
+    <script>
+        document.getElementById('storyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const story = {
+                id: Date.now(),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                farm: formData.get('farm'),
+                location: formData.get('location'),
+                farmType: formData.get('farmType'),
+                title: formData.get('title'),
+                story: formData.get('story'),
+                lessons: formData.get('lessons'),
+                featured: formData.get('featured') === 'yes',
+                date: new Date().toISOString(),
+                status: 'pending'
+            };
+            
+            const stories = JSON.parse(localStorage.getItem('stories') || '[]');
+            stories.push(story);
+            localStorage.setItem('stories', JSON.stringify(stories));
+            
+            alert('Thank you for sharing your story! We\'ve received it and will review it for publication.\n\nIn production, this would be sent to our editorial team for review.');
+            
+            this.reset();
+        });
+    </script>
+</body>
+</html>

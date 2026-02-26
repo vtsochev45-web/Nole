@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="https://vtsochev45-web.github.io/Nole/">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Value Tracker - UK Farm Tools</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .value-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .value-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .value-card h3 {
+            color: #2d5a27;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .metric {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e3c72;
+            margin: 10px 0;
+        }
+        .metric-label {
+            color: #666;
+            font-size: 0.9em;
+        }
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin-top: 15px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2d5a27, #4a7c43);
+            border-radius: 5px;
+            transition: width 0.5s;
+        }
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        .form-section h2 {
+            color: #1e3c72;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #2d5a27;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: normal;
+        }
+        .btn {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        .results {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 25px;
+            display: none;
+        }
+        .results.show {
+            display: block;
+        }
+        .savings-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .savings-item:last-child {
+            border-bottom: none;
+        }
+        .total-savings {
+            background: linear-gradient(135deg, #2d5a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .total-savings .amount {
+            font-size: 2.5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💰 Farm Value Tracker</h1>
+            <p>Track the money and time this blog has saved you</p>
+        </header>
+        
+        <div class="value-cards">
+            <div class="value-card">
+                <h3>⏱️ Time Saved</h3>
+                <div class="metric" id="timeSaved">0h</div>
+                <div class="metric-label">Hours not spent researching</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="timeProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="value-card">
+                <h3>💷 Money Saved</h3>
+                <div class="metric" id="moneySaved">£0</div>
+                <div class="metric-label">Through grants, better prices, efficiency</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="moneyProgress" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="value-card">
+                <h3>📚 Articles Used</h3>
+                <div class="metric" id="articlesUsed">0</div>
+                <div class="metric-label">Guides that helped you</div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="articleProgress" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="form-section">
+            <h2>📊 Calculate Your Savings</h2>
+            <form id="savingsForm">
+                <div class="form-group">
+                    <label>Which articles have helped you?</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="article" value="grants"> Farm Grants Guide (saved grant application time)</label>
+                        <label><input type="checkbox" name="article" value="heatwave"> Heatwave Preparation (prevented crop/animal loss)</label>
+                        <label><input type="checkbox" name="article" value="labour"> Labour Shortage Solutions (found workers faster)</label>
+                        <label><input type="checkbox" name="article" value="drones"> Farm Drones Guide (made informed purchase)</label>
+                        <label><input type="checkbox" name="article" value="calculator"> Cost Calculator (identified savings)</label>
+                        <label><input type="checkbox" name="article" value="daily"> Daily Briefs (stayed informed efficiently)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="farmSize">Farm Size</label>
+                    <select id="farmSize" required>
+                        <option value="">Select...</option>
+                        <option value="small">Small (under 50 hectares)</option>
+                        <option value="medium">Medium (50-200 hectares)</option>
+                        <option value="large">Large (200+ hectares)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hourlyRate">Your Time Value (£/hour)</label>
+                    <input type="number" id="hourlyRate" value="25" min="10" max="100">
+                </div>
+                
+                <div class="form-group">
+                    <label>Did you successfully apply for any grants?</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="grant" value="sfi"> Sustainable Farming Incentive</label>
+                        <label><input type="checkbox" name="grant" value="fif"> Farming Investment Fund</label>
+                        <label><input type="checkbox" name="grant" value="cs"> Countryside Stewardship</label>
+                        <label><input type="checkbox" name="grant" value="capital"> Capital Grants</label>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn">Calculate My Savings</button>
+            </form>
+            
+            <div class="results" id="results">
+                <h3>💡 Your Estimated Value</h3>
+                <div id="savingsBreakdown"></div>
+                <div class="total-savings">
+                    <div>Total Annual Value</div>
+                    <div class="amount" id="totalValue">£0</div>
+                </div>
+                <p style="margin-top: 15px; text-align: center; color: #666;">
+                    This blog has delivered real value. Share your story to help other farmers!
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Load saved data
+        const savedData = JSON.parse(localStorage.getItem('valueTracker') || '{}');
+        if (savedData.timeSaved) {
+            document.getElementById('timeSaved').textContent = savedData.timeSaved + 'h';
+            document.getElementById('timeProgress').style.width = Math.min(savedData.timeSaved, 100) + '%';
+        }
+        if (savedData.moneySaved) {
+            document.getElementById('moneySaved').textContent = '£' + savedData.moneySaved.toLocaleString();
+            document.getElementById('moneyProgress').style.width = Math.min(savedData.moneySaved / 100, 100) + '%';
+        }
+        if (savedData.articlesUsed) {
+            document.getElementById('articlesUsed').textContent = savedData.articlesUsed;
+            document.getElementById('articleProgress').style.width = Math.min(savedData.articlesUsed * 10, 100) + '%';
+        }
+        
+        document.getElementById('savingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const articles = document.querySelectorAll('input[name="article"]:checked');
+            const grants = document.querySelectorAll('input[name="grant"]:checked');
+            const farmSize = document.getElementById('farmSize').value;
+            const hourlyRate = parseInt(document.getElementById('hourlyRate').value) || 25;
+            
+            let timeSaved = articles.length * 5; // 5 hours per article
+            let moneySaved = 0;
+            
+            // Grant value estimates
+            grants.forEach(g => {
+                if (g.value === 'sfi') moneySaved += 5000;
+                if (g.value === 'fif') moneySaved += 10000;
+                if (g.value === 'cs') moneySaved += 8000;
+                if (g.value === 'capital') moneySaved += 15000;
+            });
+            
+            // Time value
+            const timeValue = timeSaved * hourlyRate;
+            moneySaved += timeValue;
+            
+            // Farm size multiplier
+            let multiplier = 1;
+            if (farmSize === 'medium') multiplier = 1.5;
+            if (farmSize === 'large') multiplier = 2;
+            moneySaved = Math.round(moneySaved * multiplier);
+            
+            // Display results
+            const results = document.getElementById('results');
+            const breakdown = document.getElementById('savingsBreakdown');
+            
+            breakdown.innerHTML = `
+                <div class="savings-item">
+                    <span>Time saved researching</span>
+                    <span><strong>${timeSaved} hours</strong> (worth £${timeValue.toLocaleString()})</span>
+                </div>
+                <div class="savings-item">
+                    <span>Grants successfully applied for</span>
+                    <span><strong>${grants.length} grants</strong></span>
+                </div>
+                <div class="savings-item">
+                    <span>Articles that helped</span>
+                    <span><strong>${articles.length} guides</strong></span>
+                </div>
+            `;
+            
+            document.getElementById('totalValue').textContent = '£' + moneySaved.toLocaleString();
+            results.classList.add('show');
+            
+            // Save to localStorage
+            localStorage.setItem('valueTracker', JSON.stringify({
+                timeSaved: timeSaved,
+                moneySaved: moneySaved,
+                articlesUsed: articles.length
+            }));
+            
+            // Update display
+            document.getElementById('timeSaved').textContent = timeSaved + 'h';
+            document.getElementById('timeProgress').style.width = Math.min(timeSaved, 100) + '%';
+            document.getElementById('moneySaved').textContent = '£' + moneySaved.toLocaleString();
+            document.getElementById('moneyProgress').style.width = Math.min(moneySaved / 100, 100) + '%';
+            document.getElementById('articlesUsed').textContent = articles.length;
+            document.getElementById('articleProgress').style.width = Math.min(articles.length * 10, 100) + '%';
+        });
+    </script>
+</body>
+</html>
