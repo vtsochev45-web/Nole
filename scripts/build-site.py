@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+
 try:
     import markdown
     MARKDOWN_AVAILABLE = True
@@ -18,8 +19,8 @@ CONTENT_DIR = PROJECT_ROOT / "content"
 OUTPUT_DIR = PROJECT_ROOT / "_site"
 DATA_DIR = PROJECT_ROOT / "data"
 
-# GitHub Pages path - MUST include /Nole prefix
-BASE_PATH = "/Nole"
+# Base path - defaults to /Nole for GitHub Pages; set SITE_BASE_PATH="" for Vercel
+BASE_PATH = os.environ.get("SITE_BASE_PATH", "/Nole").rstrip("/")
 
 SECTIONS = [
     ("daily-brief", "🗞 Daily Farm Brief", "Daily farming updates"),
