@@ -352,6 +352,10 @@ def build_section_page(section_id, title, desc):
     label = title.split(" ", 1)[1]
     today = datetime.now().strftime('%d %B %Y')
     
+    html_content = md_to_html(content)
+    html_content = html_content.replace('href="./', f'href="{BASE_PATH}/')
+    html_content = html_content.replace("href='./", f"href='{BASE_PATH}/")
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -385,7 +389,7 @@ def build_section_page(section_id, title, desc):
         <article class="content-page">
             <h1>{icon} {label}</h1>
             <p class="page-meta">Updated {today} &nbsp;·&nbsp; {desc}</p>
-            {md_to_html(content)}
+            {html_content}
             <p style="text-align: center; margin-top: 48px;">
                 <a href="{BASE_PATH}/" class="back-btn">← Back to Home</a>
             </p>
