@@ -33,7 +33,7 @@ Submit questions to our panel of farming experts.
 ### 4. Read Community Stories
 Learn from fellow farmers across the UK.
 
-[Browse Stories →](stories/)
+[Browse Stories →](stories.html)
 
 ---
 
