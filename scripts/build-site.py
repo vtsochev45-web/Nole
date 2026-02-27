@@ -82,6 +82,15 @@ def build_affiliate_strip():
   </div>
 </section>"""
 
+def inject_adsense(html_content, label=""):
+    """Inject ADSENSE_SCRIPT before </head> if not already present."""
+    if 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' in html_content:
+        return html_content
+    if '</head>' not in html_content:
+        print(f"  ⚠️  No </head> tag found{' in ' + label if label else ''} — AdSense script not injected")
+        return html_content
+    return html_content.replace('</head>', f'{ADSENSE_SCRIPT}\n</head>', 1)
+
 SECTIONS = [
     ("daily-brief", "🗞 Daily Farm Brief", "Daily farming updates"),
     ("weather", "🌦 Weather Alerts", "Weather risks & forecasts"),
@@ -497,7 +506,7 @@ def main():
         (section_dir / "index.html").write_text(build_section_page(section_id, title, desc))
         print(f"  ✅ {title}")
     
-    # Copy tools (update links)
+    # Copy tools (update links, inject AdSense)
     tools_src = PROJECT_ROOT / "content" / "tools"
     if tools_src.exists():
         tools_dir = OUTPUT_DIR / "tools"
@@ -507,10 +516,12 @@ def main():
             # Update any links to use BASE_PATH
             content = content.replace('href="/', f'href="{BASE_PATH}/')
             content = content.replace('href="./', f'href="{BASE_PATH}/')
+            # Inject AdSense script into <head> if not already present
+            content = inject_adsense(content, html_file.name)
             (tools_dir / html_file.name).write_text(content)
             print(f"  ✅ Tool: {html_file.name}")
     
-    # Copy community (update links)
+    # Copy community (update links, inject AdSense)
     community_src = PROJECT_ROOT / "content" / "community"
     if community_src.exists():
         community_dir = OUTPUT_DIR / "community"
@@ -519,6 +530,8 @@ def main():
             content = f.read_text()
             content = content.replace('href="/', f'href="{BASE_PATH}/')
             content = content.replace('href="./', f'href="{BASE_PATH}/')
+            # Inject AdSense script into <head> if not already present
+            content = inject_adsense(content, f.name)
             (community_dir / f.name).write_text(content)
             print(f"  ✅ Community: {f.name}")
     
