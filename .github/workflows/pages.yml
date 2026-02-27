@@ -31,6 +31,12 @@ jobs:
 
       - name: Build site
         run: python3 scripts/build-site.py
+        env:
+          ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
+          ADSENSE_SLOT_HOME_TOP: ${{ secrets.ADSENSE_SLOT_HOME_TOP }}
+          ADSENSE_SLOT_HOME_MID: ${{ secrets.ADSENSE_SLOT_HOME_MID }}
+          ADSENSE_SLOT_SECTION_TOP: ${{ secrets.ADSENSE_SLOT_SECTION_TOP }}
+          ADSENSE_SLOT_ARTICLE_MID: ${{ secrets.ADSENSE_SLOT_ARTICLE_MID }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

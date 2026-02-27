@@ -15,10 +15,21 @@ jobs:
         run: npm install -g vercel@latest
       
       - name: Deploy to Vercel
-        run: vercel --prod --yes --token="$VERCEL_TOKEN"
+        run: |
+          vercel --prod --yes --token="$VERCEL_TOKEN" \
+            --build-env ADSENSE_PUB_ID="$ADSENSE_PUB_ID" \
+            --build-env ADSENSE_SLOT_HOME_TOP="$ADSENSE_SLOT_HOME_TOP" \
+            --build-env ADSENSE_SLOT_HOME_MID="$ADSENSE_SLOT_HOME_MID" \
+            --build-env ADSENSE_SLOT_SECTION_TOP="$ADSENSE_SLOT_SECTION_TOP" \
+            --build-env ADSENSE_SLOT_ARTICLE_MID="$ADSENSE_SLOT_ARTICLE_MID"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
+          ADSENSE_SLOT_HOME_TOP: ${{ secrets.ADSENSE_SLOT_HOME_TOP }}
+          ADSENSE_SLOT_HOME_MID: ${{ secrets.ADSENSE_SLOT_HOME_MID }}
+          ADSENSE_SLOT_SECTION_TOP: ${{ secrets.ADSENSE_SLOT_SECTION_TOP }}
+          ADSENSE_SLOT_ARTICLE_MID: ${{ secrets.ADSENSE_SLOT_ARTICLE_MID }}
       
       - name: Notify Success
         if: success()
