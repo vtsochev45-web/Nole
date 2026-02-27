@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Stories - UK Farm Community</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 32px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .page-header h1 { font-size: 2.2rem; margin-bottom: 10px; }
+        .page-header p { opacity: 0.85; font-size: 1.05rem; }
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+        .story-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border-top: 4px solid #1e3c72;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .story-card:nth-child(2n) { border-top-color: #16a34a; }
+        .story-card:nth-child(3n) { border-top-color: #e8a020; }
+        .story-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(0,0,0,0.13); }
+        .story-card .tag {
+            display: inline-block;
+            background: #f0f7ff;
+            color: #1e3c72;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+        }
+        .story-card h3 { color: #1e3c72; font-size: 1.05rem; margin-bottom: 10px; line-height: 1.4; }
+        .story-card .excerpt { color: #555; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px; }
+        .story-card .author { color: #888; font-size: 0.84rem; }
+        .cta-box {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+            border: 2px dashed #cbd5e1;
+        }
+        .cta-box h2 { color: #1e3c72; margin-bottom: 12px; }
+        .cta-box p { color: #555; margin-bottom: 24px; max-width: 500px; margin-left: auto; margin-right: auto; }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 14px 36px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(30,60,114,0.3); }
+        .back-link {
+            display: inline-block;
+            margin-top: 32px;
+            color: #1e3c72;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>📖 Community Stories</h1>
+            <p>Real experiences from UK farmers — challenges, wins, and lessons learned.</p>
+        </div>
+
+        <div class="stories-grid">
+            <div class="story-card">
+                <span class="tag">Labour &amp; Costs</span>
+                <h3>"How I Reduced My Labour Costs by 40%"</h3>
+                <p class="excerpt">After struggling with seasonal worker availability, James switched to a combination of automation and local apprenticeships — here's exactly what worked.</p>
+                <p class="author">— James, Yorkshire · Mixed farm, 320ha</p>
+            </div>
+
+            <div class="story-card">
+                <span class="tag">New Farmer</span>
+                <h3>"First Year Farming: What I Wish I'd Known"</h3>
+                <p class="excerpt">Sarah took on 80 acres in Devon with no family farming background. Her honest account of the first 12 months — the costly mistakes and the unexpected joys.</p>
+                <p class="author">— Sarah, Devon · Sheep &amp; beef, 80ha</p>
+            </div>
+
+            <div class="story-card">
+                <span class="tag">Diversification</span>
+                <h3>"Building a Profitable Side-Hustle on 5 Acres"</h3>
+                <p class="excerpt">Tom converted a corner of his Kent farm into a market garden and u-pick operation. Year three revenue covers 30% of his total farm overheads.</p>
+                <p class="author">— Tom, Kent · Arable &amp; horticulture, 210ha</p>
+            </div>
+
+            <div class="story-card">
+                <span class="tag">Grants</span>
+                <h3>"We Got £85,000 Through FIF — Here's How"</h3>
+                <p class="excerpt">The application took longer than expected but the Farming Investment Fund transformed our dairy operation. A step-by-step account of our successful bid.</p>
+                <p class="author">— Rachel &amp; Dan, Cheshire · Dairy, 180ha</p>
+            </div>
+
+            <div class="story-card">
+                <span class="tag">Animal Health</span>
+                <h3>"Beating BVD on Our Suckler Herd"</h3>
+                <p class="excerpt">After losing calves for two seasons, we finally got to grips with BVD. The testing regime and biosecurity changes that made the difference.</p>
+                <p class="author">— Alastair, Borders · Beef suckler, 450ha</p>
+            </div>
+
+            <div class="story-card">
+                <span class="tag">Technology</span>
+                <h3>"One Year With Robotic Milking — Honest Review"</h3>
+                <p class="excerpt">We installed two Lely Astronaut robots on our 120-cow herd. The real figures on cost, cow performance and — yes — whether we actually get more sleep.</p>
+                <p class="author">— Helen, Somerset · Dairy, 120 cows</p>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h2>Share Your Story</h2>
+            <p>Have a farming experience that could help other UK farmers? We'd love to hear it — whether it's a success, a hard lesson, or something you're still figuring out.</p>
+            <a href="share-story.html" class="btn">Share Your Story →</a>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Community Hub</a>
+    </div>
+</body>
+</html>

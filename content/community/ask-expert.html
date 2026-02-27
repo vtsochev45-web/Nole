@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask an Expert - UK Farm Community</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .expert-panel {
+            background: #f0f7ff;
+            border-left: 4px solid #1e3c72;
+            border-radius: 0 8px 8px 0;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+        }
+        .expert-panel h3 { color: #1e3c72; margin-bottom: 8px; font-size: 1rem; }
+        .expert-panel p { color: #555; font-size: 0.92rem; }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        label .required { color: #e74c3c; }
+        input[type="text"],
+        input[type="email"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #1e3c72;
+        }
+        textarea { min-height: 150px; resize: vertical; }
+        .hint { font-size: 0.9em; color: #888; margin-top: 5px; }
+        .checkbox-group { display: flex; flex-direction: column; gap: 10px; }
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: normal;
+        }
+        .btn {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(30,60,114,0.3);
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #1e3c72;
+            text-decoration: none;
+        }
+        .back-link:hover { text-decoration: underline; }
+        .success-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            display: none;
+        }
+        .success-box h3 { color: #166534; margin-bottom: 8px; }
+        .success-box p { color: #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 Ask an Expert</h1>
+        <p class="subtitle">Submit your question to our panel of farming experts — agronomists, vets, grant advisers and business consultants.</p>
+
+        <div class="expert-panel">
+            <h3>Our Expert Panel</h3>
+            <p>Questions are reviewed by qualified farming professionals including ADAS agronomists, RCVS-registered vets, rural business consultants and accredited grant advisers. Typical response time is 3–5 working days.</p>
+        </div>
+
+        <form id="expertForm">
+            <div class="form-group">
+                <label for="name">Your Name <span class="required">*</span></label>
+                <input type="text" id="name" name="name" required placeholder="e.g., John Smith">
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address <span class="required">*</span></label>
+                <input type="email" id="email" name="email" required placeholder="your@email.com">
+                <p class="hint">We'll send the expert response directly to you. Never shared publicly.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="location">Your Location <span class="required">*</span></label>
+                <select id="location" name="location" required>
+                    <option value="">Select your region...</option>
+                    <option value="england-southeast">England - South East</option>
+                    <option value="england-southwest">England - South West</option>
+                    <option value="england-midlands">England - Midlands</option>
+                    <option value="england-north">England - North</option>
+                    <option value="wales">Wales</option>
+                    <option value="scotland">Scotland</option>
+                    <option value="northern-ireland">Northern Ireland</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="expertise">Expert Type Needed <span class="required">*</span></label>
+                <select id="expertise" name="expertise" required>
+                    <option value="">Select expert type...</option>
+                    <option value="agronomist">Agronomist (crops, soil, agronomy)</option>
+                    <option value="vet">Veterinary (livestock health)</option>
+                    <option value="grants">Grants & Funding Adviser</option>
+                    <option value="business">Rural Business Consultant</option>
+                    <option value="environment">Environmental / Countryside Stewardship</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="subject">Question Subject <span class="required">*</span></label>
+                <input type="text" id="subject" name="subject" required placeholder="e.g., SFI eligibility for my 80ha mixed farm" maxlength="150">
+                <p class="hint">Keep it specific — a clear subject gets a better answer</p>
+            </div>
+
+            <div class="form-group">
+                <label for="details">Full Question <span class="required">*</span></label>
+                <textarea id="details" name="details" required placeholder="Please include:
+
+• Your farm type and size
+• Your specific situation or challenge
+• What you've already tried or researched
+• What outcome you're hoping for
+
+The more detail you give, the more useful the expert answer will be."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Publication preference:</label>
+                <div class="checkbox-group">
+                    <label>
+                        <input type="checkbox" name="publish" value="yes">
+                        Publish my question and the expert answer on the site (anonymised) to help other farmers
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Submit to Expert Panel</button>
+            <p class="hint" style="margin-top:12px">Typical response time: 3–5 working days</p>
+        </form>
+
+        <div class="success-box" id="successBox">
+            <h3>✅ Question submitted!</h3>
+            <p>Thank you — your question has been received. An expert will respond to your email within 3–5 working days.</p>
+        </div>
+
+        <a href="index.html" class="back-link">← Back to Community Hub</a>
+    </div>
+
+    <script>
+        document.getElementById('expertForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const submission = {
+                id: Date.now(),
+                name: formData.get('name'),
+                email: formData.get('email'),
+                location: formData.get('location'),
+                expertise: formData.get('expertise'),
+                subject: formData.get('subject'),
+                details: formData.get('details'),
+                publish: formData.get('publish') === 'yes',
+                date: new Date().toISOString(),
+                status: 'pending'
+            };
+
+            const submissions = JSON.parse(localStorage.getItem('expertQuestions') || '[]');
+            submissions.push(submission);
+            localStorage.setItem('expertQuestions', JSON.stringify(submissions));
+
+            this.style.display = 'none';
+            document.getElementById('successBox').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
