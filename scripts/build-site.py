@@ -22,6 +22,66 @@ DATA_DIR = PROJECT_ROOT / "data"
 # Base path - defaults to /Nole for GitHub Pages; set SITE_BASE_PATH="" for Vercel
 BASE_PATH = os.environ.get("SITE_BASE_PATH", "/Nole").rstrip("/")
 
+# ── Monetisation ──────────────────────────────────────────────────────────────
+# Replace the publisher ID below with your real Google AdSense ID, or set the
+# ADSENSE_PUB_ID environment variable before building.
+ADSENSE_PUB_ID = os.environ.get("ADSENSE_PUB_ID", "ca-pub-XXXXXXXXXXXXXXXXX")
+
+# Ad slot IDs – replace with real slot IDs from your AdSense account, or set
+# the corresponding environment variables.
+ADSENSE_SLOT_HOME_TOP    = os.environ.get("ADSENSE_SLOT_HOME_TOP",    "0000000001")
+ADSENSE_SLOT_HOME_MID    = os.environ.get("ADSENSE_SLOT_HOME_MID",    "0000000002")
+ADSENSE_SLOT_SECTION_TOP = os.environ.get("ADSENSE_SLOT_SECTION_TOP", "0000000003")
+ADSENSE_SLOT_ARTICLE_MID = os.environ.get("ADSENSE_SLOT_ARTICLE_MID", "0000000004")
+
+ADSENSE_SCRIPT = f"""
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_PUB_ID}"
+            crossorigin="anonymous"></script>"""
+
+# Inline ad unit (responsive display ad)
+def build_ad_unit(slot_id="0000000000", label="Advertisement"):
+    return f"""<div class="ad-container" aria-label="{label}">
+  <ins class="adsbygoogle"
+       style="display:block"
+       data-ad-client="{ADSENSE_PUB_ID}"
+       data-ad-slot="{slot_id}"
+       data-ad-format="auto"
+       data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({{}});</script>
+</div>"""
+
+# Affiliate partner links shown as a "Trusted Partners" strip.
+# For Amazon Associates, set the AMAZON_AFFILIATE_TAG env var (e.g. "yoursite-21").
+# For other partners, replace the URLs with your affiliate-tracked URLs.
+_AMAZON_TAG = os.environ.get("AMAZON_AFFILIATE_TAG", "")
+_AMAZON_URL = (
+    f"https://www.amazon.co.uk/farm-supplies/?tag={_AMAZON_TAG}"
+    if _AMAZON_TAG else
+    "https://www.amazon.co.uk/farm-supplies/"
+)
+
+AFFILIATE_PARTNERS = [
+    ("Farmers Weekly Shop",    "https://shop.fwi.co.uk/",                    "Books, guides & agronomy resources"),
+    ("Amazon Farm Supplies",   _AMAZON_URL,                                  "Equipment, tools & PPE"),
+    ("Farmers Guardian Store", "https://www.farmersguardian.com/",            "News, reports & industry data"),
+    ("AHDB MarketPlace",       "https://ahdb.org.uk/",                        "Free market data & benchmarking"),
+    ("NFU Mutual Insurance",   "https://www.nfumutual.co.uk/farm-insurance/", "Farm insurance & risk cover"),
+]
+
+def build_affiliate_strip():
+    items = "".join(
+        f'<a href="{url}" class="partner-item" target="_blank" rel="noopener sponsored">'
+        f'<strong>{name}</strong><span>{desc}</span></a>'
+        for name, url, desc in AFFILIATE_PARTNERS
+    )
+    return f"""<section class="partners-strip">
+  <div class="partners-inner">
+    <span class="partners-label">🤝 Trusted Partners</span>
+    {items}
+  </div>
+</section>"""
+
 SECTIONS = [
     ("daily-brief", "🗞 Daily Farm Brief", "Daily farming updates"),
     ("weather", "🌦 Weather Alerts", "Weather risks & forecasts"),
@@ -191,6 +251,19 @@ footer { background: var(--navy); color: rgba(255,255,255,0.75); padding: 64px 2
 .footer-bottom { padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; }
 .footer-badge { background: var(--green); color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; font-weight: 700; }
 
+/* ── Ads ── */
+.ad-container { margin: 32px auto; max-width: 970px; text-align: center; overflow: hidden; }
+.ad-container::before { content: 'Advertisement'; display: block; font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+
+/* ── Partners strip ── */
+.partners-strip { background: #f8fafc; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 18px 24px; }
+.partners-inner { max-width: 1280px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+.partners-label { font-size: 0.78rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; flex-shrink: 0; }
+.partner-item { display: flex; flex-direction: column; background: white; border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; text-decoration: none; color: var(--navy); font-size: 0.82rem; transition: box-shadow 0.2s, border-color 0.2s; line-height: 1.3; }
+.partner-item:hover { border-color: var(--green); box-shadow: 0 2px 8px rgba(30,107,60,0.12); }
+.partner-item strong { font-weight: 600; }
+.partner-item span { font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
+
 /* ── Responsive ── */
 @media (max-width: 1024px) {
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
@@ -251,6 +324,7 @@ def build_footer():
         <a href="https://ahdb.org.uk/" target="_blank" rel="noopener">AHDB</a>
         <a href="https://www.nfuonline.com/" target="_blank" rel="noopener">NFU Online</a>
         <a href="{BASE_PATH}/tools/">Calculators</a>
+        <a href="mailto:advertise@ukfarmblog.co.uk" style="color:var(--gold-light);font-weight:600">📢 Advertise with Us</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -286,6 +360,7 @@ def build_homepage():
     <meta property="og:description" content="Practical daily farming updates covering grants, markets, weather and equipment.">
     <meta property="og:type" content="website">
     {GOOGLE_FONTS}
+    {ADSENSE_SCRIPT}
     <style>{COMMON_CSS}</style>
 </head>
 <body>
@@ -312,6 +387,8 @@ def build_homepage():
             <div class="stat-item"><div class="stat-num">🇬🇧</div><div class="stat-label">UK Focused</div></div>
         </div>
     </div>
+    {build_ad_unit(ADSENSE_SLOT_HOME_TOP, "Top leaderboard ad")}
+    {build_affiliate_strip()}
     <main>
         <div class="hero">
             <div class="hero-content">
@@ -333,6 +410,7 @@ def build_homepage():
         <div class="sections-grid">
             {cards_html}
         </div>
+        {build_ad_unit(ADSENSE_SLOT_HOME_MID, "Mid-page ad")}
     </main>
     {build_footer()}
 </body>
@@ -368,6 +446,7 @@ def build_section_page(section_id, title, desc):
     <meta property="og:description" content="{desc}">
     <meta property="og:type" content="website">
     {GOOGLE_FONTS}
+    {ADSENSE_SCRIPT}
     <style>{COMMON_CSS}</style>
 </head>
 <body>
@@ -386,16 +465,19 @@ def build_section_page(section_id, title, desc):
         <p class="strapline" style="margin-top:8px">{icon} {label}</p>
     </header>
     {build_nav(section_id)}
+    {build_ad_unit(ADSENSE_SLOT_SECTION_TOP, "Section page top ad")}
     <main>
         <article class="content-page">
             <h1>{icon} {label}</h1>
             <p class="page-meta">Updated {today} &nbsp;·&nbsp; {desc}</p>
             {html_content}
+            {build_ad_unit(ADSENSE_SLOT_ARTICLE_MID, "In-article ad")}
             <p style="text-align: center; margin-top: 48px;">
                 <a href="{BASE_PATH}/" class="back-btn">← Back to Home</a>
             </p>
         </article>
     </main>
+    {build_affiliate_strip()}
     {build_footer()}
 </body>
 </html>"""
