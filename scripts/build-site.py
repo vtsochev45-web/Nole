@@ -76,6 +76,7 @@ main { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
 .btn { display: inline-block; background: #ffd700; color: #1e3c72; padding: 14px 28px; text-decoration: none; border-radius: 30px; font-weight: 600; margin-top: 20px; }
 .section-card { background: white; border-radius: 16px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); transition: all 0.3s; }
 .section-card:hover { transform: translateY(-5px); }
+.sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px; }
 .card-btn { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; text-decoration: none; border-radius: 20px; }
 .content-page { background: white; border-radius: 20px; padding: 50px; max-width: 900px; margin: 40px auto; box-shadow: 0 4px 30px rgba(0,0,0,0.1); }
 .content-page h1 { color: #1e3c72; font-size: 2.5em; margin-bottom: 30px; border-bottom: 3px solid #eee; padding-bottom: 20px; }
@@ -129,14 +130,14 @@ def build_homepage():
 def build_section_page(section_id, title, desc):
     # Get content
     content = ""
-    for path in [f"content/{section_id}/latest.md", f"content/{section_id}.md"]:
+    for path in [f"content/{section_id}/latest.md", f"content/{section_id}/index.md", f"content/{section_id}.md"]:
         if (PROJECT_ROOT / path).exists():
             content = get_content(path)
             break
-    
+
     if not content:
         content = f"<p>{title} content coming soon!</p>"
-    
+
     # Navigation - ALL absolute paths with BASE_PATH
     nav_links = f'<a href="{BASE_PATH}/">🏠 Home</a>'
     for sid, stitle, _ in SECTIONS:
