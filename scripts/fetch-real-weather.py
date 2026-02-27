@@ -2,11 +2,14 @@
 """Real Met Office weather fetcher using API key"""
 import json
 import os
+import sys
 import urllib.request
 
-# Load API key
-with open(os.path.join(os.path.dirname(__file__), '..', '.env')) as f:
-    API_KEY = f.read().strip()
+# Load API key from environment variable (set METOFFICE_API_KEY before running)
+API_KEY = os.environ.get('METOFFICE_API_KEY', '')
+if not API_KEY:
+    print("Warning: METOFFICE_API_KEY environment variable not set")
+    sys.exit(0)
 
 # Met Office DataPoint API
 BASE_URL = "https://api-metoffice.apiconnect.ibmcloud.com/metoffice/production/v0/forecasts/point/daily"
