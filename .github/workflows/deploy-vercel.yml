@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    # Skip this job entirely when VERCEL_TOKEN has not been configured
+    if: ${{ secrets.VERCEL_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
       
@@ -25,6 +27,7 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           ADSENSE_PUB_ID: ${{ secrets.ADSENSE_PUB_ID }}
           ADSENSE_SLOT_HOME_TOP: ${{ secrets.ADSENSE_SLOT_HOME_TOP }}
           ADSENSE_SLOT_HOME_MID: ${{ secrets.ADSENSE_SLOT_HOME_MID }}

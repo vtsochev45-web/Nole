@@ -4,6 +4,7 @@
 import os
 import re
 import json
+import shutil
 from datetime import datetime
 from pathlib import Path
 
@@ -20,7 +21,11 @@ OUTPUT_DIR = PROJECT_ROOT / "_site"
 DATA_DIR = PROJECT_ROOT / "data"
 
 # Base path - defaults to /Nole for GitHub Pages; set SITE_BASE_PATH="" for Vercel
-BASE_PATH = os.environ.get("SITE_BASE_PATH", "/Nole").rstrip("/")
+# or when a custom domain is configured (detected via CNAME file in the project root).
+_cname_file = PROJECT_ROOT / "CNAME"
+_has_custom_domain = _cname_file.exists() and _cname_file.read_text().strip() != ""
+_default_base = "" if _has_custom_domain else "/Nole"
+BASE_PATH = os.environ.get("SITE_BASE_PATH", _default_base).rstrip("/")
 
 # ── Monetisation ──────────────────────────────────────────────────────────────
 # Replace the publisher ID below with your real Google AdSense ID, or set the
@@ -494,7 +499,12 @@ def build_section_page(section_id, title, desc):
 def main():
     print("🔨 Building UK Farm Blog v3.0...")
     OUTPUT_DIR.mkdir(exist_ok=True)
-    
+
+    # Copy CNAME so GitHub Pages preserves the custom domain on every deployment
+    if _cname_file.exists():
+        shutil.copy(_cname_file, OUTPUT_DIR / "CNAME")
+        print(f"✅ CNAME ({_cname_file.read_text().strip()})")
+
     # Homepage
     (OUTPUT_DIR / "index.html").write_text(build_homepage())
     print("✅ Homepage")
