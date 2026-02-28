@@ -1,10 +1,7 @@
 {
-  "buildCommand": "pip install markdown && python3 scripts/build-site.py",
+  "buildCommand": "echo 'Static build - no build needed'",
   "outputDirectory": "_site",
   "framework": null,
-  "env": {
-    "SITE_BASE_PATH": ""
-  },
   "rewrites": [
     { "source": "/(.*)", "destination": "/$1" }
   ]
