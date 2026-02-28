@@ -1,193 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ⚡ lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
     <title>Equipment – UK Farm Blog</title>
     <meta name="description" content="Machinery & tech updates — practical daily updates for British farmers.">
     <link rel="canonical" href="https://vtsochev45-web.github.io/Nole/equipment/">
-    <meta property="og:title" content="Equipment – UK Farm Blog">
-    <meta property="og:description" content="Machinery & tech updates — practical daily updates for British farmers.">
-    <meta property="og:type" content="website">
-    <meta name="theme-color" content="#1a2f5a">
-        <!-- Google AdSense – site verification & Auto Ads -->
-    <meta name="google-adsense-account" content="ca-pub-9535677982209167">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9535677982209167"
-            crossorigin="anonymous"></script>
-    <style>
-/* Reset & base */
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --navy:    #1a2f5a;
-  --blue:    #2a5298;
-  --green:   #2d6a27;
-  --gold:    #e8a800;
-  --light:   #f4f6fb;
-  --white:   #ffffff;
-  --grey:    #6b7280;
-  --border:  #e5e7eb;
-  --shadow:  0 2px 12px rgba(0,0,0,.08);
-  --radius:  12px;
-  --max-w:   1280px;
-  --font:    'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-html { scroll-behavior: smooth; }
-body { font-family: var(--font); background: var(--light); color: #1f2937; line-height: 1.75; min-height: 100vh; }
-
-/* Skip link */
-.skip-link { position: absolute; top: -40px; left: 0; background: var(--gold); color: var(--navy); padding: 8px 16px; font-weight: 700; z-index: 9999; border-radius: 0 0 8px 0; text-decoration: none; transition: top .2s; }
-.skip-link:focus { top: 0; }
-
-/* Top bar */
-.top-bar { background: var(--navy); color: rgba(255,255,255,.75); font-size: .78rem; padding: 6px 20px; display: flex; justify-content: space-between; align-items: center; }
-.top-bar a { color: rgba(255,255,255,.75); text-decoration: none; }
-.top-bar a:hover { color: #fff; }
-
-/* Header */
-header { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: #fff; padding: 48px 20px 40px; text-align: center; }
-.site-brand { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; color: inherit; }
-.site-brand h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -.5px; }
-.site-tagline { margin-top: 8px; font-size: 1rem; color: rgba(255,255,255,.8); }
-.header-badge { display: inline-block; background: var(--gold); color: var(--navy); font-size: .72rem; font-weight: 700; padding: 2px 10px; border-radius: 20px; margin-top: 10px; letter-spacing: .5px; text-transform: uppercase; }
-
-/* Navigation */
-nav { background: var(--navy); border-top: 3px solid var(--gold); position: sticky; top: 0; z-index: 200; }
-.nav-inner { max-width: var(--max-w); margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; padding: 0 16px; }
-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .85rem; font-weight: 500; padding: 14px 12px; display: inline-block; border-bottom: 3px solid transparent; transition: all .2s; }
-nav a:hover, nav a.active { color: #fff; border-bottom-color: var(--gold); }
-nav a.home-link { font-weight: 700; }
-
-/* Cookie banner */
-#cookie-banner { position: fixed; bottom: 0; left: 0; right: 0; background: var(--navy); color: #fff; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; z-index: 9998; font-size: .9rem; }
-#cookie-banner p { flex: 1 1 300px; }
-#cookie-banner a { color: var(--gold); }
-.cookie-btn { background: var(--gold); color: var(--navy); border: none; padding: 10px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: .9rem; }
-.cookie-btn.secondary { background: transparent; border: 1px solid rgba(255,255,255,.4); color: #fff; }
-
-/* Main layout */
-main { max-width: var(--max-w); margin: 0 auto; padding: 40px 20px; }
-
-/* Hero */
-.hero { background: linear-gradient(135deg, var(--green) 0%, #4a7c43 100%); color: #fff; padding: 48px; border-radius: var(--radius); margin-bottom: 48px; box-shadow: var(--shadow); }
-.hero h2 { font-size: .85rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.7); margin-bottom: 8px; }
-.hero-title { font-size: 1.9rem; font-weight: 800; margin-bottom: 16px; }
-.hero p { color: rgba(255,255,255,.9); max-width: 700px; }
-.btn { display: inline-block; background: var(--gold); color: var(--navy); padding: 13px 28px; text-decoration: none; border-radius: 30px; font-weight: 700; margin-top: 20px; font-size: .95rem; transition: transform .15s, box-shadow .15s; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.15); }
-.btn-outline { background: transparent; border: 2px solid #fff; color: #fff; }
-
-/* Section grid */
-.section-heading { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
-.sections-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; }
-.section-card { background: var(--white); border-radius: var(--radius); padding: 24px; box-shadow: var(--shadow); border: 1px solid var(--border); transition: transform .2s, box-shadow .2s; }
-.section-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px rgba(0,0,0,.12); }
-.section-card .card-icon { font-size: 2rem; margin-bottom: 12px; }
-.section-card h3 { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
-.section-card p { font-size: .875rem; color: var(--grey); margin-bottom: 16px; }
-.card-btn { display: inline-block; background: var(--navy); color: #fff; padding: 8px 18px; text-decoration: none; border-radius: 20px; font-size: .82rem; font-weight: 600; transition: background .2s; }
-.card-btn:hover { background: var(--blue); }
-
-/* Content page */
-.content-wrap { background: var(--white); border-radius: var(--radius); padding: 48px; max-width: 860px; margin: 0 auto; box-shadow: var(--shadow); border: 1px solid var(--border); }
-.content-wrap h1 { color: var(--navy); font-size: 2rem; font-weight: 800; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--border); }
-.content-wrap h2 { color: var(--green); font-size: 1.3rem; font-weight: 700; margin: 36px 0 16px; padding-left: 14px; border-left: 4px solid var(--gold); }
-.content-wrap h3 { color: var(--navy); font-size: 1.1rem; font-weight: 600; margin: 24px 0 10px; }
-.content-wrap p { margin-bottom: 16px; }
-.content-wrap ul, .content-wrap ol { margin: 12px 0 20px 24px; }
-.content-wrap li { margin-bottom: 6px; }
-.content-wrap table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-.content-wrap th { background: var(--navy); color: #fff; padding: 10px 14px; text-align: left; font-size: .88rem; }
-.content-wrap td { padding: 10px 14px; border-bottom: 1px solid var(--border); font-size: .9rem; }
-.content-wrap tr:nth-child(even) td { background: var(--light); }
-.content-wrap blockquote { border-left: 4px solid var(--gold); background: #fef9e7; padding: 14px 20px; margin: 20px 0; border-radius: 0 8px 8px 0; }
-.content-wrap a { color: var(--blue); }
-.content-wrap strong { color: var(--navy); }
-.back-link-wrap { text-align: center; margin-top: 40px; }
-
-/* Ad containers */
-.ad-container { margin: 28px 0; overflow: hidden; }
-.ad-label { font-size: .72rem; color: var(--grey); text-align: center; margin-bottom: 4px; letter-spacing: .5px; }
-
-/* Partners strip */
-.partners-strip { background: var(--navy); padding: 18px 20px; margin-top: 48px; border-radius: var(--radius); }
-.partners-inner { max-width: var(--max-w); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
-.partners-label { color: rgba(255,255,255,.6); font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; }
-.partner-item { display: flex; flex-direction: column; background: rgba(255,255,255,.08); border-radius: 8px; padding: 10px 16px; text-decoration: none; transition: background .2s; }
-.partner-item:hover { background: rgba(255,255,255,.15); }
-.partner-item strong { color: #fff; font-size: .85rem; }
-.partner-item span { color: rgba(255,255,255,.6); font-size: .75rem; }
-
-/* Footer */
-footer { background: var(--navy); color: rgba(255,255,255,.75); padding: 60px 20px 32px; margin-top: 64px; }
-.footer-inner { max-width: var(--max-w); margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; }
-.footer-col h4 { color: #fff; font-size: .9rem; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 14px; }
-.footer-col ul { list-style: none; }
-.footer-col li { margin-bottom: 8px; }
-.footer-col a { color: rgba(255,255,255,.65); text-decoration: none; font-size: .875rem; transition: color .2s; }
-.footer-col a:hover { color: #fff; }
-.footer-col p { font-size: .875rem; line-height: 1.6; }
-.footer-bottom { max-width: var(--max-w); margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,.12); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: .8rem; color: rgba(255,255,255,.5); }
-.footer-bottom a { color: rgba(255,255,255,.5); text-decoration: none; margin-left: 16px; }
-.footer-bottom a:hover { color: #fff; }
-
-/* Policy pages */
-.policy-page { background: var(--white); border-radius: var(--radius); padding: 48px; max-width: 860px; margin: 40px auto; box-shadow: var(--shadow); }
-.policy-page h1 { color: var(--navy); font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
-.policy-page .policy-date { color: var(--grey); font-size: .875rem; margin-bottom: 32px; }
-.policy-page h2 { color: var(--navy); font-size: 1.2rem; font-weight: 700; margin: 32px 0 12px; }
-.policy-page p, .policy-page li { font-size: .95rem; line-height: 1.75; color: #374151; }
-.policy-page ul { margin: 12px 0 16px 24px; }
-.policy-page a { color: var(--blue); }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .hero { padding: 28px 20px; }
-  .hero-title { font-size: 1.5rem; }
-  .content-wrap { padding: 24px 16px; }
-  .policy-page { padding: 24px 16px; }
-  .footer-inner { grid-template-columns: 1fr 1fr; }
-  nav a { padding: 11px 8px; font-size: .8rem; }
-}
-@media (max-width: 480px) {
-  .site-brand h1 { font-size: 1.6rem; }
-  .sections-grid { grid-template-columns: 1fr 1fr; }
-  .footer-inner { grid-template-columns: 1fr; }
-}
-</style>
+        <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <style amp-custom>
+        body { font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 16px; color: #1f2937; line-height: 1.7; max-width: 800px; margin: 0 auto; }
+        h1 { font-size: 1.6rem; color: #1a2f5a; margin-bottom: 8px; }
+        h2 { font-size: 1.25rem; color: #2d6a27; margin: 24px 0 10px; }
+        a { color: #2a5298; }
+        .back-link { display: inline-block; margin-top: 24px; background: #e8a800; color: #1a2f5a; padding: 10px 20px; text-decoration: none; border-radius: 20px; font-weight: 700; }
+    </style>
 </head>
 <body>
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<div class="top-bar">
-  <span>🇬🇧 Practical advice for British farmers · Updated daily</span>
-  <span><a href="/Nole/privacy-policy/">Privacy</a> · <a href="/Nole/cookie-policy/">Cookies</a></span>
-</div>
-<header>
-  <a href="/Nole/" class="site-brand">
-    <h1>🌾 UK Farm Blog</h1>
-  </a>
-  <p class="site-tagline">Grants · Markets · Weather · Practical Guides</p>
-  <span class="header-badge">Updated Daily</span>
-</header>
-<nav aria-label="Main navigation"><div class="nav-inner"><a href="/Nole/" class="home-link">🌾 Home</a><a href="/Nole/daily-brief/">🗞 Daily Farm Brief</a><a href="/Nole/weather/">🌦 Weather Alerts</a><a href="/Nole/grants/">💰 Grants & Funding</a><a href="/Nole/markets/">📈 Market Prices</a><a href="/Nole/equipment/" class="active">🚜 Equipment</a><a href="/Nole/livestock/">🐄 Livestock</a><a href="/Nole/crops/">🌾 Crops</a><a href="/Nole/seasonal/">📅 Seasonal Tasks</a><a href="/Nole/tools/">📊 Tools</a><a href="/Nole/community/">👥 Community</a></div></nav>
-<div id="cookie-banner" style="display:none" role="dialog" aria-live="polite" aria-label="Cookie consent">
-  <p>🍪 We use cookies and show ads to keep this site free. By clicking <strong>Accept</strong> you consent to our use of cookies and advertising. Read our <a href="/Nole/privacy-policy/">Privacy Policy</a> and <a href="/Nole/cookie-policy/">Cookie Policy</a>.</p>
-  <button class="cookie-btn" id="cookie-accept">Accept All</button>
-  <button class="cookie-btn secondary" id="cookie-decline">Decline</button>
-</div>
-<main id="main-content">
-
-<div class="ad-container" aria-label="Top advertisement">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-9535677982209167"
-       data-ad-slot="0000000003"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
-<div class="content-wrap">
-  <h1>🚜 Equipment</h1>
-  <h1>Drones on UK Farms: How to Choose, Where to Fly, and What They Cost</h1>
+    <amp-auto-ads type="adsense" data-ad-client="ca-pub-9535677982209167"></amp-auto-ads>
+    <h1>🚜 Equipment</h1>
+    <p>Machinery & tech updates</p>
+    <h1>Drones on UK Farms: How to Choose, Where to Fly, and What They Cost</h1>
 <p>Drones are no longer just high‑tech toys—they’re becoming essential farm tools. From spotting nutrient deficiencies in a wheat field to counting sheep on a hillside, a well‑chosen drone can save you hours of labour, reduce input costs, and boost yields. But with so many models, rules, and price tags, where do you start?</p>
 <p>This guide walks you through everything a UK farmer needs to know about agricultural drones in 2026. You’ll learn which tasks a drone can handle, what the law requires, which drone fits your farm, how much you’ll need to invest, and—most importantly—how to calculate whether it’s worth the money.</p>
 <hr />
@@ -604,79 +440,6 @@ Payback = 25,000 ÷ 12,000 ≈ <strong>2.1 years</strong></p>
 <p>The technology is advancing fast, but the fundamentals—good piloting, careful planning, and clear objectives—will never go out of style.</p>
 <p><strong>Safe flying, and happy farming!</strong></p>
 <p><em>Published 26 February 2026 • Updated as regulations and technology evolve.</em></p>
-  <div class="ad-container" aria-label="Mid-article advertisement">
-  <ins class="adsbygoogle"
-       style="display:block"
-       data-ad-client="ca-pub-9535677982209167"
-       data-ad-slot="0000000004"
-       data-ad-format="auto"
-       data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
-  <div class="back-link-wrap">
-    <a href="/Nole/" class="btn">← Back to Home</a>
-  </div>
-</div>
-</main>
-<section class="partners-strip" aria-label="Trusted Partners">
-  <div class="partners-inner">
-    <span class="partners-label">🤝 Trusted Partners</span>
-    <a href="https://shop.fwi.co.uk/" class="partner-item" target="_blank" rel="noopener sponsored"><strong>Farmers Weekly Shop</strong><span>Books, guides & agronomy resources</span></a><a href="https://www.amazon.co.uk/farm-supplies/" class="partner-item" target="_blank" rel="noopener sponsored"><strong>Amazon Farm Supplies</strong><span>Equipment, tools & PPE</span></a><a href="https://www.farmersguardian.com/" class="partner-item" target="_blank" rel="noopener sponsored"><strong>Farmers Guardian</strong><span>News, reports & industry data</span></a><a href="https://ahdb.org.uk/" class="partner-item" target="_blank" rel="noopener sponsored"><strong>AHDB MarketPlace</strong><span>Free market data & benchmarking</span></a><a href="https://www.nfumutual.co.uk/farm-insurance/" class="partner-item" target="_blank" rel="noopener sponsored"><strong>NFU Mutual Insurance</strong><span>Farm insurance & risk cover</span></a>
-  </div>
-</section>
-<footer>
-  <div class="footer-inner">
-    <div class="footer-col">
-      <h4>🌾 UK Farm Blog</h4>
-      <p>Daily news, grants, market prices and practical guides for British farmers. Updated every morning.</p>
-    </div>
-    <div class="footer-col">
-      <h4>Sections</h4>
-      <ul><li><a href="/Nole/daily-brief/">Daily Farm Brief</a></li>
-<li><a href="/Nole/weather/">Weather Alerts</a></li>
-<li><a href="/Nole/grants/">Grants & Funding</a></li>
-<li><a href="/Nole/markets/">Market Prices</a></li>
-<li><a href="/Nole/equipment/">Equipment</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>More</h4>
-      <ul><li><a href="/Nole/livestock/">Livestock</a></li>
-<li><a href="/Nole/crops/">Crops</a></li>
-<li><a href="/Nole/seasonal/">Seasonal Tasks</a></li>
-<li><a href="/Nole/tools/">Tools</a></li>
-<li><a href="/Nole/community/">Community</a></li></ul>
-    </div>
-    <div class="footer-col">
-      <h4>Legal</h4>
-      <ul>
-        <li><a href="/Nole/privacy-policy/">Privacy Policy</a></li>
-        <li><a href="/Nole/terms-of-use/">Terms of Use</a></li>
-        <li><a href="/Nole/cookie-policy/">Cookie Policy</a></li>
-      </ul>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2026 UK Farm Blog · Updated 28 February 2026</span>
-    <span>
-      <a href="/Nole/privacy-policy/">Privacy</a>
-      <a href="/Nole/terms-of-use/">Terms</a>
-      <a href="/Nole/cookie-policy/">Cookies</a>
-    </span>
-  </div>
-</footer>
-
-<script>
-(function(){
-  if(localStorage.getItem('cookies_ok')) return;
-  var b = document.getElementById('cookie-banner');
-  if(b) b.style.display='flex';
-  var ok = document.getElementById('cookie-accept');
-  var no = document.getElementById('cookie-decline');
-  function hide(){ if(b) b.style.display='none'; }
-  if(ok) ok.addEventListener('click', function(){ localStorage.setItem('cookies_ok','1'); hide(); });
-  if(no) no.addEventListener('click', function(){ hide(); });
-})();
-</script>
-
+    <p><a class="back-link" href="https://vtsochev45-web.github.io/Nole/equipment/">View full Equipment page</a></p>
 </body>
 </html>
