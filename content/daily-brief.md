@@ -1,74 +1,41 @@
 ---
-title: "Daily Farm Brief – 26 February 2026"
-date: 2026-02-26T14:00:00Z
-description: "Latest farming updates: New grant deadlines, heatwave prep strategies, drone tech guide, labour shortage solutions"
-tags: ["daily-brief", "uk-farming", "grants", "technology", "labour"]
+title: "Daily Farm Brief – 28 February 2026"
+date: 2026-02-28T07:01:30Z
+description: "Daily UK farming update: weather risks, market prices, grant deadlines"
+tags: ["daily-brief", "uk-farming", "weather", "markets", "grants"]
 type: brief
 ---
 
-# 📰 Daily Farm Brief – 26 February 2026
+# 📰 Daily Farm Brief – 28 February 2026
 
-> Your 3-minute roundup of today's important farming updates, plus NEW comprehensive guides published today.
-
----
-
-## 🆕 NEW: Essential Guides Published Today
-
-### 💰 Brexit Grants 2026: Complete Guide
-**Step-by-step guide to UK Farm Grants 2026** – ELM schemes, Farming Investment Fund, SFI payments. Application checklists and common pitfalls to avoid.
-
-[Read Full Guide →](./grants/)
-
-### 🌡️ Heatwave Preparation Guide
-**Preparing Your UK Farm for Heatwaves** – Region-specific strategies for Scotland, Midlands, South West, East Anglia. Water management, livestock cooling, soil conservation.
-
-[Read Full Guide →](./weather/)
-
-### 👥 Labour Shortage Solutions
-**Run Your Farm with Fewer Workers** – Post-Brexit workforce strategies. Automation costs (robotic milking £150k-£250k), retention strategies, seasonal worker management.
-
-[Read Full Guide →](./livestock/)
-
-### 🚁 Farm Drones Guide
-**How to Choose, Where to Fly, What They Cost** – CAA regulations, best drones for different farm sizes, ROI calculator. Legal requirements and getting started steps.
-
-[Read Full Guide →](./equipment/)
+> Your 3-minute roundup of today's important farming updates.
 
 ---
 
-## 📍 Regional Farming Guides
+## 🌦 Today's Weather Risks
 
-- 🏴󠁧󠁢󠁳󠁣󠁴󠁿 **Farming in Scotland** – Crop & livestock opportunities + grant map
-- 🏴󠁧󠁢󠁷󠁬󠁳󠁿 **Sheep Farming in Wales** – Everything you need to know + local grants
-
----
-
-## 🛠️ New Tools Available
-
-- **💰 Farm Cost Calculator** – Calculate operating costs, compare to industry averages, export reports
-- **📊 Value Tracker** – Track money and time saved using this blog
-
-[Try Tools →](./tools/)
+- **Scotland** (YELLOW): Heavy rain expected across Highlands tomorrow. *Field work suspended, flooding risk low-lying areas*
+- **Midlands** (YELLOW): Frost risk overnight, temps down to -1°C. *Protect tender crops, check livestock housing*
+- **South West**: 11°C, no alerts
+- **East Anglia**: 6°C, no alerts
 
 ---
 
-## 📈 Quick Market Update
+## 📈 Market Prices
 
-- **Wheat**: £165/t (feed) | £185/t (milling)
-- **Barley**: £155/t (feed)
-- **Lamb**: £2.85/kg 📈 strong prices
-- **Cattle**: £4.25/kg
-
----
-
-## ⏰ Upcoming Grant Deadlines
-
-| Grant | Deadline | Value |
-|-------|----------|-------|
-| Farming Investment Fund | 31 March 2026 | £1,000-£25,000 |
-| Farming Resilience Fund | 15 March 2026 | Variable |
+- **Feed Wheat**: £165.0/t ↑ (+2.5)
+- **Feed Barley**: £155.0/t ↓ (-1.0)
+- **Rapeseed**: £420.0/t ↑ (+5.0)
+- **Milk**: 0.38p/L
 
 ---
 
-*Last updated: 26 February 2026 14:00 UTC*
-*Next daily brief: Tomorrow 06:00 UTC*
+## 💰 Grant Updates
+
+- **Sustainable Farming Incentive** (£20-£450/ha): Payment schedule changes announced for Countryside Stewardship
+- **Farming Investment Fund** (£25,000-£500,000): New round opens for equipment and technology | **Deadline: 31 Mar 2026**
+- **Rural Payments Agency** (N/A): New livestock unit calculation tool released
+
+---
+
+*Updated automatically at 06:00 UTC. [Browse all sections →](/Nole/)*
