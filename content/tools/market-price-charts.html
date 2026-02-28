@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Livestock &amp; Crop Market Price Charts – UK Farm Blog</title>
+    <meta name="description" content="Interactive UK livestock and crop market price charts. Compare wheat, barley, cattle, sheep and pig prices with spider and bar charts.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #1a2f5a 0%, #2a5298 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 28px; }
+        .tab-btn { border: 2px solid #d1d5db; background: #fff; padding: 9px 20px; border-radius: 20px; font-size: .88rem; font-weight: 600; cursor: pointer; transition: all .2s; color: #374151; }
+        .tab-btn.active { background: #1a2f5a; border-color: #1a2f5a; color: #fff; }
+        .tab-btn:hover:not(.active) { border-color: #2a5298; color: #2a5298; }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+        @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+        .card { background: #fff; border-radius: 16px; padding: 24px 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; }
+        .card h2 { font-size: 1rem; font-weight: 700; color: #1a2f5a; margin-bottom: 16px; }
+        .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
+        @media (max-width: 640px) { .kpi-row { grid-template-columns: 1fr 1fr; } }
+        .kpi { background: #fff; border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 1px solid #e5e7eb; }
+        .kpi-val { font-size: 1.6rem; font-weight: 900; color: #1a2f5a; line-height: 1.1; }
+        .kpi-lbl { font-size: .75rem; color: #6b7280; margin-top: 4px; }
+        .kpi-trend { font-size: .78rem; font-weight: 700; margin-top: 2px; }
+        .up { color: #2d6a27; }
+        .down { color: #b91c1c; }
+        .data-note { background: #fef9c3; border-left: 4px solid #e8a800; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: .83rem; color: #78350f; margin-bottom: 24px; }
+        .back-link { display: inline-block; background: #1a2f5a; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: .9rem; }
+        .back-link:hover { background: #2a5298; }
+        .section-panel { display: none; }
+        .section-panel.active { display: block; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/markets/">Markets</a>
+    <a href="/livestock/">Livestock</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>📊 UK Market Price Charts</h1>
+        <p>Indicative UK livestock and crop market prices for planning purposes. Data refreshed weekly from AHDB benchmarks.</p>
+    </div>
+
+    <div class="data-note">
+        ℹ️ <strong>Note:</strong> These are indicative benchmark prices for planning purposes. Always verify with AHDB Market Data, Farmers Weekly or your merchant before trading.
+    </div>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="showPanel('crops',this)">🌾 Crops</button>
+        <button class="tab-btn" onclick="showPanel('livestock',this)">🐄 Livestock</button>
+        <button class="tab-btn" onclick="showPanel('compare',this)">🕸 Compare (Spider Chart)</button>
+    </div>
+
+    <!-- Crops panel -->
+    <div class="section-panel active" id="panel-crops">
+        <div class="kpi-row">
+            <div class="kpi"><div class="kpi-val">£215</div><div class="kpi-lbl">Wheat (feed) /t</div><div class="kpi-trend up">▲ +£3 wk</div></div>
+            <div class="kpi"><div class="kpi-val">£198</div><div class="kpi-lbl">Feed barley /t</div><div class="kpi-trend down">▼ −£1 wk</div></div>
+            <div class="kpi"><div class="kpi-val">£398</div><div class="kpi-lbl">Oilseed rape /t</div><div class="kpi-trend up">▲ +£5 wk</div></div>
+            <div class="kpi"><div class="kpi-val">£240</div><div class="kpi-lbl">Milling wheat /t</div><div class="kpi-trend up">▲ +£2 wk</div></div>
+        </div>
+        <div class="card">
+            <h2>📈 Crop Prices – 12 Month Trend (£/tonne, indicative)</h2>
+            <canvas id="cropChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Livestock panel -->
+    <div class="section-panel" id="panel-livestock">
+        <div class="kpi-row">
+            <div class="kpi"><div class="kpi-val">535p</div><div class="kpi-lbl">Cattle deadweight /kg</div><div class="kpi-trend up">▲ +4p wk</div></div>
+            <div class="kpi"><div class="kpi-val">620p</div><div class="kpi-lbl">Lamb deadweight /kg</div><div class="kpi-trend up">▲ +8p wk</div></div>
+            <div class="kpi"><div class="kpi-val">185p</div><div class="kpi-lbl">Pig (SPP) /kg DW</div><div class="kpi-trend down">▼ −2p wk</div></div>
+            <div class="kpi"><div class="kpi-val">38p</div><div class="kpi-lbl">Milk /litre</div><div class="kpi-trend up">▲ +0.5p</div></div>
+        </div>
+        <div class="card">
+            <h2>📈 Livestock Prices – 12 Month Trend (pence/kg DW, indicative)</h2>
+            <canvas id="livestockChart" height="300"></canvas>
+        </div>
+    </div>
+
+    <!-- Spider chart comparison panel -->
+    <div class="section-panel" id="panel-compare">
+        <div class="card">
+            <h2>🕸 Price Performance vs 5-Year Average (%)</h2>
+            <p style="font-size:.85rem;color:#6b7280;margin-bottom:16px">Radar chart showing current prices as a percentage of the 5-year average benchmark (100% = at average)</p>
+            <canvas id="spiderChart" height="380"></canvas>
+        </div>
+    </div>
+
+    <a href="/tools/" class="back-link" style="margin-top:32px;display:inline-block">← Back to Tools</a>
+</div>
+
+<script>
+const MONTHS = ['Feb 25','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan 26'];
+
+// Crop chart
+const cropCtx = document.getElementById('cropChart').getContext('2d');
+new Chart(cropCtx, {
+    type: 'line',
+    data: {
+        labels: MONTHS,
+        datasets: [
+            {
+                label: 'Feed Wheat (£/t)',
+                data: [192,196,202,208,210,205,200,198,205,210,212,215],
+                borderColor: '#2a5298', backgroundColor: 'rgba(42,82,152,.1)',
+                tension: 0.4, fill: false, pointRadius: 3,
+            },
+            {
+                label: 'Feed Barley (£/t)',
+                data: [178,182,186,190,192,189,185,180,185,192,196,198],
+                borderColor: '#2d6a27', backgroundColor: 'rgba(45,106,39,.1)',
+                tension: 0.4, fill: false, pointRadius: 3,
+            },
+            {
+                label: 'Oilseed Rape (£/t)',
+                data: [360,368,375,380,385,370,365,360,378,385,392,398],
+                borderColor: '#e8a800', backgroundColor: 'rgba(232,168,0,.1)',
+                tension: 0.4, fill: false, pointRadius: 3,
+            },
+            {
+                label: 'Milling Wheat (£/t)',
+                data: [218,222,228,234,236,230,225,220,228,234,238,240],
+                borderColor: '#7c3aed', backgroundColor: 'rgba(124,58,237,.1)',
+                tension: 0.4, fill: false, pointRadius: 3,
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+            y: { ticks: { callback: v => '£' + v } }
+        }
+    }
+});
+
+// Livestock chart
+const livCtx = document.getElementById('livestockChart').getContext('2d');
+new Chart(livCtx, {
+    type: 'line',
+    data: {
+        labels: MONTHS,
+        datasets: [
+            {
+                label: 'Cattle DW (p/kg)',
+                data: [498,505,512,520,525,522,518,516,522,528,532,535],
+                borderColor: '#e87800', tension: 0.4, fill: false, pointRadius: 3,
+            },
+            {
+                label: 'Lamb DW (p/kg)',
+                data: [570,578,585,595,610,618,620,615,610,612,616,620],
+                borderColor: '#2d6a27', tension: 0.4, fill: false, pointRadius: 3,
+            },
+            {
+                label: 'Pig SPP (p/kg)',
+                data: [195,192,190,188,186,185,183,185,186,185,186,185],
+                borderColor: '#b91c1c', tension: 0.4, fill: false, pointRadius: 3,
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+            y: { ticks: { callback: v => v + 'p' } }
+        }
+    }
+});
+
+// Spider chart
+const spiderCtx = document.getElementById('spiderChart').getContext('2d');
+new Chart(spiderCtx, {
+    type: 'radar',
+    data: {
+        labels: ['Feed Wheat', 'Feed Barley', 'Oilseed Rape', 'Milling Wheat', 'Cattle', 'Lamb', 'Pigs', 'Milk'],
+        datasets: [
+            {
+                label: 'Current vs 5yr avg (%)',
+                data: [108, 104, 112, 106, 105, 115, 92, 98],
+                borderColor: '#2a5298',
+                backgroundColor: 'rgba(42,82,152,.2)',
+                pointBackgroundColor: '#2a5298',
+                pointRadius: 5,
+            },
+            {
+                label: '5-Year Average (100%)',
+                data: [100,100,100,100,100,100,100,100],
+                borderColor: '#e5e7eb',
+                backgroundColor: 'rgba(229,231,235,.1)',
+                pointBackgroundColor: '#e5e7eb',
+                borderDash: [5,5],
+                pointRadius: 3,
+            }
+        ]
+    },
+    options: {
+        responsive: true,
+        plugins: { legend: { position: 'bottom' } },
+        scales: {
+            r: {
+                min: 80, max: 130,
+                ticks: { callback: v => v + '%', stepSize: 10 },
+                pointLabels: { font: { size: 12 } }
+            }
+        }
+    }
+});
+
+function showPanel(id, btn) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    btn.classList.add('active');
+}
+</script>
+</body>
+</html>

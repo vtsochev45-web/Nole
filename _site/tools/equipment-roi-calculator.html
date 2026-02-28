@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment ROI Calculator – UK Farm Blog</title>
+    <meta name="description" content="Calculate the return on investment for farm machinery purchases. See payback period, NPV and annual savings with a visual timeline.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 920px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #1a2f5a 0%, #2a5298 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+        .card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; color: #1a2f5a; margin-bottom: 20px; border-bottom: 2px solid #e8a800; padding-bottom: 10px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; font-size: .88rem; color: #374151; margin-bottom: 6px; }
+        label span { font-weight: 400; color: #6b7280; }
+        input[type=number], select { width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 10px 14px; font-size: .95rem; outline: none; transition: border-color .2s; background: #fff; }
+        input[type=number]:focus, select:focus { border-color: #2a5298; }
+        .calc-btn { width: 100%; background: #2a5298; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background .2s; }
+        .calc-btn:hover { background: #1a2f5a; }
+        .results { display: none; }
+        .results.visible { display: block; }
+        .kpi-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 24px; }
+        @media (max-width: 640px) { .kpi-row { grid-template-columns: 1fr 1fr; } }
+        .kpi { background: #fff; border-radius: 12px; padding: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.07); border: 1px solid #e5e7eb; }
+        .kpi-val { font-size: 1.8rem; font-weight: 900; color: #1a2f5a; line-height: 1; }
+        .kpi-lbl { font-size: .78rem; color: #6b7280; margin-top: 6px; }
+        .kpi.positive .kpi-val { color: #2d6a27; }
+        .kpi.negative .kpi-val { color: #b91c1c; }
+        .chart-wrap { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .chart-wrap h3 { font-weight: 700; color: #1a2f5a; margin-bottom: 16px; }
+        .verdict { padding: 20px 28px; border-radius: 12px; margin-bottom: 24px; font-weight: 600; font-size: .95rem; }
+        .verdict.good { background: #d1fae5; color: #065f46; border-left: 5px solid #2d6a27; }
+        .verdict.caution { background: #fef9c3; color: #78350f; border-left: 5px solid #e8a800; }
+        .verdict.poor { background: #fee2e2; color: #7f1d1d; border-left: 5px solid #b91c1c; }
+        .back-link { display: inline-block; background: #1a2f5a; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: .9rem; }
+        .back-link:hover { background: #2a5298; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/grants/">Grants</a>
+    <a href="/markets/">Markets</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>🚜 Equipment ROI Calculator</h1>
+        <p>See the payback period, net present value and cumulative savings of any machinery investment. Includes grant uplift options.</p>
+    </div>
+
+    <div class="grid2">
+        <div class="card">
+            <h2>💷 Equipment Details</h2>
+            <div class="form-group">
+                <label>Equipment / machine name</label>
+                <input type="text" id="equip-name" placeholder="e.g. Precision drill, Robotic milker" style="width:100%;border:1.5px solid #d1d5db;border-radius:8px;padding:10px 14px;font-size:.95rem;outline:none;">
+            </div>
+            <div class="form-group">
+                <label>Purchase price <span>(£)</span></label>
+                <input type="number" id="purchase-price" min="0" value="50000" placeholder="50000">
+            </div>
+            <div class="form-group">
+                <label>UK grant / subsidy received <span>(£, e.g. FIF, FETF)</span></label>
+                <input type="number" id="grant" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Estimated useful life <span>(years)</span></label>
+                <input type="number" id="useful-life" min="1" max="30" value="10" placeholder="10">
+            </div>
+            <div class="form-group">
+                <label>Residual / resale value <span>(£ at end of life)</span></label>
+                <input type="number" id="residual" min="0" value="5000" placeholder="5000">
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Annual Benefits &amp; Costs</h2>
+            <div class="form-group">
+                <label>Annual labour savings <span>(£/year)</span></label>
+                <input type="number" id="labour-saving" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Annual fuel / input savings <span>(£/year)</span></label>
+                <input type="number" id="fuel-saving" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Additional revenue generated <span>(£/year)</span></label>
+                <input type="number" id="extra-revenue" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Annual maintenance cost <span>(£/year)</span></label>
+                <input type="number" id="maintenance" min="0" value="1500" placeholder="1500">
+            </div>
+            <div class="form-group">
+                <label>Discount rate <span>(%/year, e.g. 7 for UK public projects)</span></label>
+                <input type="number" id="discount-rate" min="0" max="30" value="7" placeholder="7">
+            </div>
+            <button class="calc-btn" onclick="calculateROI()">Calculate ROI →</button>
+        </div>
+    </div>
+
+    <div class="results" id="results">
+        <div class="kpi-row">
+            <div class="kpi" id="kpi-payback"><div class="kpi-val" id="payback-val">—</div><div class="kpi-lbl">Payback period</div></div>
+            <div class="kpi positive" id="kpi-npv"><div class="kpi-val" id="npv-val">—</div><div class="kpi-lbl">Net Present Value</div></div>
+            <div class="kpi" id="kpi-roi"><div class="kpi-val" id="roi-val">—</div><div class="kpi-lbl">Simple ROI</div></div>
+            <div class="kpi" id="kpi-irr"><div class="kpi-val" id="irr-val">—</div><div class="kpi-lbl">Net cost (after grant)</div></div>
+        </div>
+        <div class="verdict" id="verdict"></div>
+        <div class="chart-wrap">
+            <h3>📊 Cumulative Cash Flow Over Equipment Life</h3>
+            <canvas id="roiChart" height="280"></canvas>
+        </div>
+        <a href="/tools/" class="back-link">← Back to Tools</a>
+    </div>
+</div>
+
+<script>
+let roiChart = null;
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function calculateROI() {
+    const price     = v('purchase-price');
+    const grant     = v('grant');
+    const life      = Math.max(1, Math.round(v('useful-life')));
+    const residual  = v('residual');
+    const labour    = v('labour-saving');
+    const fuel      = v('fuel-saving');
+    const revenue   = v('extra-revenue');
+    const maint     = v('maintenance');
+    const dr        = v('discount-rate') / 100;
+
+    const netCost   = price - grant;
+    const annualNet = labour + fuel + revenue - maint;
+
+    // Payback
+    let payback = '> ' + life + ' yrs';
+    let cum = -netCost;
+    const cumulativeVals = [-netCost];
+    let npv = -netCost;
+    let paybackYr = null;
+    for (let y = 1; y <= life; y++) {
+        const cashflow = (y === life) ? annualNet + residual : annualNet;
+        cum += cashflow;
+        cumulativeVals.push(cum);
+        npv += cashflow / Math.pow(1 + dr, y);
+        if (paybackYr === null && cum >= 0) paybackYr = y;
+    }
+    if (paybackYr) payback = paybackYr + (paybackYr === 1 ? ' year' : ' years');
+
+    const simpleROI = netCost > 0 ? (((annualNet * life + residual - netCost) / netCost) * 100).toFixed(0) + '%' : 'N/A';
+
+    document.getElementById('payback-val').textContent = payback;
+    document.getElementById('npv-val').textContent = '£' + Math.round(npv).toLocaleString();
+    document.getElementById('roi-val').textContent = simpleROI;
+    document.getElementById('irr-val').textContent = '£' + Math.round(netCost).toLocaleString();
+
+    const verdictEl = document.getElementById('verdict');
+    if (npv > 0 && paybackYr && paybackYr <= life * 0.5) {
+        verdictEl.className = 'verdict good';
+        verdictEl.textContent = '✅ Strong investment – positive NPV and payback in less than half the equipment life. Consider applying for FIF or FETF grants to improve returns further.';
+    } else if (npv > 0) {
+        verdictEl.className = 'verdict caution';
+        verdictEl.textContent = '⚠️ Marginal investment – positive NPV but longer payback. Check whether a UK Farming Investment Fund grant could improve viability.';
+    } else {
+        verdictEl.className = 'verdict poor';
+        verdictEl.textContent = '❌ Poor return – negative NPV at this discount rate. Consider whether second-hand equipment, contractor hire, or machinery ring sharing would be more cost-effective.';
+    }
+
+    const labels = Array.from({ length: life + 1 }, (_, i) => i === 0 ? 'Purchase' : 'Year ' + i);
+    const ctx = document.getElementById('roiChart').getContext('2d');
+    if (roiChart) roiChart.destroy();
+    roiChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels,
+            datasets: [{
+                label: 'Cumulative Cash Flow (£)',
+                data: cumulativeVals,
+                backgroundColor: cumulativeVals.map(v => v >= 0 ? 'rgba(45,106,39,0.75)' : 'rgba(185,28,28,0.7)'),
+                borderColor: cumulativeVals.map(v => v >= 0 ? '#2d6a27' : '#b91c1c'),
+                borderWidth: 1.5,
+                borderRadius: 4,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { ticks: { callback: v => '£' + v.toLocaleString() } }
+            }
+        }
+    });
+
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

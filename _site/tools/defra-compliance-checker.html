@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEFRA Compliance Checker – UK Farm Blog</title>
+    <meta name="description" content="Interactive DEFRA compliance checker for UK farmers. Step-by-step guide covering cross compliance, ELM, nutrient management and more.">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 780px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #1a2f5a 0%, #2a5298 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .progress-bar { background: #e5e7eb; border-radius: 8px; height: 8px; margin-bottom: 24px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #2d6a27, #4a7c43); border-radius: 8px; transition: width .4s; }
+        .progress-label { text-align: right; font-size: .78rem; color: #6b7280; margin-bottom: 8px; }
+        .step-card { background: #fff; border-radius: 16px; padding: 32px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; display: none; }
+        .step-card.active { display: block; }
+        .step-category { font-size: .78rem; font-weight: 700; color: #2a5298; text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+        .step-card h2 { font-size: 1.3rem; font-weight: 700; color: #1a2f5a; margin-bottom: 12px; }
+        .step-card .help-text { background: #eff6ff; border-left: 4px solid #2a5298; padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: .88rem; color: #1e40af; margin-bottom: 20px; }
+        .options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+        .option-btn { border: 2px solid #d1d5db; background: #fff; padding: 14px 20px; border-radius: 10px; text-align: left; cursor: pointer; font-size: .92rem; transition: all .2s; display: flex; align-items: center; gap: 12px; }
+        .option-btn:hover { border-color: #2a5298; background: #eff6ff; }
+        .option-btn.selected { border-color: #2d6a27; background: #d1fae5; }
+        .option-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .nav-row { display: flex; gap: 12px; margin-top: 8px; }
+        .btn-back { background: #f3f4f6; color: #374151; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: .9rem; }
+        .btn-next { background: #2a5298; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: .9rem; flex: 1; transition: background .2s; }
+        .btn-next:hover { background: #1a2f5a; }
+        .btn-next:disabled { background: #9ca3af; cursor: not-allowed; }
+        .results-panel { display: none; }
+        .results-panel.visible { display: block; }
+        .result-header { background: linear-gradient(135deg, #2d6a27, #4a7c43); color: #fff; padding: 28px 32px; border-radius: 16px; margin-bottom: 24px; }
+        .result-header h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 8px; }
+        .score-badge { display: inline-block; background: rgba(255,255,255,.2); padding: 6px 16px; border-radius: 20px; font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+        .compliance-items { margin-bottom: 24px; }
+        .compliance-item { background: #fff; border-radius: 12px; padding: 20px 24px; margin-bottom: 14px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border-left: 5px solid transparent; }
+        .compliance-item.ok { border-left-color: #2d6a27; }
+        .compliance-item.warning { border-left-color: #e8a800; }
+        .compliance-item.action { border-left-color: #b91c1c; }
+        .compliance-item h3 { font-size: .95rem; font-weight: 700; color: #1a2f5a; margin-bottom: 6px; }
+        .compliance-item p { font-size: .85rem; color: #374151; }
+        .compliance-item .tag { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; margin-bottom: 8px; }
+        .tag-ok { background: #d1fae5; color: #065f46; }
+        .tag-warning { background: #fef9c3; color: #78350f; }
+        .tag-action { background: #fee2e2; color: #7f1d1d; }
+        .restart-btn { background: #1a2f5a; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: .9rem; width: 100%; margin-top: 8px; }
+        .back-link { display: inline-block; background: #f3f4f6; color: #374151; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; margin-top: 16px; font-size: .9rem; }
+        .back-link:hover { background: #e5e7eb; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/grants/">Grants</a>
+    <a href="/seasonal/">Seasonal</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>✅ DEFRA Compliance Checker</h1>
+        <p>Step-by-step compliance health check covering cross compliance, ELM schemes, nutrient management, biosecurity and environmental requirements.</p>
+    </div>
+
+    <div id="checker">
+        <div class="progress-label" id="progress-label">Step 1 of 8</div>
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:12.5%"></div></div>
+
+        <!-- Step 1: Farm type -->
+        <div class="step-card active" id="step-1">
+            <div class="step-category">Farm Profile</div>
+            <h2>What best describes your farm type?</h2>
+            <div class="help-text">Your farm type determines which DEFRA requirements apply to you.</div>
+            <div class="options" id="opts-1">
+                <button class="option-btn" onclick="selectOption(1,'arable')"><span class="option-icon">🌾</span> Arable (crops)</button>
+                <button class="option-btn" onclick="selectOption(1,'livestock')"><span class="option-icon">🐄</span> Livestock (cattle, sheep, pigs)</button>
+                <button class="option-btn" onclick="selectOption(1,'mixed')"><span class="option-icon">🚜</span> Mixed (crops and livestock)</button>
+                <button class="option-btn" onclick="selectOption(1,'horticulture')"><span class="option-icon">🥦</span> Horticulture / market garden</button>
+                <button class="option-btn" onclick="selectOption(1,'dairy')"><span class="option-icon">🥛</span> Dairy</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-next" id="next-1" disabled onclick="nextStep(1)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 2: Farm size -->
+        <div class="step-card" id="step-2">
+            <div class="step-category">Farm Profile</div>
+            <h2>What is your total farmed area?</h2>
+            <div class="help-text">Area determines whether you are subject to mandatory ELM participation thresholds and nitrate regulations.</div>
+            <div class="options" id="opts-2">
+                <button class="option-btn" onclick="selectOption(2,'small')"><span class="option-icon">🏡</span> Under 50 hectares</button>
+                <button class="option-btn" onclick="selectOption(2,'medium')"><span class="option-icon">🌱</span> 50–250 hectares</button>
+                <button class="option-btn" onclick="selectOption(2,'large')"><span class="option-icon">🗺</span> Over 250 hectares</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(2)">← Back</button>
+                <button class="btn-next" id="next-2" disabled onclick="nextStep(2)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 3: NVZ -->
+        <div class="step-card" id="step-3">
+            <div class="step-category">Nutrient Management</div>
+            <h2>Is your farm in a Nitrate Vulnerable Zone (NVZ)?</h2>
+            <div class="help-text">NVZs have strict rules on when and how much nitrogen fertiliser and slurry you can apply. Check the <a href="https://www.gov.uk/guidance/nutrient-management" target="_blank" rel="noopener" style="color:#2a5298">Gov.uk NVZ checker</a>.</div>
+            <div class="options" id="opts-3">
+                <button class="option-btn" onclick="selectOption(3,'yes')"><span class="option-icon">⚠️</span> Yes – I am in an NVZ</button>
+                <button class="option-btn" onclick="selectOption(3,'no')"><span class="option-icon">✅</span> No – not in an NVZ</button>
+                <button class="option-btn" onclick="selectOption(3,'unsure')"><span class="option-icon">❓</span> Not sure</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(3)">← Back</button>
+                <button class="btn-next" id="next-3" disabled onclick="nextStep(3)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 4: Nutrient Management Plan -->
+        <div class="step-card" id="step-4">
+            <div class="step-category">Nutrient Management</div>
+            <h2>Do you have a Nutrient Management Plan (NMP)?</h2>
+            <div class="help-text">An NMP is mandatory if you are in an NVZ and have livestock. It is required to access the Sustainable Farming Incentive (SFI).</div>
+            <div class="options" id="opts-4">
+                <button class="option-btn" onclick="selectOption(4,'yes-written')"><span class="option-icon">📋</span> Yes – written NMP in place</button>
+                <button class="option-btn" onclick="selectOption(4,'yes-verbal')"><span class="option-icon">🗣</span> Partially – informal plan only</button>
+                <button class="option-btn" onclick="selectOption(4,'no')"><span class="option-icon">❌</span> No NMP</button>
+                <button class="option-btn" onclick="selectOption(4,'na')"><span class="option-icon">➖</span> Not applicable (no livestock)</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(4)">← Back</button>
+                <button class="btn-next" id="next-4" disabled onclick="nextStep(4)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 5: SFI / ELM -->
+        <div class="step-card" id="step-5">
+            <div class="step-category">Environmental Land Management</div>
+            <h2>Are you currently enrolled in any ELM scheme?</h2>
+            <div class="help-text">The Sustainable Farming Incentive (SFI), Countryside Stewardship (CS) and Landscape Recovery are the three ELM tiers replacing BPS payments.</div>
+            <div class="options" id="opts-5">
+                <button class="option-btn" onclick="selectOption(5,'sfi')"><span class="option-icon">🌿</span> Yes – Sustainable Farming Incentive (SFI)</button>
+                <button class="option-btn" onclick="selectOption(5,'cs')"><span class="option-icon">🌄</span> Yes – Countryside Stewardship</button>
+                <button class="option-btn" onclick="selectOption(5,'both')"><span class="option-icon">✅</span> Yes – both SFI and CS</button>
+                <button class="option-btn" onclick="selectOption(5,'none')"><span class="option-icon">❌</span> Not yet enrolled</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(5)">← Back</button>
+                <button class="btn-next" id="next-5" disabled onclick="nextStep(5)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 6: Biosecurity -->
+        <div class="step-card" id="step-6">
+            <div class="step-category">Biosecurity</div>
+            <h2>Do you have a written biosecurity plan?</h2>
+            <div class="help-text">A biosecurity plan is required under the Animal Health Act and is assessed during Red Tractor audits and APHA inspections.</div>
+            <div class="options" id="opts-6">
+                <button class="option-btn" onclick="selectOption(6,'yes')"><span class="option-icon">✅</span> Yes – written and reviewed annually</button>
+                <button class="option-btn" onclick="selectOption(6,'partial')"><span class="option-icon">⚠️</span> Partial – some measures in place</button>
+                <button class="option-btn" onclick="selectOption(6,'no')"><span class="option-icon">❌</span> No formal biosecurity plan</button>
+                <button class="option-btn" onclick="selectOption(6,'na')"><span class="option-icon">➖</span> No livestock on farm</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(6)">← Back</button>
+                <button class="btn-next" id="next-6" disabled onclick="nextStep(6)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 7: Record keeping -->
+        <div class="step-card" id="step-7">
+            <div class="step-category">Record Keeping</div>
+            <h2>Are your farm records up to date?</h2>
+            <div class="help-text">DEFRA requires records to be kept for at least 5 years for cross-compliance audits. This includes spraying records, livestock movement records and field operations.</div>
+            <div class="options" id="opts-7">
+                <button class="option-btn" onclick="selectOption(7,'digital')"><span class="option-icon">💻</span> Yes – digital farm management system</button>
+                <button class="option-btn" onclick="selectOption(7,'paper')"><span class="option-icon">📁</span> Yes – paper records kept</button>
+                <button class="option-btn" onclick="selectOption(7,'partial')"><span class="option-icon">⚠️</span> Partially up to date</button>
+                <button class="option-btn" onclick="selectOption(7,'no')"><span class="option-icon">❌</span> Records are not up to date</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(7)">← Back</button>
+                <button class="btn-next" id="next-7" disabled onclick="nextStep(7)">Next →</button>
+            </div>
+        </div>
+
+        <!-- Step 8: Water management -->
+        <div class="step-card" id="step-8">
+            <div class="step-category">Water & Environment</div>
+            <h2>Do you have an abstraction licence if you take water from rivers, boreholes or reservoirs?</h2>
+            <div class="help-text">Abstracting water without a licence from the Environment Agency is an offence. Small quantities (under 20m³/day) are usually exempt.</div>
+            <div class="options" id="opts-8">
+                <button class="option-btn" onclick="selectOption(8,'licenced')"><span class="option-icon">✅</span> Yes – valid abstraction licence held</button>
+                <button class="option-btn" onclick="selectOption(8,'exempt')"><span class="option-icon">📋</span> Exempt (under 20m³/day)</button>
+                <button class="option-btn" onclick="selectOption(8,'mains')"><span class="option-icon">💧</span> Mains supply only – no abstraction</button>
+                <button class="option-btn" onclick="selectOption(8,'unknown')"><span class="option-icon">❓</span> Not sure / need to check</button>
+            </div>
+            <div class="nav-row">
+                <button class="btn-back" onclick="prevStep(8)">← Back</button>
+                <button class="btn-next" id="next-8" disabled onclick="showResults()">See My Compliance Report →</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-panel" id="results">
+        <div class="result-header">
+            <div class="score-badge" id="score-badge">Compliance Score: —</div>
+            <h2>Your Farm Compliance Report</h2>
+            <p style="color:rgba(255,255,255,.85);font-size:.9rem">Based on your answers — always verify with DEFRA / your local FAS adviser.</p>
+        </div>
+        <div class="compliance-items" id="compliance-items"></div>
+        <button class="restart-btn" onclick="restartChecker()">🔄 Start Again</button>
+        <br>
+        <a href="/tools/" class="back-link">← Back to Tools</a>
+    </div>
+</div>
+
+<script>
+const answers = {};
+const TOTAL_STEPS = 8;
+
+function selectOption(step, value) {
+    answers['step' + step] = value;
+    document.querySelectorAll('#opts-' + step + ' .option-btn').forEach(b => b.classList.remove('selected'));
+    event.currentTarget.classList.add('selected');
+    document.getElementById('next-' + step).disabled = false;
+}
+
+function nextStep(current) {
+    document.getElementById('step-' + current).classList.remove('active');
+    const next = current + 1;
+    if (next <= TOTAL_STEPS) {
+        document.getElementById('step-' + next).classList.add('active');
+        updateProgress(next);
+    }
+}
+
+function prevStep(current) {
+    document.getElementById('step-' + current).classList.remove('active');
+    document.getElementById('step-' + (current - 1)).classList.add('active');
+    updateProgress(current - 1);
+}
+
+function updateProgress(step) {
+    const pct = (step / TOTAL_STEPS) * 100;
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = 'Step ' + step + ' of ' + TOTAL_STEPS;
+}
+
+function showResults() {
+    document.getElementById('checker').style.display = 'none';
+    const items = [];
+
+    // NVZ compliance
+    if (answers.step3 === 'yes') {
+        if (answers.step4 === 'no') {
+            items.push({ level:'action', title:'⛔ Write a Nutrient Management Plan', text:'You are in an NVZ and have livestock but no NMP. This is a legal requirement. Contact AHDB or your local FAS adviser immediately.' });
+        } else if (answers.step4 === 'yes-verbal') {
+            items.push({ level:'warning', title:'⚠️ Formalise Your Nutrient Management Plan', text:'An informal plan is insufficient for NVZ compliance. A written NMP should be produced using PLANET or Tried & Tested software.' });
+        } else {
+            items.push({ level:'ok', title:'✅ Nutrient Management Plan in Place', text:'Good. Ensure your NMP is reviewed annually and slurry storage meets 6-month capacity requirements in NVZs.' });
+        }
+    } else if (answers.step3 === 'unsure') {
+        items.push({ level:'warning', title:'⚠️ Check Your NVZ Status', text:'Use the Gov.uk NVZ checker to confirm whether your land is in a Nitrate Vulnerable Zone. Rules differ significantly inside and outside NVZs.' });
+    } else {
+        items.push({ level:'ok', title:'✅ NVZ — Not Applicable', text:'You are not in an NVZ so mandatory NVZ rules do not apply. Good fertilisation practice and a voluntary NMP is still advisable.' });
+    }
+
+    // ELM/SFI
+    if (answers.step5 === 'none') {
+        items.push({ level:'warning', title:'⚠️ Not Enrolled in ELM Scheme', text:'BPS payments have ended. The Sustainable Farming Incentive (SFI) is open year-round and most farmers qualify. Applications take 15 minutes at the Rural Payments service.' });
+    } else if (answers.step5 === 'sfi' || answers.step5 === 'both') {
+        items.push({ level:'ok', title:'✅ SFI Active', text:'Great. Ensure your SFI management actions are being carried out and recorded correctly. Actions must be maintained for the full agreement period.' });
+    } else {
+        items.push({ level:'ok', title:'✅ Countryside Stewardship Active', text:'Good. Check your CS agreement end date and consider adding SFI actions for additional income.' });
+    }
+
+    // Biosecurity
+    if (answers.step6 === 'no') {
+        items.push({ level:'action', title:'⛔ No Biosecurity Plan', text:'A written biosecurity plan is required under Animal Health legislation and Red Tractor standards. AHDB provides free templates at ahdb.org.uk.' });
+    } else if (answers.step6 === 'partial') {
+        items.push({ level:'warning', title:'⚠️ Improve Your Biosecurity Plan', text:'Partial biosecurity measures may not satisfy an APHA inspection. Complete a formal written plan using the AHDB Biosecurity self-assessment tool.' });
+    } else if (answers.step6 === 'yes') {
+        items.push({ level:'ok', title:'✅ Biosecurity Plan in Place', text:'Good. Make sure all staff are trained on the biosecurity plan and it is reviewed after any disease outbreak or significant change.' });
+    }
+
+    // Records
+    if (answers.step7 === 'no') {
+        items.push({ level:'action', title:'⛔ Update Farm Records Immediately', text:'DEFRA requires records to be kept for 5+ years for cross-compliance audits. Missing records can result in SFI/CS payment reductions. Use a farm management app or paper diary.' });
+    } else if (answers.step7 === 'partial') {
+        items.push({ level:'warning', title:'⚠️ Incomplete Records', text:'Partial records create cross-compliance risk. Prioritise spraying records, livestock movement books (within 36 hours) and field operation diaries.' });
+    } else {
+        items.push({ level:'ok', title:'✅ Farm Records Up to Date', text:'Good. Ensure records cover at least the past 5 years and include spraying certificates for all operations.' });
+    }
+
+    // Water abstraction
+    if (answers.step8 === 'unknown') {
+        items.push({ level:'warning', title:'⚠️ Check Abstraction Licence Status', text:'Contact the Environment Agency (03708 506 506) or check via the water management portal. Unlicensed abstraction can result in significant fines.' });
+    } else if (answers.step8 === 'licenced' || answers.step8 === 'exempt' || answers.step8 === 'mains') {
+        items.push({ level:'ok', title:'✅ Water Abstraction — Compliant', text:'Good. Ensure your licence conditions are met (volume, timing, returns to EA). Licences should be renewed when they expire.' });
+    }
+
+    // Farm size + ELM
+    if (answers.step2 === 'large' && answers.step5 === 'none') {
+        items.push({ level:'warning', title:'⚠️ Large Farm — Review ELM Transition Plan', text:'Farms over 250ha should have a formal ELM transition plan to replace lost BPS income. Contact DEFRA\'s Future Farming Resilience Fund for free advice.' });
+    }
+
+    const score = items.filter(i => i.level === 'ok').length;
+    const total = items.length;
+    document.getElementById('score-badge').textContent = `Compliance Score: ${score}/${total} areas ✅`;
+
+    document.getElementById('compliance-items').innerHTML = items.map(item => {
+        const tagClass = item.level === 'ok' ? 'tag-ok' : item.level === 'warning' ? 'tag-warning' : 'tag-action';
+        const tagLabel = item.level === 'ok' ? 'Compliant' : item.level === 'warning' ? 'Review Required' : 'Action Required';
+        return `<div class="compliance-item ${item.level}">
+            <span class="tag ${tagClass}">${tagLabel}</span>
+            <h3>${item.title}</h3>
+            <p>${item.text}</p>
+        </div>`;
+    }).join('');
+
+    document.getElementById('results').classList.add('visible');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartChecker() {
+    Object.keys(answers).forEach(k => delete answers[k]);
+    document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('selected'));
+    document.querySelectorAll('.step-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.btn-next').forEach(b => b.disabled = true);
+    document.getElementById('step-1').classList.add('active');
+    updateProgress(1);
+    document.getElementById('results').classList.remove('visible');
+    document.getElementById('checker').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

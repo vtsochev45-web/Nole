@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Carbon Footprint Calculator – UK Farm Blog</title>
+    <meta name="description" content="Calculate your UK farm's carbon footprint. See your CO₂e emissions from livestock, machinery, energy and land use.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; font-family: 'Segoe UI', system-ui, sans-serif; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #1a2f5a 0%, #2a5298 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } }
+        .card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; color: #1a2f5a; margin-bottom: 20px; border-bottom: 2px solid #e8a800; padding-bottom: 10px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; font-size: .88rem; color: #374151; margin-bottom: 6px; }
+        label span { font-weight: 400; color: #6b7280; }
+        input[type=number] { width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 10px 14px; font-size: .95rem; outline: none; transition: border-color .2s; }
+        input[type=number]:focus { border-color: #2a5298; }
+        .calc-btn { width: 100%; background: #2d6a27; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; margin-top: 8px; transition: background .2s; }
+        .calc-btn:hover { background: #245520; }
+        .results { display: none; grid-column: 1 / -1; }
+        .results.visible { display: block; }
+        .result-banner { background: linear-gradient(135deg, #2d6a27 0%, #4a7c43 100%); color: #fff; padding: 28px 36px; border-radius: 16px; margin-bottom: 24px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap; }
+        .result-number { font-size: 3rem; font-weight: 900; line-height: 1; }
+        .result-label { font-size: 1.1rem; color: rgba(255,255,255,.9); }
+        .result-sub { font-size: .9rem; color: rgba(255,255,255,.75); margin-top: 4px; }
+        .benchmarks { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        @media (max-width: 640px) { .benchmarks { grid-template-columns: 1fr 1fr; } }
+        .bench-card { background: #fff; border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 2px solid transparent; }
+        .bench-card.highlight { border-color: #e8a800; }
+        .bench-val { font-size: 1.5rem; font-weight: 800; color: #1a2f5a; }
+        .bench-lbl { font-size: .78rem; color: #6b7280; margin-top: 4px; }
+        .chart-wrap { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .chart-wrap h3 { font-weight: 700; color: #1a2f5a; margin-bottom: 16px; }
+        .tips { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; }
+        .tips h3 { font-weight: 700; color: #1a2f5a; margin-bottom: 16px; }
+        .tip-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f3f4f6; }
+        .tip-item:last-child { border-bottom: none; }
+        .tip-icon { font-size: 1.4rem; flex-shrink: 0; }
+        .tip-text strong { display: block; color: #1a2f5a; font-size: .9rem; }
+        .tip-text span { font-size: .83rem; color: #6b7280; }
+        .back-link { display: inline-block; background: #1a2f5a; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; margin-top: 32px; font-size: .9rem; }
+        .back-link:hover { background: #2a5298; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/weather/">Weather</a>
+    <a href="/grants/">Grants</a>
+    <a href="/markets/">Markets</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>🌿 Farm Carbon Footprint Calculator</h1>
+        <p>Estimate your farm's annual CO₂e emissions across livestock, machinery, energy and fertiliser. Get actionable reduction tips.</p>
+    </div>
+
+    <div class="grid">
+        <!-- Livestock -->
+        <div class="card">
+            <h2>🐄 Livestock</h2>
+            <div class="form-group">
+                <label>Dairy cattle <span>(head)</span></label>
+                <input type="number" id="dairy" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Beef cattle <span>(head)</span></label>
+                <input type="number" id="beef" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Sheep <span>(head)</span></label>
+                <input type="number" id="sheep" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Pigs <span>(head)</span></label>
+                <input type="number" id="pigs" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Poultry <span>(birds)</span></label>
+                <input type="number" id="poultry" min="0" value="0" placeholder="0">
+            </div>
+        </div>
+
+        <!-- Energy & Machinery -->
+        <div class="card">
+            <h2>⚙️ Energy &amp; Machinery</h2>
+            <div class="form-group">
+                <label>Diesel used <span>(litres/year)</span></label>
+                <input type="number" id="diesel" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Electricity <span>(kWh/year)</span></label>
+                <input type="number" id="electricity" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Natural gas / LPG <span>(therms/year)</span></label>
+                <input type="number" id="gas" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Nitrogen fertiliser <span>(kg N applied/year)</span></label>
+                <input type="number" id="fertiliser" min="0" value="0" placeholder="0">
+            </div>
+            <div class="form-group">
+                <label>Farm area <span>(hectares, for land-use credit)</span></label>
+                <input type="number" id="hectares" min="0" value="0" placeholder="0">
+            </div>
+            <button class="calc-btn" onclick="calculate()">Calculate My Carbon Footprint →</button>
+        </div>
+
+        <!-- Results -->
+        <div class="results" id="results">
+            <div class="result-banner">
+                <div>
+                    <div class="result-number" id="total-co2">0</div>
+                    <div class="result-label">tonnes CO₂e per year</div>
+                </div>
+                <div>
+                    <div class="result-sub" id="per-ha-text"></div>
+                    <div class="result-sub" id="intensity-text"></div>
+                </div>
+            </div>
+
+            <div class="benchmarks">
+                <div class="bench-card">
+                    <div class="bench-val" id="bench-livestock">0</div>
+                    <div class="bench-lbl">Livestock t CO₂e</div>
+                </div>
+                <div class="bench-card">
+                    <div class="bench-val" id="bench-energy">0</div>
+                    <div class="bench-lbl">Energy t CO₂e</div>
+                </div>
+                <div class="bench-card">
+                    <div class="bench-val" id="bench-fertiliser">0</div>
+                    <div class="bench-lbl">Fertiliser t CO₂e</div>
+                </div>
+                <div class="bench-card highlight">
+                    <div class="bench-val" id="bench-sequestration">0</div>
+                    <div class="bench-lbl">Land sequestration (credit)</div>
+                </div>
+                <div class="bench-card">
+                    <div class="bench-val" id="bench-net">0</div>
+                    <div class="bench-lbl">Net emissions t CO₂e</div>
+                </div>
+            </div>
+
+            <div class="chart-wrap">
+                <h3>📊 Emissions Breakdown</h3>
+                <canvas id="co2Chart" height="260"></canvas>
+            </div>
+
+            <div class="tips" id="tips-section">
+                <h3>💡 Top Reduction Opportunities</h3>
+                <div id="tips-list"></div>
+            </div>
+
+            <a href="/tools/" class="back-link">← Back to Tools</a>
+        </div>
+    </div>
+</div>
+
+<script>
+// DEFRA / IPCC emission factors (simplified, 2024 values)
+const EF = {
+    dairy:        3.5,    // t CO2e per head per year (enteric + manure)
+    beef:         2.5,
+    sheep:        0.18,
+    pigs:         0.35,
+    poultry:      0.006,
+    diesel:       0.00268, // t CO2e per litre
+    electricity:  0.000233,// t CO2e per kWh (UK grid 2024)
+    gas:          0.00552, // t CO2e per therm
+    fertiliserN:  0.0082,  // t CO2e per kg N (production + N2O)
+    sequestration:2.5,     // t CO2e sequestered per ha per year (grassland/hedges estimate)
+};
+
+let co2Chart = null;
+
+function v(id) { return parseFloat(document.getElementById(id).value) || 0; }
+
+function calculate() {
+    const livestock = v('dairy')*EF.dairy + v('beef')*EF.beef + v('sheep')*EF.sheep + v('pigs')*EF.pigs + v('poultry')*EF.poultry;
+    const energy    = v('diesel')*EF.diesel + v('electricity')*EF.electricity + v('gas')*EF.gas;
+    const fertEmit  = v('fertiliser')*EF.fertiliserN;
+    const seqCredit = v('hectares')*EF.sequestration;
+    const net       = Math.max(0, livestock + energy + fertEmit - seqCredit);
+
+    document.getElementById('total-co2').textContent = net.toFixed(1);
+    document.getElementById('bench-livestock').textContent = livestock.toFixed(1);
+    document.getElementById('bench-energy').textContent = energy.toFixed(1);
+    document.getElementById('bench-fertiliser').textContent = fertEmit.toFixed(1);
+    document.getElementById('bench-sequestration').textContent = seqCredit.toFixed(1);
+    document.getElementById('bench-net').textContent = net.toFixed(1);
+
+    const ha = v('hectares');
+    if (ha > 0) {
+        document.getElementById('per-ha-text').textContent = (net/ha).toFixed(1) + ' t CO₂e / hectare';
+    }
+
+    // Chart
+    const ctx = document.getElementById('co2Chart').getContext('2d');
+    if (co2Chart) co2Chart.destroy();
+    co2Chart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Livestock', 'Energy & Machinery', 'Fertiliser', 'Sequestration (credit)'],
+            datasets: [{
+                data: [livestock.toFixed(1), energy.toFixed(1), fertEmit.toFixed(1), seqCredit.toFixed(1)],
+                backgroundColor: ['#e87800', '#2a5298', '#e8c400', '#2d6a27'],
+                borderWidth: 3,
+                borderColor: '#fff',
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' },
+                tooltip: { callbacks: { label: function(c){ return c.label + ': ' + c.raw + ' t CO₂e'; } } }
+            }
+        }
+    });
+
+    // Tips
+    const tips = [];
+    if (livestock > energy + fertEmit) tips.push({ icon:'🐄', title:'Improve livestock management', desc:'Methane inhibitors, improved grazing rotation and slurry covers can cut livestock emissions by 15–25%.' });
+    if (v('fertiliser') > 100) tips.push({ icon:'🌱', title:'Switch to slow-release fertiliser', desc:'Nitrification inhibitors reduce N₂O emissions by up to 40% with the same agronomic effect.' });
+    if (v('diesel') > 5000) tips.push({ icon:'⛽', title:'Reduce diesel usage', desc:'GPS-guided precision farming and tyre pressure management can cut diesel use by 10–20%.' });
+    if (v('electricity') > 10000) tips.push({ icon:'☀️', title:'Install solar PV', desc:'A 50 kWp roof-mounted array can cut electricity emissions by 12–18 t CO₂e and earn Renewable Heat Incentive income.' });
+    if (v('hectares') < 10) tips.push({ icon:'🌳', title:'Plant hedgerows & cover crops', desc:'Each 100m of hedgerow sequesters ~0.3 t CO₂e/year, while cover crops add soil carbon and qualify for SFI payments.' });
+    tips.push({ icon:'📋', title:'Apply for UK ETS Carbon Credits', desc:'UK Woodland Carbon Code and Peatland Code allow farms to sell verified carbon credits to offset compliance costs.' });
+
+    document.getElementById('tips-list').innerHTML = tips.map(t => `
+        <div class="tip-item">
+            <span class="tip-icon">${t.icon}</span>
+            <div class="tip-text"><strong>${t.title}</strong><span>${t.desc}</span></div>
+        </div>`).join('');
+
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

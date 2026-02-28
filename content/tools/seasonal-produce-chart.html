@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UK Seasonal Produce Chart – UK Farm Blog</title>
+    <meta name="description" content="Interactive UK seasonal produce availability chart. See which fruits, vegetables and crops are in season each month.">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #2d6a27 0%, #4a7c43 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+        .filter-btn { border: 2px solid #d1d5db; background: #fff; padding: 8px 18px; border-radius: 20px; font-size: .85rem; font-weight: 600; cursor: pointer; transition: all .2s; color: #374151; }
+        .filter-btn:hover { border-color: #2d6a27; color: #2d6a27; }
+        .filter-btn.active { background: #2d6a27; border-color: #2d6a27; color: #fff; }
+        .current-month-btn { background: #e8a800; border-color: #e8a800; color: #1a2f5a; font-weight: 700; }
+        .legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 20px; font-size: .83rem; }
+        .legend-item { display: flex; align-items: center; gap: 6px; }
+        .legend-swatch { width: 20px; height: 20px; border-radius: 4px; flex-shrink: 0; }
+        .table-wrap { overflow-x: auto; border-radius: 16px; box-shadow: 0 2px 12px rgba(0,0,0,.08); }
+        table { width: 100%; border-collapse: collapse; background: #fff; min-width: 700px; }
+        thead th { background: #1a2f5a; color: #fff; padding: 12px 8px; font-size: .78rem; text-align: center; font-weight: 700; letter-spacing: .3px; position: sticky; top: 0; }
+        thead th:first-child { text-align: left; padding-left: 20px; min-width: 160px; }
+        tbody tr:nth-child(even) { background: #f8f9fa; }
+        tbody td { padding: 9px 6px; text-align: center; font-size: .85rem; }
+        tbody td:first-child { text-align: left; padding-left: 20px; font-weight: 600; color: #1a2f5a; font-size: .88rem; }
+        .cell-full { background: #2d6a27; color: #fff; border-radius: 4px; font-weight: 700; font-size: .75rem; }
+        .cell-start { background: #a7d7a0; color: #1a2f5a; border-radius: 4px; font-size: .72rem; }
+        .cell-peak { background: #e8a800; color: #1a2f5a; border-radius: 4px; font-weight: 700; font-size: .75rem; }
+        .cell-storage { background: #c3cfe2; color: #1a2f5a; border-radius: 4px; font-size: .72rem; }
+        .cell-none { color: #d1d5db; font-size: .7rem; }
+        .month-highlight { background: rgba(232,168,0,.15) !important; }
+        .category-header td { background: #1a2f5a; color: #fff; font-weight: 700; font-size: .82rem; padding: 8px 20px; letter-spacing: .5px; text-transform: uppercase; }
+        .hidden { display: none; }
+        .back-link { display: inline-block; background: #1a2f5a; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; margin-top: 32px; font-size: .9rem; }
+        .back-link:hover { background: #2a5298; }
+        .info-bar { background: #fff; border-radius: 12px; padding: 16px 24px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 1px solid #e5e7eb; font-size: .88rem; color: #374151; }
+        .info-bar strong { color: #1a2f5a; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/seasonal/">Seasonal Tasks</a>
+    <a href="/markets/">Markets</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>🗓 UK Seasonal Produce Chart</h1>
+        <p>Monthly availability of British fruits, vegetables, herbs and livestock produce. Plan your buying, selling and planting around the seasons.</p>
+    </div>
+
+    <div class="info-bar" id="current-month-bar"></div>
+
+    <div class="filters" id="filters">
+        <button class="filter-btn active" data-cat="all" onclick="filterCat(this,'all')">All Produce</button>
+        <button class="filter-btn" data-cat="vegetables" onclick="filterCat(this,'vegetables')">🥦 Vegetables</button>
+        <button class="filter-btn" data-cat="fruit" onclick="filterCat(this,'fruit')">🍓 Fruit</button>
+        <button class="filter-btn" data-cat="herbs" onclick="filterCat(this,'herbs')">🌿 Herbs</button>
+        <button class="filter-btn" data-cat="grains" onclick="filterCat(this,'grains')">🌾 Grains &amp; Pulses</button>
+        <button class="filter-btn current-month-btn" onclick="highlightCurrentMonth()">📍 Highlight Current Month</button>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#2d6a27"></div> In season (full)</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#a7d7a0"></div> Starting / ending</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e8a800"></div> Peak season</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#c3cfe2"></div> Storage / protected</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#e5e7eb"></div> Out of season</div>
+    </div>
+
+    <div class="table-wrap">
+        <table id="produce-table">
+            <thead>
+                <tr id="header-row">
+                    <th>Produce</th>
+                    <th>Jan</th><th>Feb</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th>
+                    <th>Jul</th><th>Aug</th><th>Sep</th><th>Oct</th><th>Nov</th><th>Dec</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"></tbody>
+        </table>
+    </div>
+    <a href="/tools/" class="back-link">← Back to Tools</a>
+</div>
+
+<script>
+// S=starting, F=full, P=peak, T=storage, blank=none
+const PRODUCE = [
+    // Vegetables
+    { name: '🥬 Cabbage', cat: 'vegetables', months: ['F','F','S','F','F','F','F','F','F','F','F','F'] },
+    { name: '🥕 Carrot', cat: 'vegetables', months: ['T','T','S','S','F','F','F','P','P','F','F','T'] },
+    { name: '🥔 Potato (new)', cat: 'vegetables', months: ['','','','S','F','P','F','F','','','',''] },
+    { name: '🥔 Potato (main)', cat: 'vegetables', months: ['T','T','T','','','','S','F','P','F','T','T'] },
+    { name: '🧅 Onion', cat: 'vegetables', months: ['T','T','','','','','S','F','P','F','T','T'] },
+    { name: '🥦 Broccoli', cat: 'vegetables', months: ['T','T','S','F','F','P','F','F','F','F','F','T'] },
+    { name: '🌿 Leek', cat: 'vegetables', months: ['F','F','F','','','','','','S','F','F','F'] },
+    { name: '🥗 Lettuce', cat: 'vegetables', months: ['','','S','F','F','P','P','F','F','S','',''] },
+    { name: '🫛 Runner Bean', cat: 'vegetables', months: ['','','','','S','F','P','P','F','S','',''] },
+    { name: '🫛 Broad Bean', cat: 'vegetables', months: ['','','','S','F','P','F','S','','','',''] },
+    { name: '🌽 Sweetcorn', cat: 'vegetables', months: ['','','','','','','S','F','P','S','',''] },
+    { name: '🥒 Courgette', cat: 'vegetables', months: ['','','','','S','F','P','P','F','S','',''] },
+    { name: '🎃 Pumpkin', cat: 'vegetables', months: ['','','','','','','','S','F','P','T',''] },
+    { name: '🧄 Garlic', cat: 'vegetables', months: ['T','T','','','S','F','P','F','T','T','T','T'] },
+    { name: '🌱 Asparagus', cat: 'vegetables', months: ['','','','S','P','F','S','','','','',''] },
+    { name: '🥬 Kale', cat: 'vegetables', months: ['F','F','F','','','','','S','F','P','F','F'] },
+    { name: '🌿 Spinach', cat: 'vegetables', months: ['T','','S','F','F','P','F','F','F','F','T',''] },
+    { name: '🟣 Beetroot', cat: 'vegetables', months: ['T','','','S','F','F','P','P','F','F','T','T'] },
+    { name: '🥬 Cauliflower', cat: 'vegetables', months: ['F','F','S','F','F','F','F','F','F','F','F','F'] },
+    { name: '🟢 Peas', cat: 'vegetables', months: ['','','','','S','F','P','F','S','','',''] },
+    // Fruit
+    { name: '🍓 Strawberry', cat: 'fruit', months: ['','','','','S','P','P','F','S','','',''] },
+    { name: '🫐 Blueberry', cat: 'fruit', months: ['','','','','','S','P','P','S','','',''] },
+    { name: '🍒 Cherry', cat: 'fruit', months: ['','','','','','S','P','S','','','',''] },
+    { name: '🍎 Apple', cat: 'fruit', months: ['T','T','T','','','','','S','F','P','F','T'] },
+    { name: '🍐 Pear', cat: 'fruit', months: ['T','T','','','','','','S','F','P','F','T'] },
+    { name: '🟣 Plum', cat: 'fruit', months: ['','','','','','','S','P','F','S','',''] },
+    { name: '🫐 Gooseberry', cat: 'fruit', months: ['','','','','S','P','F','S','','','',''] },
+    { name: '🍓 Raspberry', cat: 'fruit', months: ['','','','','','S','P','P','F','S','',''] },
+    { name: '🟡 Damson', cat: 'fruit', months: ['','','','','','','S','F','P','S','',''] },
+    { name: '🍏 Bramley Apple', cat: 'fruit', months: ['T','T','T','','','','','S','F','P','F','T'] },
+    { name: '🫐 Blackcurrant', cat: 'fruit', months: ['','','','','','S','P','F','S','','',''] },
+    { name: '🍇 Elderberry', cat: 'fruit', months: ['','','','','','','','S','P','F','S',''] },
+    // Herbs
+    { name: '🌿 Parsley', cat: 'herbs', months: ['T','T','S','F','F','P','P','F','F','F','T','T'] },
+    { name: '🌿 Chives', cat: 'herbs', months: ['','','S','F','P','P','F','F','F','S','',''] },
+    { name: '🌿 Basil', cat: 'herbs', months: ['','','','','S','F','P','P','F','S','',''] },
+    { name: '🌿 Mint', cat: 'herbs', months: ['','','S','F','F','P','P','F','F','S','',''] },
+    { name: '🌿 Thyme', cat: 'herbs', months: ['F','F','F','F','F','P','P','F','F','F','F','F'] },
+    { name: '🌿 Rosemary', cat: 'herbs', months: ['F','F','F','F','F','P','P','F','F','F','F','F'] },
+    { name: '🌿 Sage', cat: 'herbs', months: ['F','F','F','F','P','P','F','F','F','F','F','F'] },
+    { name: '🌿 Coriander', cat: 'herbs', months: ['','','S','F','P','F','F','F','S','','',''] },
+    // Grains & Pulses
+    { name: '🌾 Winter Wheat', cat: 'grains', months: ['F','F','F','F','F','F','F','P','','','F','F'] },
+    { name: '🌾 Spring Barley', cat: 'grains', months: ['','','S','F','F','F','F','P','S','','',''] },
+    { name: '🌾 Oilseed Rape', cat: 'grains', months: ['F','F','F','F','F','P','S','','','F','F','F'] },
+    { name: '🫘 Field Beans', cat: 'grains', months: ['F','F','F','F','F','F','F','P','S','','','F'] },
+    { name: '🫘 Peas (combining)', cat: 'grains', months: ['','','S','F','F','F','P','S','','','',''] },
+    { name: '🌾 Rye', cat: 'grains', months: ['F','F','F','F','F','F','P','S','','','F','F'] },
+    { name: '🌾 Oats', cat: 'grains', months: ['F','F','F','F','F','F','F','P','S','','F','F'] },
+];
+
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const CATEGORIES = [
+    { id: 'vegetables', label: '🥦 Vegetables' },
+    { id: 'fruit', label: '🍓 Fruit' },
+    { id: 'herbs', label: '🌿 Herbs' },
+    { id: 'grains', label: '🌾 Grains & Pulses' },
+];
+
+let currentFilter = 'all';
+let highlightMonth = null;
+
+function cellClass(code) {
+    if (code === 'P') return 'cell-peak';
+    if (code === 'F') return 'cell-full';
+    if (code === 'S') return 'cell-start';
+    if (code === 'T') return 'cell-storage';
+    return 'cell-none';
+}
+function cellLabel(code) {
+    if (code === 'P') return '★';
+    if (code === 'F') return '✓';
+    if (code === 'S') return '~';
+    if (code === 'T') return '□';
+    return '·';
+}
+
+function renderTable() {
+    const tbody = document.getElementById('table-body');
+    tbody.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+        const items = PRODUCE.filter(p => p.cat === cat.id && (currentFilter === 'all' || currentFilter === cat.id));
+        if (!items.length) return;
+        // Category header
+        const hRow = document.createElement('tr');
+        hRow.className = 'category-header';
+        hRow.innerHTML = `<td colspan="13">${cat.label}</td>`;
+        tbody.appendChild(hRow);
+        items.forEach(item => {
+            const tr = document.createElement('tr');
+            let cells = `<td>${item.name}</td>`;
+            item.months.forEach((code, i) => {
+                const isHighlight = highlightMonth !== null && i === highlightMonth;
+                cells += `<td class="${isHighlight ? 'month-highlight' : ''}"><span class="${cellClass(code)}" style="display:block;padding:2px 0;border-radius:4px">${cellLabel(code)}</span></td>`;
+            });
+            tr.innerHTML = cells;
+            tbody.appendChild(tr);
+        });
+    });
+    // Highlight header columns
+    document.querySelectorAll('#header-row th').forEach((th, i) => {
+        if (i === 0) { th.style.background = ''; return; }
+        th.style.background = (highlightMonth !== null && i - 1 === highlightMonth) ? '#e8a800' : '';
+        th.style.color = (highlightMonth !== null && i - 1 === highlightMonth) ? '#1a2f5a' : '';
+    });
+}
+
+function filterCat(btn, cat) {
+    document.querySelectorAll('.filter-btn[data-cat]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = cat;
+    renderTable();
+}
+
+function highlightCurrentMonth() {
+    const m = new Date().getMonth();
+    highlightMonth = highlightMonth === m ? null : m;
+    renderTable();
+}
+
+// Current month info bar
+const now = new Date();
+const monthIdx = now.getMonth();
+const monthName = MONTHS[monthIdx];
+const inSeasonNow = PRODUCE.filter(p => ['P','F','S'].includes(p.months[monthIdx])).map(p => p.name.replace(/^\S+\s/,'')).slice(0,8);
+document.getElementById('current-month-bar').innerHTML = `<strong>📍 In season now (${monthName}):</strong> ${inSeasonNow.join(', ')}${inSeasonNow.length < PRODUCE.filter(p=>['P','F','S'].includes(p.months[monthIdx])).length ? ', …' : ''}`;
+
+renderTable();
+</script>
+</body>
+</html>

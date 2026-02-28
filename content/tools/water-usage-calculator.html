@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farm Water Usage Optimizer – UK Farm Blog</title>
+    <meta name="description" content="Plan and optimise irrigation water usage on your UK farm. Calculate water requirements by crop type and area, and see savings from efficient systems.">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f4f6fb; color: #1f2937; line-height: 1.75; }
+        .site-nav { background: #1a2f5a; padding: 10px 20px; display: flex; align-items: center; gap: 20px; flex-wrap: wrap; border-bottom: 3px solid #e8a800; }
+        .site-nav a { color: rgba(255,255,255,.85); text-decoration: none; font-size: .9rem; }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
+        .container { max-width: 960px; margin: 40px auto; padding: 0 20px 60px; }
+        .page-header { background: linear-gradient(135deg, #164e63 0%, #0891b2 100%); color: #fff; padding: 36px 40px; border-radius: 16px; margin-bottom: 30px; box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        @media (max-width: 640px) { .grid2 { grid-template-columns: 1fr; } }
+        .card { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .card h2 { font-size: 1.1rem; font-weight: 700; color: #1a2f5a; margin-bottom: 20px; border-bottom: 2px solid #0891b2; padding-bottom: 10px; }
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; font-size: .88rem; color: #374151; margin-bottom: 6px; }
+        label span { font-weight: 400; color: #6b7280; }
+        input[type=number], select { width: 100%; border: 1.5px solid #d1d5db; border-radius: 8px; padding: 10px 14px; font-size: .95rem; outline: none; transition: border-color .2s; background: #fff; }
+        input[type=number]:focus, select:focus { border-color: #0891b2; }
+        .crop-rows { margin-bottom: 16px; }
+        .crop-row { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 10px; margin-bottom: 10px; align-items: end; }
+        @media (max-width: 400px) { .crop-row { grid-template-columns: 1fr 1fr; } }
+        .crop-row label { font-size: .8rem; }
+        .add-btn { background: #e0f2fe; color: #0369a1; border: 1.5px dashed #0891b2; padding: 9px 18px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: .85rem; width: 100%; margin-bottom: 16px; transition: background .2s; }
+        .add-btn:hover { background: #bae6fd; }
+        .calc-btn { width: 100%; background: #0891b2; color: #fff; border: none; padding: 14px; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background .2s; }
+        .calc-btn:hover { background: #0369a1; }
+        .results { display: none; }
+        .results.visible { display: block; }
+        .kpi-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 24px; }
+        @media (max-width: 500px) { .kpi-row { grid-template-columns: 1fr 1fr; } }
+        .kpi { background: #fff; border-radius: 12px; padding: 18px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,.06); border: 1px solid #e5e7eb; }
+        .kpi-val { font-size: 1.7rem; font-weight: 900; color: #164e63; line-height: 1.1; }
+        .kpi-lbl { font-size: .75rem; color: #6b7280; margin-top: 4px; }
+        .chart-wrap { background: #fff; border-radius: 16px; padding: 28px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .chart-wrap h3 { font-weight: 700; color: #1a2f5a; margin-bottom: 16px; }
+        .tips-card { background: #e0f2fe; border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; }
+        .tips-card h3 { color: #0369a1; font-weight: 700; margin-bottom: 14px; }
+        .tip-row { display: flex; gap: 10px; margin-bottom: 10px; font-size: .88rem; }
+        .tip-icon { flex-shrink: 0; font-size: 1.1rem; }
+        .back-link { display: inline-block; background: #1a2f5a; color: #fff; padding: 12px 28px; border-radius: 30px; text-decoration: none; font-weight: 700; font-size: .9rem; }
+        .back-link:hover { background: #2a5298; }
+        .remove-btn { background: #fee2e2; color: #b91c1c; border: none; border-radius: 6px; padding: 6px 10px; cursor: pointer; font-size: .8rem; align-self: end; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">← Tools</a>
+    <a href="/crops/">Crops</a>
+    <a href="/weather/">Weather</a>
+</nav>
+<div class="container">
+    <div class="page-header">
+        <h1>💧 Water Usage Optimizer</h1>
+        <p>Calculate your farm's seasonal irrigation water requirements, compare system efficiencies, and identify savings opportunities.</p>
+    </div>
+
+    <div class="grid2">
+        <div class="card">
+            <h2>🌱 Crop &amp; Area</h2>
+            <div class="crop-rows" id="crop-rows">
+                <div class="crop-row">
+                    <div class="form-group" style="margin-bottom:0">
+                        <label>Crop type</label>
+                        <select class="crop-type">
+                            <option value="potatoes">Potatoes</option>
+                            <option value="vegetables">Vegetables</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="barley">Barley</option>
+                            <option value="maize">Maize/Sweetcorn</option>
+                            <option value="strawberries">Strawberries/Soft Fruit</option>
+                            <option value="grass">Grass/Silage</option>
+                            <option value="orchard">Orchard/Top Fruit</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-bottom:0">
+                        <label>Hectares</label>
+                        <input type="number" class="crop-ha" min="0.1" step="0.1" value="10" placeholder="10">
+                    </div>
+                    <button class="remove-btn" onclick="removeRow(this)" title="Remove">✕</button>
+                </div>
+            </div>
+            <button class="add-btn" onclick="addCropRow()">+ Add Another Crop</button>
+        </div>
+
+        <div class="card">
+            <h2>⚙️ Irrigation System</h2>
+            <div class="form-group">
+                <label>Irrigation method</label>
+                <select id="irrig-method">
+                    <option value="raingun">Rain gun / travelling irrigator</option>
+                    <option value="pivot">Centre pivot / linear</option>
+                    <option value="trickle">Trickle / drip irrigation</option>
+                    <option value="overhead">Overhead boom</option>
+                    <option value="flood">Flood / furrow</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Water source</label>
+                <select id="water-source">
+                    <option value="reservoir">On-farm reservoir</option>
+                    <option value="river">River / watercourse abstraction</option>
+                    <option value="borehole">Borehole</option>
+                    <option value="mains">Mains supply</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cost of water <span>(£/m³ or estimate)</span></label>
+                <input type="number" id="water-cost" min="0" step="0.01" value="0.15" placeholder="0.15">
+            </div>
+            <div class="form-group">
+                <label>Pumping energy cost <span>(£/1000 litres pumped)</span></label>
+                <input type="number" id="pump-cost" min="0" step="0.01" value="0.08" placeholder="0.08">
+            </div>
+            <button class="calc-btn" onclick="calculateWater()">Calculate Water Plan →</button>
+        </div>
+    </div>
+
+    <div class="results" id="results">
+        <div class="kpi-row">
+            <div class="kpi"><div class="kpi-val" id="kpi-total-water">—</div><div class="kpi-lbl">Total water needed (m³/season)</div></div>
+            <div class="kpi"><div class="kpi-val" id="kpi-total-cost">—</div><div class="kpi-lbl">Estimated seasonal cost</div></div>
+            <div class="kpi"><div class="kpi-val" id="kpi-saving">—</div><div class="kpi-lbl">Potential saving (drip switch)</div></div>
+        </div>
+
+        <div class="chart-wrap">
+            <h3>📊 Monthly Water Demand by Crop (m³)</h3>
+            <canvas id="waterChart" height="300"></canvas>
+        </div>
+
+        <div class="tips-card">
+            <h3>💡 Water Efficiency Tips</h3>
+            <div id="water-tips"></div>
+        </div>
+        <a href="/tools/" class="back-link">← Back to Tools</a>
+    </div>
+</div>
+
+<script>
+// Peak water demand (mm/growing season) per crop type – approximate UK values
+const CROP_DEMAND_MM = {
+    potatoes:     200,
+    vegetables:   150,
+    wheat:        60,
+    barley:       50,
+    maize:        120,
+    strawberries: 180,
+    grass:        80,
+    orchard:      140,
+};
+// Monthly distribution as fraction of season total
+const MONTHLY_PROFILE = {
+    potatoes:    [0,0,0,0.05,0.10,0.20,0.30,0.25,0.10,0,0,0],
+    vegetables:  [0,0,0,0.05,0.15,0.25,0.25,0.20,0.10,0,0,0],
+    wheat:       [0,0,0,0,0.20,0.40,0.30,0.10,0,0,0,0],
+    barley:      [0,0,0,0.10,0.30,0.40,0.20,0,0,0,0,0],
+    maize:       [0,0,0,0,0.05,0.20,0.35,0.30,0.10,0,0,0],
+    strawberries:[0,0,0,0.05,0.20,0.30,0.25,0.15,0.05,0,0,0],
+    grass:       [0.05,0.05,0.05,0.10,0.15,0.20,0.20,0.10,0.05,0.05,0,0],
+    orchard:     [0,0,0,0.05,0.15,0.25,0.30,0.20,0.05,0,0,0],
+};
+// Efficiency (fraction of water actually delivered to crop)
+const EFFICIENCY = { raingun: 0.70, pivot: 0.82, trickle: 0.92, overhead: 0.78, flood: 0.55 };
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+let waterChart = null;
+
+function addCropRow() {
+    const container = document.getElementById('crop-rows');
+    const div = document.createElement('div');
+    div.className = 'crop-row';
+    div.innerHTML = `
+        <div class="form-group" style="margin-bottom:0">
+            <label>Crop type</label>
+            <select class="crop-type">
+                <option value="potatoes">Potatoes</option>
+                <option value="vegetables">Vegetables</option>
+                <option value="wheat">Wheat</option>
+                <option value="barley">Barley</option>
+                <option value="maize">Maize/Sweetcorn</option>
+                <option value="strawberries">Strawberries/Soft Fruit</option>
+                <option value="grass">Grass/Silage</option>
+                <option value="orchard">Orchard/Top Fruit</option>
+            </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0">
+            <label>Hectares</label>
+            <input type="number" class="crop-ha" min="0.1" step="0.1" value="5" placeholder="5">
+        </div>
+        <button class="remove-btn" onclick="removeRow(this)" title="Remove">✕</button>
+    `;
+    container.appendChild(div);
+}
+
+function removeRow(btn) {
+    const rows = document.querySelectorAll('.crop-row');
+    if (rows.length > 1) btn.closest('.crop-row').remove();
+}
+
+function calculateWater() {
+    const method    = document.getElementById('irrig-method').value;
+    const eff       = EFFICIENCY[method] || 0.75;
+    const waterCost = parseFloat(document.getElementById('water-cost').value) || 0.15;
+    const pumpCost  = parseFloat(document.getElementById('pump-cost').value) || 0.08;
+
+    const cropRows = document.querySelectorAll('.crop-row');
+    const monthlyTotals = new Array(12).fill(0);
+    let totalM3 = 0;
+    const datasets = [];
+    const colours = ['#0891b2','#2d6a27','#e8a800','#b91c1c','#7c3aed','#0369a1','#15803d','#ea580c'];
+
+    cropRows.forEach((row, idx) => {
+        const cropType = row.querySelector('.crop-type').value;
+        const ha       = parseFloat(row.querySelector('.crop-ha').value) || 0;
+        const demandMM = CROP_DEMAND_MM[cropType] || 100;
+        const profile  = MONTHLY_PROFILE[cropType] || MONTHLY_PROFILE.vegetables;
+        const cropMonthly = profile.map(frac => {
+            // mm * ha * 10 = m3; divide by efficiency to get abstraction volume
+            const m3 = frac * demandMM * ha * 10 / eff;
+            return Math.round(m3);
+        });
+        cropMonthly.forEach((v, i) => monthlyTotals[i] += v);
+        totalM3 += cropMonthly.reduce((a, b) => a + b, 0);
+        const cropLabel = row.querySelector('.crop-type').options[row.querySelector('.crop-type').selectedIndex].text;
+        datasets.push({ label: `${cropLabel} (${ha} ha)`, data: cropMonthly, backgroundColor: colours[idx % colours.length] + 'cc', borderColor: colours[idx % colours.length], borderWidth: 1, borderRadius: 3 });
+    });
+
+    const totalCost = Math.round(totalM3 * waterCost + totalM3 * pumpCost);
+    // Potential saving if switching to drip (0.92 efficiency)
+    const trickleM3 = totalM3 * eff / 0.92;
+    const saving = Math.max(0, Math.round((totalM3 - trickleM3) * (waterCost + pumpCost)));
+
+    document.getElementById('kpi-total-water').textContent = totalM3.toLocaleString();
+    document.getElementById('kpi-total-cost').textContent = '£' + totalCost.toLocaleString();
+    document.getElementById('kpi-saving').textContent = saving > 0 ? '£' + saving.toLocaleString() : 'Already optimal';
+
+    const ctx = document.getElementById('waterChart').getContext('2d');
+    if (waterChart) waterChart.destroy();
+    waterChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: MONTH_NAMES, datasets },
+        options: {
+            responsive: true,
+            scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => v.toLocaleString() + ' m³' } } },
+            plugins: { legend: { position: 'bottom' } }
+        }
+    });
+
+    const tips = [
+        { icon:'💧', text:'Use a soil moisture monitoring system (TDR probes or tensiometers) to irrigate only when the crop actually needs water — typical savings of 20–30%.' },
+        { icon:'🌧', text:'Install a tipping-bucket rain gauge linked to your irrigation controller to automatically suspend irrigation during rainfall.' },
+        { icon:'📋', text:'UK Environment Agency abstraction licences must cover your peak demand. Apply well in advance — licence changes can take 4–6 months to process.' },
+        { icon:'💰', text:'Reservoir construction grants are available through Countryside Stewardship (capital item WS6). An on-farm reservoir reduces abstraction licence pressure.' },
+        { icon:'☀️', text:'Schedule irrigation during cooler parts of the day (early morning) to reduce evaporation losses by up to 15%.' },
+    ];
+    if (method === 'flood') tips.unshift({ icon:'⚠️', text:'Flood/furrow irrigation has the lowest efficiency (55%). Switching to a drip system could save significant water and reduce licence requirements.' });
+
+    document.getElementById('water-tips').innerHTML = tips.map(t => `<div class="tip-row"><span class="tip-icon">${t.icon}</span><span>${t.text}</span></div>`).join('');
+
+    document.getElementById('results').classList.add('visible');
+    document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+</body>
+</html>

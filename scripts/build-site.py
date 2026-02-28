@@ -277,6 +277,40 @@ footer { background: var(--navy); color: rgba(255,255,255,.75); padding: 60px 20
 }
 """
 
+MOBILE_MENU_CSS = """
+/* Mobile hamburger menu */
+.nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 14px 16px; margin-left: auto; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: rgba(255,255,255,.85); margin: 5px 0; border-radius: 2px; transition: all .3s; }
+.nav-toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.nav-toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; flex-direction: column; justify-content: center; }
+  .nav-links { display: none; flex-basis: 100%; flex-direction: column; }
+  .nav-links.open { display: flex; }
+  .nav-inner { flex-wrap: wrap; }
+  .nav-links a { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: .9rem; }
+}
+"""
+
+MOBILE_MENU_JS = """
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var links  = document.getElementById('nav-links');
+  if(!toggle || !links) return;
+  toggle.addEventListener('click', function(){
+    var open = links.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  // Close menu on nav link click
+  links.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){ links.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); });
+  });
+})();
+</script>
+"""
+
 COOKIE_BANNER_JS = """
 <script>
 (function(){
@@ -305,7 +339,14 @@ def build_nav(active_id=""):
         icon  = stitle.split(" ", 1)[0]
         active = ' class="active"' if sid == active_id else ""
         links += f'<a href="{BASE_PATH}/{sid}/"{active}>{icon} {label}</a>'
-    return f'<nav aria-label="Main navigation"><div class="nav-inner">{links}</div></nav>'
+    return f"""<nav aria-label="Main navigation">
+  <div class="nav-inner">
+    <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="nav-links">{links}</div>
+  </div>
+</nav>"""
 
 def build_footer():
     section_links = "\n".join(
@@ -351,7 +392,26 @@ def build_footer():
   </div>
 </footer>"""
 
-def build_head(title, description="Daily farming updates for British farmers", canonical=""):
+SCHEMA_ORG_SITE = f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "UK Farm Blog",
+  "url": "{SITE_URL}/",
+  "description": "Daily grants, market prices, weather alerts and practical guides for UK farmers.",
+  "publisher": {{
+    "@type": "Organization",
+    "name": "UK Farm Blog",
+    "url": "{SITE_URL}/",
+    "logo": {{
+      "@type": "ImageObject",
+      "url": "{SITE_URL}/favicon.png"
+    }}
+  }}
+}}
+</script>"""
+
+def build_head(title, description="Daily farming updates for British farmers", canonical="", schema_extra=""):
     canon_tag = f'<link rel="canonical" href="{canonical}">' if canonical else ""
     return f"""<head>
     <meta charset="UTF-8">
@@ -364,13 +424,15 @@ def build_head(title, description="Daily farming updates for British farmers", c
     <meta property="og:type" content="website">
     <meta name="theme-color" content="#1a2f5a">
     {ADSENSE_HEAD}
-    <style>{COMMON_CSS}</style>
+    {SCHEMA_ORG_SITE}
+    {schema_extra}
+    <style>{COMMON_CSS}{MOBILE_MENU_CSS}</style>
 </head>"""
 
-def build_page(title, description, canonical, body_html, active_section=""):
+def build_page(title, description, canonical, body_html, active_section="", schema_extra=""):
     return f"""<!DOCTYPE html>
 <html lang="en">
-{build_head(title, description, canonical)}
+{build_head(title, description, canonical, schema_extra)}
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 <div class="top-bar">
@@ -392,6 +454,7 @@ def build_page(title, description, canonical, body_html, active_section=""):
 {build_affiliate_strip()}
 {build_footer()}
 {COOKIE_BANNER_JS}
+{MOBILE_MENU_JS}
 </body>
 </html>"""
 
@@ -447,6 +510,23 @@ def build_section_page(section_id, title, desc):
     content_html = md_to_html(content)
     content_html = content_html.replace('href="./', f'href="{BASE_PATH}/')
 
+    today_iso = datetime.now().strftime('%Y-%m-%dT%H:%M:%S+00:00')
+    article_schema = f"""<script type="application/ld+json">
+{{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{label} – UK Farm Blog",
+  "description": "{desc} — practical daily updates for British farmers.",
+  "url": "{SITE_URL}/{section_id}/",
+  "dateModified": "{today_iso}",
+  "publisher": {{
+    "@type": "Organization",
+    "name": "UK Farm Blog",
+    "url": "{SITE_URL}/"
+  }}
+}}
+</script>"""
+
     body = f"""
 {build_ad_unit(ADSENSE_SLOT_SECTION_TOP, "Top advertisement")}
 <div class="content-wrap">
@@ -464,6 +544,7 @@ def build_section_page(section_id, title, desc):
         canonical=f"{SITE_URL}/{section_id}/",
         body_html=body,
         active_section=section_id,
+        schema_extra=article_schema,
     )
 
 def build_privacy_policy_page():
