@@ -1,6 +1,6 @@
 ---
 title: "Daily Farm Brief – 28 February 2026"
-date: 2026-02-28T07:01:30Z
+date: 2026-02-28T07:03:49Z
 description: "Daily UK farming update: weather risks, market prices, grant deadlines"
 tags: ["daily-brief", "uk-farming", "weather", "markets", "grants"]
 type: brief
