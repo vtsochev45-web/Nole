@@ -5,6 +5,10 @@ theme: minima
 url: https://britfarmers.com
 baseurl: ""
 
+# Google AdSense publisher ID – replace with your real ca-pub-XXXXXXXXXXXXXXXX value
+# (also set the ADSENSE_PUB_ID repository secret for the GitHub Actions build)
+adsense_pub_id: ca-pub-XXXXXXXXXXXXXXXXX
+
 # Exclude
 exclude:
   - scripts/
