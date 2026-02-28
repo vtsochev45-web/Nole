@@ -30,7 +30,7 @@ spawn_agent() {
 }
 EOF
 
-    echo "  ✅ $agent_name ready (task logged)" | tee -a "$LOG_FILE"
+    echo "  ✅ $agent_name ready (task logged)" | tee -a "$LOG_File"
 }
 
 # ============ DAILY TEAM (6:00 AM) ============
