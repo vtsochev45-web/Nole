@@ -137,10 +137,10 @@
 </head>
 <body>
 <nav class="site-nav">
-    <a href="/Nole/" class="brand">🌾 UK Farm Blog</a>
-    <a href="/Nole/tools/">📊 Tools</a>
-    <a href="/Nole/grants/">💰 Grants</a>
-    <a href="/Nole/">← Home</a>
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/tools/">📊 Tools</a>
+    <a href="/grants/">💰 Grants</a>
+    <a href="/">← Home</a>
 </nav>
 
 <div class="container">
@@ -196,7 +196,7 @@
             <p class="disclaimer">* Estimates only. Always check <a href="https://www.gov.uk/guidance/funding-for-farmers" target="_blank" rel="noopener">GOV.UK</a> for full eligibility criteria and current deadlines before applying.</p>
         </div>
 
-        <a href="/Nole/tools/" class="back-link">← Back to Tools</a>
+        <a href="/tools/" class="back-link">← Back to Tools</a>
     </div>
 </div>
 
@@ -273,7 +273,7 @@ function checkGrants() {
     const container = document.getElementById('grant-results');
 
     if (matches.length === 0) {
-        resultsDiv.innerHTML = '<p>No specific matches found based on your selections. Consider <a href="/Nole/grants/">reading the full Grants guide</a> for all available options.</p>';
+        resultsDiv.innerHTML = '<p>No specific matches found based on your selections. Consider <a href="/grants/">reading the full Grants guide</a> for all available options.</p>';
     } else {
         resultsDiv.innerHTML = matches.map(g => `
             <div class="grant-match">

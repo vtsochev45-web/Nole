@@ -22,11 +22,13 @@ DATA_DIR     = PROJECT_ROOT / "data"
 # Support a custom domain via CNAME file; fall back to /Nole subpath for
 # GitHub Pages when no custom domain is configured.
 _cname_file        = PROJECT_ROOT / "CNAME"
-_has_custom_domain = _cname_file.exists() and _cname_file.read_text().strip() != ""
+_custom_domain     = _cname_file.read_text().strip() if _cname_file.exists() else ""
+_has_custom_domain = bool(_custom_domain)
 _default_base      = "" if _has_custom_domain else "/Nole"
+_default_site_url  = f"https://{_custom_domain}" if _has_custom_domain else "https://vtsochev45-web.github.io/Nole"
 BASE_PATH = os.environ.get("SITE_BASE_PATH", _default_base).rstrip("/")
 
-SITE_URL      = os.environ.get("SITE_URL",      "https://vtsochev45-web.github.io/Nole").rstrip("/")
+SITE_URL      = os.environ.get("SITE_URL",      _default_site_url).rstrip("/")
 CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "privacy@britfarmers.com")
 
 # ── Monetisation ──────────────────────────────────────────────────────────────
@@ -660,6 +662,12 @@ def build_amp_page(title, description, canonical_url, body_content):
 def main():
     print("🔨 Building UK Farm Blog (professional edition)…")
     OUTPUT_DIR.mkdir(exist_ok=True)
+
+    # Copy CNAME to _site so GitHub Pages preserves the custom domain
+    if _has_custom_domain:
+        import shutil
+        shutil.copy(_cname_file, OUTPUT_DIR / "CNAME")
+        print(f"✅ CNAME ({_custom_domain})")
 
     # Homepage
     (OUTPUT_DIR / "index.html").write_text(build_homepage())
