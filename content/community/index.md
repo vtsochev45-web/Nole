@@ -28,12 +28,12 @@ Tell us about your farm, your challenges, your wins.
 ### 3. Get Expert Advice
 Submit questions to our panel of farming experts.
 
-[Ask an Expert →](ask-expert.html)
+[Ask an Expert →](ask-question.html)
 
 ### 4. Read Community Stories
 Learn from fellow farmers across the UK.
 
-[Browse Stories →](stories/)
+[Browse Stories →](ask-question.html)
 
 ---
 

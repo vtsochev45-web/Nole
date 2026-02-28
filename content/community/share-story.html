@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Share Your Story - UK Farm Community</title>
     <style>
+        .site-nav {
+            background: #1a2f5a;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #e8a800;
+        }
+        .site-nav a {
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            font-size: .9rem;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+        .site-nav a.brand { font-weight: 700; font-size: 1rem; color: #fff; margin-right: 8px; }
+        .site-nav a:hover { color: #e8a800; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
@@ -113,6 +130,11 @@
     </style>
 </head>
 <body>
+<nav class="site-nav">
+    <a href="/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/community/">👥 Community</a>
+    <a href="/">← Home</a>
+</nav>
     <div class="container">
         <h1>📖 Share Your Story</h1>
         <p class="subtitle">Inspire fellow farmers with your experiences, challenges, and wins</p>
@@ -211,7 +233,7 @@ Aim for 500-2000 words for best results."></textarea>
             <p class="hint">All stories are reviewed before publication. We'll contact you within 48 hours.</p>
         </form>
         
-        <a href="index.html" class="back-link">← Back to Community Hub</a>
+        <a href="/community/" class="back-link">← Back to Community Hub</a>
     </div>
     
     <script>

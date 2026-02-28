@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grant Finder – UK Farm Blog</title>
+    <meta name="description" content="Check which UK farm grants you qualify for in 2 minutes. Find SFI, Farming Investment Fund, Countryside Stewardship and more.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+        }
+        .site-nav {
+            background: #1a2f5a;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            border-bottom: 3px solid #e8a800;
+        }
+        .site-nav a {
+            color: rgba(255,255,255,.85);
+            text-decoration: none;
+            font-size: .9rem;
+        }
+        .site-nav a.brand {
+            font-weight: 700;
+            font-size: 1rem;
+            color: #fff;
+            margin-right: 8px;
+        }
+        .site-nav a:hover { color: #e8a800; }
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            padding: 0 20px 40px;
+        }
+        .page-header {
+            background: linear-gradient(135deg, #2d6a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 36px 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 16px rgba(0,0,0,.1);
+        }
+        .page-header h1 { font-size: 2rem; font-weight: 800; margin-bottom: 8px; }
+        .page-header p { color: rgba(255,255,255,.9); }
+        .tool-card {
+            background: white;
+            border-radius: 16px;
+            padding: 36px;
+            box-shadow: 0 4px 20px rgba(0,0,0,.08);
+        }
+        .form-group { margin-bottom: 22px; }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        select, input[type="number"] {
+            width: 100%;
+            padding: 11px 14px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color .2s;
+            background: #fff;
+        }
+        select:focus, input:focus { outline: none; border-color: #2d6a27; }
+        .checkbox-group { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+        .checkbox-group label {
+            display: flex; align-items: center; gap: 8px;
+            font-weight: normal; cursor: pointer;
+            background: #f4f6fb; padding: 8px 14px;
+            border-radius: 8px; border: 1px solid #e5e7eb;
+            transition: background .15s;
+        }
+        .checkbox-group label:hover { background: #e8f0fe; }
+        .submit-btn {
+            background: linear-gradient(135deg, #2d6a27 0%, #4a7c43 100%);
+            color: white;
+            padding: 14px 36px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform .15s, box-shadow .15s;
+            margin-top: 8px;
+        }
+        .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,.15); }
+        .results-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 24px;
+            border-radius: 12px;
+            margin-top: 28px;
+            display: none;
+        }
+        .results-box h3 { color: #166534; margin-bottom: 16px; font-size: 1.1rem; }
+        .grant-match {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 18px;
+            margin-bottom: 14px;
+        }
+        .grant-match h4 { color: #166534; display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+        .amount { color: #15803d; font-size: .9rem; font-weight: 700; }
+        .deadline { color: #dc2626; font-size: .85rem; margin-top: 6px; }
+        .apply-btn {
+            display: inline-block;
+            background: #166534;
+            color: white;
+            padding: 7px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: .875rem;
+            margin-top: 10px;
+            transition: background .2s;
+        }
+        .apply-btn:hover { background: #14532d; }
+        .disclaimer { color: #6b7280; font-size: .85rem; margin-top: 16px; font-style: italic; }
+        .back-link {
+            display: inline-block;
+            margin-top: 28px;
+            color: #2a5298;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+<nav class="site-nav">
+    <a href="/Nole/" class="brand">🌾 UK Farm Blog</a>
+    <a href="/Nole/tools/">📊 Tools</a>
+    <a href="/Nole/grants/">💰 Grants</a>
+    <a href="/Nole/">← Home</a>
+</nav>
+
+<div class="container">
+    <div class="page-header">
+        <h1>🔍 Grant Finder</h1>
+        <p>Answer 4 quick questions to find UK farm grants you may qualify for in 2026.</p>
+    </div>
+
+    <div class="tool-card">
+        <form id="grant-checker" onsubmit="checkGrants(); return false;">
+            <div class="form-group">
+                <label for="farm-type">Farm Type</label>
+                <select id="farm-type">
+                    <option value="arable">Arable / Crops</option>
+                    <option value="livestock">Cattle / Sheep</option>
+                    <option value="dairy">Dairy</option>
+                    <option value="mixed">Mixed</option>
+                    <option value="horticulture">Horticulture</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="farm-size">Farm Size (hectares)</label>
+                <input type="number" id="farm-size" min="5" max="10000" value="100">
+            </div>
+
+            <div class="form-group">
+                <label>Current Schemes (tick all that apply)</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" value="bps"> Basic Payment</label>
+                    <label><input type="checkbox" value="sfi" checked> SFI</label>
+                    <label><input type="checkbox" value="cs"> Countryside Stewardship</label>
+                    <label><input type="checkbox" value="none"> New to schemes</label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Interested In (tick all that apply)</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" value="equipment"> Equipment / Tech</label>
+                    <label><input type="checkbox" value="environmental"> Environmental Works</label>
+                    <label><input type="checkbox" value="infrastructure"> Buildings / Slurry</label>
+                    <label><input type="checkbox" value="advice"> Professional Advice</label>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">Check My Eligibility →</button>
+        </form>
+
+        <div id="grant-results" class="results-box">
+            <h3>💰 Schemes You May Qualify For</h3>
+            <div id="matching-grants"></div>
+            <p class="disclaimer">* Estimates only. Always check <a href="https://www.gov.uk/guidance/funding-for-farmers" target="_blank" rel="noopener">GOV.UK</a> for full eligibility criteria and current deadlines before applying.</p>
+        </div>
+
+        <a href="/Nole/tools/" class="back-link">← Back to Tools</a>
+    </div>
+</div>
+
+<script>
+const grantDatabase = {
+    "farming-investment-fund": {
+        name: "Farming Investment Fund",
+        amount: "£25,000–£500,000",
+        match: ["equipment", "infrastructure"],
+        farmTypes: ["arable", "livestock", "dairy", "mixed", "horticulture"],
+        endDate: "2026-03-31",
+        description: "Capital grants for equipment, technology and farm buildings.",
+        url: "https://www.gov.uk/guidance/farming-investment-fund"
+    },
+    "sfi": {
+        name: "Sustainable Farming Incentive (SFI)",
+        amount: "£20–£450/ha per year",
+        match: ["environmental"],
+        farmTypes: ["arable", "livestock", "dairy", "mixed", "horticulture"],
+        endDate: "Ongoing",
+        description: "Payments for adopting sustainable land-management actions.",
+        url: "https://www.gov.uk/guidance/apply-for-the-sustainable-farming-incentive-scheme"
+    },
+    "slurry-infra": {
+        name: "Slurry Infrastructure Grant",
+        amount: "Up to £262,000",
+        match: ["infrastructure"],
+        farmTypes: ["livestock", "dairy"],
+        endDate: "2027-12-31",
+        description: "Cover stores and low-emission slurry spreading equipment.",
+        url: "https://www.gov.uk/guidance/slurry-infrastructure-grant"
+    },
+    "farming-resilience": {
+        name: "Farming Resilience Fund",
+        amount: "£5,000–£25,000",
+        match: ["advice"],
+        farmTypes: ["arable", "livestock", "dairy", "mixed", "horticulture"],
+        endDate: "2026-06-30",
+        description: "Funded business planning and professional advice to navigate the transition.",
+        url: "https://www.gov.uk/guidance/farming-resilience-fund"
+    },
+    "water-quality": {
+        name: "Water Quality (Catchment Sensitive Farming)",
+        amount: "Up to £10,000",
+        match: ["environmental", "infrastructure"],
+        farmTypes: ["arable", "mixed"],
+        endDate: "2026-09-30",
+        description: "Free advice and small grants for farms near watercourses.",
+        url: "https://www.gov.uk/guidance/catchment-sensitive-farming-reduce-agricultural-water-pollution"
+    },
+    "countryside-stewardship": {
+        name: "Countryside Stewardship",
+        amount: "Varies by options selected",
+        match: ["environmental"],
+        farmTypes: ["arable", "livestock", "dairy", "mixed", "horticulture"],
+        endDate: "2026-07-31",
+        description: "Mid-tier and higher-tier agreements for significant environmental improvements.",
+        url: "https://www.gov.uk/guidance/countryside-stewardship-grants"
+    }
+};
+
+function checkGrants() {
+    const farmType = document.getElementById('farm-type').value;
+    const interested = Array.from(document.querySelectorAll('#grant-checker input[type="checkbox"]:checked'))
+        .map(cb => cb.value);
+
+    const matches = Object.values(grantDatabase).filter(grant => {
+        const interestMatch = grant.match.some(m => interested.includes(m));
+        const typeMatch = grant.farmTypes.includes('all') || grant.farmTypes.includes(farmType);
+        return interestMatch && typeMatch;
+    });
+
+    const resultsDiv = document.getElementById('matching-grants');
+    const container = document.getElementById('grant-results');
+
+    if (matches.length === 0) {
+        resultsDiv.innerHTML = '<p>No specific matches found based on your selections. Consider <a href="/Nole/grants/">reading the full Grants guide</a> for all available options.</p>';
+    } else {
+        resultsDiv.innerHTML = matches.map(g => `
+            <div class="grant-match">
+                <h4>${g.name} <span class="amount">${g.amount}</span></h4>
+                <p>${g.description}</p>
+                <p class="deadline">⏰ Deadline: ${g.endDate}</p>
+                <a href="${g.url}" target="_blank" rel="noopener" class="apply-btn">View on GOV.UK →</a>
+            </div>
+        `).join('');
+    }
+
+    container.style.display = 'block';
+    container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>
