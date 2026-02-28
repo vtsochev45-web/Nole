@@ -1,0 +1,60 @@
+name: Update Live Data
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Price Data
+        run: |
+          chmod +x scripts/fetch-prices.py
+          python3 scripts/fetch-prices.py
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update prices $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
+
+  update-weather:
+    runs-on: ubuntu-latest
+    needs: [update-prices]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Weather Data
+        run: python3 scripts/fetch-weather.py
+
+      - name: Commit and Push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git pull --rebase
+          git add data/
+          git diff --quiet && git diff --staged --quiet || git commit -m "Update weather $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push
