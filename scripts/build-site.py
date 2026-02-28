@@ -27,10 +27,17 @@ _has_custom_domain = _cname_file.exists() and _cname_file.read_text().strip() !=
 _default_base = "" if _has_custom_domain else "/Nole"
 BASE_PATH = os.environ.get("SITE_BASE_PATH", _default_base).rstrip("/")
 
+# ── Site identity ─────────────────────────────────────────────────────────────
+# Canonical domain – used in sitemap, robots.txt, and the privacy policy page.
+SITE_URL = os.environ.get("SITE_URL", "https://britfarmers.com").rstrip("/")
+CONTACT_EMAIL = os.environ.get("CONTACT_EMAIL", "privacy@britfarmers.com")
+
 # ── Monetisation ──────────────────────────────────────────────────────────────
-# Replace the publisher ID below with your real Google AdSense ID, or set the
-# ADSENSE_PUB_ID environment variable before building.
-ADSENSE_PUB_ID = os.environ.get("ADSENSE_PUB_ID", "ca-pub-XXXXXXXXXXXXXXXXX")
+# The publisher ID is read from the ADSENSE_PUB_ID environment variable (set as
+# a GitHub/Vercel secret).  The real pub ID is used as the fallback so it is
+# correct even when the secret is absent.  AdSense publisher IDs are inherently
+# public — they appear verbatim in every page's HTML that is served to visitors.
+ADSENSE_PUB_ID = os.environ.get("ADSENSE_PUB_ID", "ca-pub-9535677982209167")
 
 # Ad slot IDs – replace with real slot IDs from your AdSense account, or set
 # the corresponding environment variables.
@@ -344,11 +351,81 @@ def build_footer():
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© {year} UK Farm Blog · For information only · Always verify with official sources</span>
+      <span>© {year} UK Farm Blog · For information only · Always verify with official sources · <a href="{BASE_PATH}/privacy-policy/" style="color:rgba(255,255,255,0.6);text-decoration:underline">Privacy Policy</a></span>
       <span class="footer-badge">Updated Daily</span>
     </div>
   </div>
 </footer>"""
+
+def build_privacy_policy_page():
+    today = datetime.now().strftime('%d %B %Y')
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy – UK Farm Blog</title>
+    <meta name="description" content="Privacy policy for UK Farm Blog, explaining how we collect, use and protect your data.">
+    {GOOGLE_FONTS}
+    {ADSENSE_SCRIPT}
+    <style>{COMMON_CSS}</style>
+</head>
+<body>
+    <div class="topbar">
+        <span>📅 {today}</span>
+        <span>🇬🇧 UK Farm Blog</span>
+    </div>
+    <header>
+        <a href="{BASE_PATH}/" class="site-logo" style="text-decoration:none">
+            <div class="logo-icon">🌾</div>
+            <div class="logo-text">
+                <div class="brand">UK Farm Blog</div>
+                <div class="tagline">Your daily farming briefing</div>
+            </div>
+        </a>
+    </header>
+    {build_nav()}
+    <main>
+        <article class="content-page">
+            <h1>Privacy Policy</h1>
+            <p class="page-meta">Last updated: {today}</p>
+
+            <p>This Privacy Policy explains how UK Farm Blog ("<strong>we</strong>", "<strong>us</strong>", or "<strong>our</strong>") collects, uses, and shares information about you when you visit <a href="{SITE_URL}">{SITE_URL}</a>.</p>
+
+            <h2>Information We Collect</h2>
+            <p>We do not directly collect personal information. However, third-party services we use may collect data as described below.</p>
+
+            <h2>Google AdSense &amp; Advertising</h2>
+            <p>We use Google AdSense to display advertisements. Google may use cookies and similar tracking technologies to show you personalised ads based on your interests and browsing activity across sites. Google's use of advertising cookies enables it and its partners to serve ads based on your visit to this site and/or other sites on the Internet.</p>
+            <p>You may opt out of personalised advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">Google Ads Settings</a> or <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">www.aboutads.info/choices</a>.</p>
+            <p>For more information on how Google uses data, see <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">How Google uses data when you use our partners' sites or apps</a>.</p>
+
+            <h2>Cookies</h2>
+            <p>This site uses cookies placed by Google AdSense and Google Analytics (if enabled) to measure traffic and serve relevant advertisements. By continuing to use this site you consent to the placement of these cookies. You can control cookies through your browser settings.</p>
+
+            <h2>Third-Party Links</h2>
+            <p>This site contains links to external websites, including affiliate partner links. We are not responsible for the privacy practices of those sites and recommend you review their policies separately.</p>
+
+            <h2>Affiliate Links</h2>
+            <p>Some links on this site are affiliate links. If you click an affiliate link and make a purchase, we may earn a small commission at no additional cost to you. Affiliate relationships are disclosed with the "sponsored" link attribute.</p>
+
+            <h2>Children's Privacy</h2>
+            <p>This site is not directed at children under the age of 13. We do not knowingly collect personal information from children.</p>
+
+            <h2>Changes to This Policy</h2>
+            <p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with an updated date.</p>
+
+            <h2>Contact Us</h2>
+            <p>If you have any questions about this Privacy Policy, please contact us at <a href="mailto:{CONTACT_EMAIL}">{CONTACT_EMAIL}</a>.</p>
+
+            <p style="text-align: center; margin-top: 48px;">
+                <a href="{BASE_PATH}/" class="back-btn">← Back to Home</a>
+            </p>
+        </article>
+    </main>
+    {build_footer()}
+</body>
+</html>"""
 
 def build_homepage():
     brief_content = get_content("content/daily-brief.md")[:700]
@@ -513,6 +590,17 @@ def main():
     (OUTPUT_DIR / "ads.txt").write_text(ads_txt)
     print(f"✅ ads.txt ({ADSENSE_PUB_ID})")
 
+    # Generate robots.txt so search engine crawlers (including Googlebot) can
+    # access all pages.  A missing robots.txt can prevent AdSense from verifying
+    # site ownership because the crawler cannot confirm the meta-tag is present.
+    robots_txt = (
+        "User-agent: *\n"
+        "Allow: /\n"
+        f"\nSitemap: {SITE_URL}/sitemap.xml\n"
+    )
+    (OUTPUT_DIR / "robots.txt").write_text(robots_txt)
+    print("✅ robots.txt")
+
     # Homepage
     (OUTPUT_DIR / "index.html").write_text(build_homepage())
     print("✅ Homepage")
@@ -523,6 +611,30 @@ def main():
         section_dir.mkdir(exist_ok=True)
         (section_dir / "index.html").write_text(build_section_page(section_id, title, desc))
         print(f"  ✅ {title}")
+
+    # Privacy Policy page (required by Google AdSense policy)
+    privacy_dir = OUTPUT_DIR / "privacy-policy"
+    privacy_dir.mkdir(exist_ok=True)
+    (privacy_dir / "index.html").write_text(build_privacy_policy_page())
+    print("✅ Privacy Policy page")
+
+    # Generate sitemap.xml to help Google discover and index all pages
+    today_iso = datetime.now().strftime('%Y-%m-%d')
+    urls = [f"{SITE_URL}/"]
+    urls += [f"{SITE_URL}/{sid}/" for sid, _, _ in SECTIONS]
+    urls.append(f"{SITE_URL}/privacy-policy/")
+    sitemap_entries = "\n".join(
+        f"  <url><loc>{u}</loc><lastmod>{today_iso}</lastmod><changefreq>daily</changefreq></url>"
+        for u in urls
+    )
+    sitemap_xml = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        f"{sitemap_entries}\n"
+        '</urlset>\n'
+    )
+    (OUTPUT_DIR / "sitemap.xml").write_text(sitemap_xml)
+    print("✅ sitemap.xml")
     
     # Copy tools (update links, inject AdSense)
     tools_src = PROJECT_ROOT / "content" / "tools"
