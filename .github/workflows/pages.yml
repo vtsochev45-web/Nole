@@ -3,12 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-  schedule:
-    - cron: '0 6 * * *'
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -31,25 +29,6 @@ jobs:
       - name: Install dependencies
         run: pip install markdown --quiet
 
-      - name: Fetch market prices
-        run: python3 scripts/fetch-prices.py
-
-      - name: Fetch weather data
-        if: ${{ env.METOFFICE_API_KEY != '' }}
-        run: python3 scripts/fetch-weather.py
-        env:
-          METOFFICE_API_KEY: ${{ secrets.METOFFICE_API_KEY }}
-
-      - name: Generate daily brief
-        run: python3 scripts/generate-daily-brief.py
-
-      - name: Commit updated data and brief
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/ content/daily-brief.md
-          git diff --staged --quiet || git commit -m "Daily update: $(date -u '+%Y-%m-%d %H:%M UTC')" && git push || true
-
       - name: Build site
         run: python3 scripts/build-site.py
 
@@ -61,10 +40,6 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
