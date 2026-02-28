@@ -444,11 +444,14 @@ def build_section_page(section_id, title, desc):
     icon  = title.split(" ", 1)[0]
     label = title.split(" ", 1)[1]
 
+    content_html = md_to_html(content)
+    content_html = content_html.replace('href="./', f'href="{BASE_PATH}/')
+
     body = f"""
 {build_ad_unit(ADSENSE_SLOT_SECTION_TOP, "Top advertisement")}
 <div class="content-wrap">
   <h1>{icon} {label}</h1>
-  {md_to_html(content)}
+  {content_html}
   {build_ad_unit(ADSENSE_SLOT_ARTICLE_MID, "Mid-article advertisement")}
   <div class="back-link-wrap">
     <a href="{BASE_PATH}/" class="btn">← Back to Home</a>
