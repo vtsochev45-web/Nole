@@ -40,7 +40,8 @@ ADSENSE_SLOT_SECTION_TOP = os.environ.get("ADSENSE_SLOT_SECTION_TOP", "000000000
 ADSENSE_SLOT_ARTICLE_MID = os.environ.get("ADSENSE_SLOT_ARTICLE_MID", "0000000004")
 
 ADSENSE_SCRIPT = f"""
-    <!-- Google AdSense -->
+    <!-- Google AdSense - site verification & auto ads -->
+    <meta name="google-adsense-account" content="{ADSENSE_PUB_ID}">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_PUB_ID}"
             crossorigin="anonymous"></script>"""
 
@@ -89,7 +90,8 @@ def build_affiliate_strip():
 
 def inject_adsense(html_content, label=""):
     """Inject ADSENSE_SCRIPT before </head> if not already present."""
-    if 'pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' in html_content:
+    if ('pagead2.googlesyndication.com/pagead/js/adsbygoogle.js' in html_content
+            or 'google-adsense-account' in html_content):
         return html_content
     if '</head>' not in html_content:
         print(f"  ⚠️  No </head> tag found{' in ' + label if label else ''} — AdSense script not injected")
@@ -504,6 +506,12 @@ def main():
     if _cname_file.exists():
         shutil.copy(_cname_file, OUTPUT_DIR / "CNAME")
         print(f"✅ CNAME ({_cname_file.read_text().strip()})")
+
+    # Generate ads.txt for AdSense publisher authorization.
+    # f08c47fec0942fa0 is Google's AdSense certified ads seller (TAG-ID) required by the IAB ads.txt spec.
+    ads_txt = f"google.com, {ADSENSE_PUB_ID}, DIRECT, f08c47fec0942fa0\n"
+    (OUTPUT_DIR / "ads.txt").write_text(ads_txt)
+    print(f"✅ ads.txt ({ADSENSE_PUB_ID})")
 
     # Homepage
     (OUTPUT_DIR / "index.html").write_text(build_homepage())
