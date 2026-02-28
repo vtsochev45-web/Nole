@@ -49,6 +49,8 @@ jobs:
 
       - name: Fetch Weather Data
         run: python3 scripts/fetch-weather.py
+        env:
+          METOFFICE_API_KEY: ${{ secrets.METOFFICE_API_KEY }}
 
       - name: Commit and Push
         run: |
