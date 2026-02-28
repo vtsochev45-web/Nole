@@ -52,6 +52,16 @@ ADSENSE_SCRIPT = f"""
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={ADSENSE_PUB_ID}"
             crossorigin="anonymous"></script>"""
 
+# AMP Auto Ads – script tag goes inside <head>; the <amp-auto-ads> element must
+# be placed immediately after the opening <body> tag.
+AMP_AUTO_ADS_SCRIPT = """    <script async custom-element="amp-auto-ads"
+        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
+    </script>"""
+
+AMP_AUTO_ADS_TAG = f"""<amp-auto-ads type="adsense"
+    data-ad-client="{ADSENSE_PUB_ID}">
+</amp-auto-ads>"""
+
 # Inline ad unit (responsive display ad)
 def build_ad_unit(slot_id="0000000000", label="Advertisement"):
     return f"""<div class="ad-container" aria-label="{label}">
@@ -104,6 +114,40 @@ def inject_adsense(html_content, label=""):
         print(f"  ⚠️  No </head> tag found{' in ' + label if label else ''} — AdSense script not injected")
         return html_content
     return html_content.replace('</head>', f'{ADSENSE_SCRIPT}\n</head>', 1)
+
+
+def build_amp_page(title, description, canonical_url, body_content):
+    """Return a valid AMP HTML page with Auto Ads enabled.
+
+    The amp-auto-ads <script> tag is placed inside <head> as required by the
+    AMP spec, and the <amp-auto-ads> element is the first child of <body> so
+    that Google can automatically place ads across the page.
+    """
+    return f"""<!DOCTYPE html>
+<html \u26a1 lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+    <title>{title}</title>
+    <meta name="description" content="{description}">
+    <link rel="canonical" href="{canonical_url}">
+    {AMP_AUTO_ADS_SCRIPT}
+    <script async src="https://cdn.ampproject.org/v0.js"></script>
+    <style amp-boilerplate>body{{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}}@-webkit-keyframes -amp-start{{from{{visibility:hidden}}to{{visibility:visible}}}}</style><noscript><style amp-boilerplate>body{{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}}</style></noscript>
+    <style amp-custom>
+        body {{ font-family: 'Segoe UI', system-ui, sans-serif; margin: 0; padding: 16px; color: #333; }}
+        h1 {{ font-size: 1.6rem; margin-bottom: 0.5rem; }}
+        h2 {{ font-size: 1.3rem; }}
+        a {{ color: #2a5298; }}
+        .back-link {{ display: inline-block; margin-top: 24px; }}
+    </style>
+</head>
+<body>
+    {AMP_AUTO_ADS_TAG}
+    {body_content}
+</body>
+</html>"""
+
 
 SECTIONS = [
     ("daily-brief", "🗞 Daily Farm Brief", "Daily farming updates"),
@@ -664,7 +708,52 @@ def main():
             content = inject_adsense(content, f.name)
             (community_dir / f.name).write_text(content)
             print(f"  ✅ Community: {f.name}")
-    
+
+    # AMP pages – homepage and each section get an AMP counterpart served from
+    # /{section}/amp/index.html (canonical page links back to the regular URL).
+    amp_dir = OUTPUT_DIR / "amp"
+    amp_dir.mkdir(exist_ok=True)
+    brief_content = get_content("content/daily-brief.md")[:700]
+    today = datetime.now().strftime('%d %B %Y')
+    home_body = f"""<h1>🌾 UK Farm Blog</h1>
+    <p>Practical grants, markets &amp; weather updates for British farmers — every morning</p>
+    <p><strong>📰 Today's Farm Brief – {today}</strong></p>
+    {md_to_html(brief_content)}
+    <p><a href="{SITE_URL}/">View full site</a></p>"""
+    (amp_dir / "index.html").write_text(
+        build_amp_page(
+            title="UK Farm Blog – Daily Updates for British Farmers",
+            description="Daily farming news, grants, market prices, weather alerts and practical guides for UK farmers.",
+            canonical_url=f"{SITE_URL}/",
+            body_content=home_body,
+        )
+    )
+    print("✅ AMP Homepage")
+
+    for section_id, title, desc in SECTIONS:
+        content = ""
+        for path in [f"content/{section_id}/latest.md", f"content/{section_id}/index.md", f"content/{section_id}.md"]:
+            if (PROJECT_ROOT / path).exists():
+                content = get_content(path)
+                break
+        icon = title.split(" ", 1)[0]
+        label = title.split(" ", 1)[1]
+        section_body = f"""<h1>{icon} {label}</h1>
+    <p>{desc}</p>
+    {md_to_html(content) if content else f"<p>{label} content coming soon!</p>"}
+    <p><a class="back-link" href="{SITE_URL}/{section_id}/">View full {label} page</a></p>"""
+        section_amp_dir = OUTPUT_DIR / section_id / "amp"
+        section_amp_dir.mkdir(parents=True, exist_ok=True)
+        (section_amp_dir / "index.html").write_text(
+            build_amp_page(
+                title=f"{label} – UK Farm Blog",
+                description=f"{desc} — practical daily updates for British farmers.",
+                canonical_url=f"{SITE_URL}/{section_id}/",
+                body_content=section_body,
+            )
+        )
+        print(f"  ✅ AMP {title}")
+
     print(f"\n📁 Built in {OUTPUT_DIR}")
     print(f"   Using base path: {BASE_PATH}")
     print("🚀 Ready to deploy!")
