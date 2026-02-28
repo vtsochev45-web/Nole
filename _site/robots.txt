@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://vtsochev45-web.github.io/Nole/sitemap.xml
