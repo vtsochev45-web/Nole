@@ -1,0 +1,30 @@
+🚀 UK Farm Content Swarm Launching...
+Time: Wed Mar  4 06:00:01 AM UTC 2026
+
+📅 DAILY TEAM (6:00 AM UTC)
+🤖 Spawning: 🌦 Weather Scout
+🤖 Spawning: 💰 Grants Hunter
+🤖 Spawning: 📈 Market Watcher
+🤖 Spawning: 📝 Daily Brief Writer
+
+📅 WEEKLY TEAM (Sunday 8:00 AM UTC)
+🤖 Spawning: 🔍 SEO Researcher
+🤖 Spawning: ✍️ Long-Form Writer
+
+📅 MONTHLY TEAM (1st of month 9:00 AM UTC)
+🤖 Spawning: 🗓️ Seasonal Editor
+🤖 Spawning: 🛠️ Tool Developer
+
+🚀 DEPLOYER (On content changes)
+🤖 Spawning: 🔨 Site Builder
+
+✅ SWARM CONFIGURATION COMPLETE
+
+Next steps:
+1. Subagents will auto-spawn at scheduled times
+2. Dependencies: Brief Writer waits for Weather/Grants/Market
+3. Site Builder triggers on any content change
+4. Notifications sent to Telegram on completion
+
+To add to OpenClaw cron:
+  ~/.openclaw/workspace/skills/uk-farm-blog/scripts/swarm-launcher.sh

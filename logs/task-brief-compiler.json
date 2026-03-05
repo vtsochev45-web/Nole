@@ -1,8 +1,8 @@
 {
-  "swarm_id": "uk-farm-1772517601",
+  "swarm_id": "uk-farm-1772690401",
   "agent": "brief-compiler",
   "name": "📝 Daily Brief Writer",
   "task": "Compile weather, grants, and market data into Daily Farm Brief. Format: 3-minute read with emojis, bullet points. Output: content/posts/{date}-daily-brief.md",
   "model": "deepseek/deepseek-chat:free",
-  "spawned_at": "2026-03-03T06:00:01+00:00"
+  "spawned_at": "2026-03-05T06:00:01+00:00"
 }
