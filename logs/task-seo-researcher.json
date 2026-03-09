@@ -1,8 +1,8 @@
 {
-  "swarm_id": "uk-farm-1772690401",
+  "swarm_id": "uk-farm-1772863201",
   "agent": "seo-researcher",
   "name": "🔍 SEO Researcher",
   "task": "Research trending UK farming keywords. Look for: seasonal topics (spring drilling, lambing), policy changes, equipment queries. Output: data/seo-keywords.json with top 10 topics",
   "model": "deepseek/deepseek-chat:free",
-  "spawned_at": "2026-03-05T06:00:01+00:00"
+  "spawned_at": "2026-03-07T06:00:01+00:00"
 }

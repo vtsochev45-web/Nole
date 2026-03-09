@@ -1,8 +1,8 @@
 {
-  "swarm_id": "uk-farm-1772690401",
+  "swarm_id": "uk-farm-1772863201",
   "agent": "article-writer",
   "name": "✍️ Long-Form Writer",
   "task": "Write 1500-word SEO article on top researched topic. Include: practical advice, UK-specific examples, CTA. Output: content/posts/{date}-{slug}.md",
   "model": "deepseek/deepseek-chat:free",
-  "spawned_at": "2026-03-05T06:00:01+00:00"
+  "spawned_at": "2026-03-07T06:00:01+00:00"
 }

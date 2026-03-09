@@ -1,8 +1,8 @@
 {
-  "swarm_id": "uk-farm-1772690401",
+  "swarm_id": "uk-farm-1772863201",
   "agent": "site-builder",
   "name": "🔨 Site Builder",
   "task": "Compile all content, build HTML, push to GitHub Pages. Steps: 1) python3 scripts/build-site.py 2) git commit 3) git push",
   "model": "deepseek/deepseek-chat:free",
-  "spawned_at": "2026-03-05T06:00:01+00:00"
+  "spawned_at": "2026-03-07T06:00:01+00:00"
 }

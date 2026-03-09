@@ -1,8 +1,8 @@
 {
-  "swarm_id": "uk-farm-1772690401",
+  "swarm_id": "uk-farm-1772863201",
   "agent": "markets-watcher",
   "name": "📈 Market Watcher",
   "task": "Check AHDB for latest commodity prices (wheat, barley, rapeseed, milk, livestock). Note price trends. Output: data/market-data.json",
   "model": "deepseek/deepseek-chat:free",
-  "spawned_at": "2026-03-05T06:00:01+00:00"
+  "spawned_at": "2026-03-07T06:00:01+00:00"
 }
