@@ -1,0 +1,582 @@
+<!-- UK Farm Sustainability Calculator - Enhanced Version -->
+<div class="sustainability-calculator">
+    <div class="calc-header">
+        <h2>🌱 UK Farm Sustainability Calculator</h2>
+        <p>Calculate your farm's carbon footprint, water usage & biodiversity score — then get a personalized action plan.</p>
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('carbon')">Carbon</button>
+            <button class="tab-btn" onclick="showTab('water')">Water</button>
+            <button class="tab-btn" onclick="showTab('biodiversity')">Biodiversity</button>
+            <button class="tab-btn" onclick="showTab('action-plan')">Action Plan</button>
+        </div>
+    </div>
+
+    <!-- CARBON CALCULATOR -->
+    <div id="carbon" class="tab-content active">
+        <div class="calc-grid">
+            <div class="calc-section">
+                <h3>🚜 Livestock</h3>
+                <div class="form-group">
+                    <label>Dairy Cows (number):</label>
+                    <input type="number" id="dairy-cows" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Beef Cattle (number):</label>
+                    <input type="number" id="beef-cattle" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Sheep (number):</label>
+                    <input type="number" id="sheep" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Pigs (number):</label>
+                    <input type="number" id="pigs" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Poultry (number):</label>
+                    <input type="number" id="poultry" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🌾 Crops & Fertiliser</h3>
+                <div class="form-group">
+                    <label>Arable Area (hectares):</label>
+                    <input type="number" id="arable-ha" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Nitrogen Fertiliser (kg/year):</label>
+                    <input type="number" id="nitrogen-fertiliser" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Manure Applied (tonnes/year):</label>
+                    <input type="number" id="manure" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>⛽ Energy & Transport</h3>
+                <div class="form-group">
+                    <label>Diesel (litres/year):</label>
+                    <input type="number" id="diesel" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Electricity (kWh/year):</label>
+                    <input type="number" id="electricity" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Gas (kWh/year):</label>
+                    <input type="number" id="gas" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🏠 Other Emissions</h3>
+                <div class="form-group">
+                    <label>Farm Buildings (m²):</label>
+                    <input type="number" id="buildings" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+                <div class="form-group">
+                    <label>Refrigerant Leaks (kg CO2e):</label>
+                    <input type="number" id="refrigerant" min="0" value="0" onchange="calculateCarbon()">
+                </div>
+            </div>
+        </div>
+
+        <div class="results-panel">
+            <h3>📊 Your Carbon Footprint</h3>
+            <div class="total-emissions">
+                <span class="big-number" id="total-carbon">0</span>
+                <span class="unit">tCO2e/year</span>
+            </div>
+            <div class="emissions-breakdown">
+                <div class="breakdown-item">
+                    <span class="dot" style="background:#16a34a"></span>
+                    <span>Livestock:</span>
+                    <span class="value" id="livestock-emissions">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="dot" style="background:#eab308"></span>
+                    <span>Crops/Fertiliser:</span>
+                    <span class="value" id="crops-emissions">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="dot" style="background:#3b82f6"></span>
+                    <span>Energy:</span>
+                    <span class="value" id="energy-emissions">0</span>
+                </div>
+                <div class="breakdown-item">
+                    <span class="dot" style="background:#8b5cf6"></span>
+                    <span>Other:</span>
+                    <span class="value" id="other-emissions">0</span>
+                </div>
+            </div>
+            <div class="comparison">
+                <p>📈 <strong>Benchmark:</strong> <span id="carbon-benchmark">--</span></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- WATER CALCULATOR -->
+    <div id="water" class="tab-content">
+        <div class="calc-grid">
+            <div class="calc-section">
+                <h3>💧 Irrigation</h3>
+                <div class="form-group">
+                    <label>Irrigated Area (hectares):</label>
+                    <input type="number" id="irrigated-ha" min="0" value="0" onchange="calculateWater()">
+                </div>
+                <div class="form-group">
+                    <label>Water Applied (m³/hectare):</label>
+                    <input type="number" id="water-rate" min="0" value="3000" onchange="calculateWater()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🐄 Livestock Water</h3>
+                <div class="form-group">
+                    <label>Dairy Cows:</label>
+                    <input type="number" id="water-dairy" min="0" value="0" onchange="calculateWater()">
+                </div>
+                <div class="form-group">
+                    <label>Beef Cattle:</label>
+                    <input type="number" id="water-beef" min="0" value="0" onchange="calculateWater()">
+                </div>
+                <div class="form-group">
+                    <label>Sheep:</label>
+                    <input type="number" id="water-sheep" min="0" value="0" onchange="calculateWater()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🏭 Domestic & Farm Use</h3>
+                <div class="form-group">
+                    <label>Household (m³/year):</label>
+                    <input type="number" id="household-water" min="0" value="200" onchange="calculateWater()">
+                </div>
+                <div class="form-group">
+                    <label>Yard/Washing (m³/year):</label>
+                    <input type="number" id="yard-water" min="0" value="100" onchange="calculateWater()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🌧️ Water Sources</h3>
+                <div class="form-group">
+                    <label>Mains Water (%):</label>
+                    <input type="range" id="mains-percent" min="0" max="100" value="50" oninput="calculateWater()">
+                    <span id="mains-display">50%</span>
+                </div">
+                    <label>Rainwater Harvested (m³):</label>
+                    <input type="number" id="rainwater" min="0" value="0" onchange="calculateWater()">
+                </div>
+                <div class="form-group">
+                    <label>Abstraction (m³/year):</label>
+                    <input type="number" id="abstraction" min="0" value="0" onchange="calculateWater()">
+                </div>
+            </div>
+        </div>
+
+        <div class="results-panel">
+            <h3>💦 Water Usage Summary</h3>
+            <div class="total-emissions">
+                <span class="big-number" id="total-water">0</span>
+                <span class="unit">m³/year</span>
+            </div>
+            <div class="water-sources">
+                <div class="source-bar">
+                    <div class="mains-bar" id="mains-bar" style="width:50%"></div>
+                </div>
+                <p>Mains: <span id="mains-usage">0</span> m³ | Rainwater: <span id="rainwater-usage">0</span> m³ | Abstraction: <span id="abstraction-usage">0</span> m³</p>
+            </div>
+            <div class="water-score">
+                <p>📊 Water Efficiency Score: <strong id="water-score-value">--</strong></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIODIVERSITY CALCULATOR -->
+    <div id="biodiversity" class="tab-content">
+        <div class="calc-grid">
+            <div class="calc-section">
+                <h3>🌿 Habitats (mark all that apply)</h3>
+                <div class="checkbox-grid">
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-hedge" onchange="calculateBiodiversity()">
+                        <span>Hedgerows</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-woodland" onchange="calculateBiodiversity()">
+                        <span>Woodland</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-pasture" onchange="calculateBiodiversity()">
+                        <span>Pasture/Grassland</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-wetland" onchange="calculateBiodiversity()">
+                        <span>Wetland/Pond</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-beetle" onchange="calculateBiodiversity()">
+                        <span>Beetle Banks</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-wildflower" onchange="calculateBiodiversity()">
+                        <span>Wildflower Margins</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-scrub" onchange="calculateBiodiversity()">
+                        <span>Scrub/Rough Grass</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="habitat-sky" onchange="calculateBiodiversity()">
+                        <span>Skylark Plots</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>📏 Habitat Areas</h3>
+                <div class="form-group">
+                    <label>Total Farm Area (ha):</label>
+                    <input type="number" id="total-farm-ha" min="1" value="100" onchange="calculateBiodiversity()">
+                </div>
+                <div class="form-group">
+                    <label>Environmental Area (ha):</label>
+                    <input type="number" id="environmental-ha" min="0" value="5" onchange="calculateBiodiversity()">
+                </div>
+                <div class="form-group">
+                    <label>Hedgerow Length (km):</label>
+                    <input type="number" id="hedgerow-km" min="0" value="2" onchange="calculateBiodiversity()">
+                </div>
+                <div class="form-group">
+                    <label>Pond/Wetland (ha):</label>
+                    <input type="number" id="pond-ha" min="0" value="0.5" onchange="calculateBiodiversity()">
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>🦋 Species Indicators</h3>
+                <div class="form-group">
+                    <label>Birds Seen Regularly:</label>
+                    <select id="bird-score" onchange="calculateBiodiversity()">
+                        <option value="0">None</option>
+                        <option value="1">1-5 species</option>
+                        <option value="2">6-10 species</option>
+                        <option value="3" selected>11-20 species</option>
+                        <option value="4">20+ species</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Pollinators Observed:</label>
+                    <select id="pollinator-score" onchange="calculateBiodiversity()">
+                        <option value="0">None</option>
+                        <option value="1">Rarely</option>
+                        <option value="2" selected>Occasionally</option>
+                        <option value="3">Frequently</option>
+                        <option value="4">Abundant</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Soil Health Indicators:</label>
+                    <select id="soil-score" onchange="calculateBiodiversity()">
+                        <option value="0">Poor</option>
+                        <option value="1">Below Average</option>
+                        <option value="2" selected>Average</option>
+                        <option value="3">Good</option>
+                        <option value="4">Excellent</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="calc-section">
+                <h3>♻️ Sustainable Practices</h3>
+                <div class="checkbox-grid">
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-organic" onchange="calculateBiodiversity()">
+                        <span>Organic/Symbol</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-ipm" onchange="calculateBiodiversity()">
+                        <span>IPM Strategy</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-cover" onchange="calculateBiodiversity()">
+                        <span>Cover Crops</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-buffer" onchange="calculateBiodiversity()">
+                        <span>River Buffers</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-wildlife" onchange="calculateBiodiversity()">
+                        <span>Wildlife Corridor</span>
+                    </label>
+                    <label class="habitat-check">
+                        <input type="checkbox" id="practice-nesting" onchange="calculateBiodiversity()">
+                        <span>Nesting Boxes</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-panel">
+            <h3>🌼 Biodiversity Score</h3>
+            <div class="biodiversity-score">
+                <div class="score-circle" id="bio-score-circle">
+                    <span class="big-number" id="bio-score">0</span>
+                    <span class="unit">/100</span>
+                </div>
+            </div>
+            <div class="score-breakdown">
+                <p>Habitats: <span id="habitat-score">0</span>/30</p>
+                <p>Species: <span id="species-score">0</span>/30</p>
+                <p>Practices: <span id="practice-score">0</span>/40</p>
+            </div>
+            <p class="bio-rating" id="bio-rating">Enter your farm details above</p>
+        </div>
+    </div>
+
+    <!-- ACTION PLAN -->
+    <div id="action-plan" class="tab-content">
+        <div class="action-plan-container">
+            <h3>📋 Your Personalized Action Plan</h3>
+            <p>Based on your inputs, here are targeted recommendations:</p>
+            
+            <div id="carbon-actions" class="action-category">
+                <h4>🌡️ Carbon Reduction Actions</h4>
+                <ul id="carbon-action-list"></ul>
+            </div>
+            
+            <div id="water-actions" class="action-category">
+                <h4>💧 Water Management Actions</h4>
+                <ul id="water-action-list"></ul>
+            </div>
+            
+            <div id="biodiversity-actions" class="action-category">
+                <h4>🌼 Biodiversity Boost Actions</h4>
+                <ul id="biodiversity-action-list"></ul>
+            </div>
+
+            <div class="export-section">
+                <button onclick="exportReport()">📄 Download Report</button>
+                <button onclick="saveLocally()">💾 Save My Data</button>
+                <button onclick="resetCalculator()">🔄 Reset</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const emissionFactors = { dairyCow: 11.9, beefCow: 9.8, sheep: 1.2, pig: 2.4, poultry: 0.1, nitrogenFertiliser: 5.2, manure: 0.6, diesel: 2.68, electricity: 0.21, gas: 0.18, building: 20, refrigerant: 1430 };
+const waterFactors = { dairy: 45, beef: 25, sheep: 5, irrigation: 3000 };
+let carbonResults = {}, waterResults = {}, biodiversityResults = {};
+
+function showTab(tabName) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tabName).classList.add('active');
+    event.target.classList.add('active');
+    if (tabName === 'action-plan') generateActionPlan();
+}
+
+function calculateCarbon() {
+    const dairy = parseInt(document.getElementById('dairy-cows').value) || 0;
+    const beef = parseInt(document.getElementById('beef-cattle').value) || 0;
+    const sheep = parseInt(document.getElementById('sheep').value) || 0;
+    const pigs = parseInt(document.getElementById('pigs').value) || 0;
+    const poultry = parseInt(document.getElementById('poultry').value) || 0;
+    const nitrogen = parseInt(document.getElementById('nitrogen-fertiliser').value) || 0;
+    const manure = parseInt(document.getElementById('manure').value) || 0;
+    const diesel = parseInt(document.getElementById('diesel').value) || 0;
+    const electricity = parseInt(document.getElementById('electricity').value) || 0;
+    const gas = parseInt(document.getElementById('gas').value) || 0;
+    const buildings = parseInt(document.getElementById('buildings').value) || 0;
+    const refrigerant = parseInt(document.getElementById('refrigerant').value) || 0;
+    
+    const livestock = (dairy * emissionFactors.dairyCow) + (beef * emissionFactors.beefCow) + (sheep * emissionFactors.sheep) + (pigs * emissionFactors.pig) + (poultry * emissionFactors.poultry);
+    const crops = (nitrogen * emissionFactors.nitrogenFertiliser) + (manure * emissionFactors.manure);
+    const energy = (diesel * emissionFactors.diesel) + (electricity * emissionFactors.electricity) + (gas * emissionFactors.gas);
+    const other = (buildings * emissionFactors.building) + refrigerant;
+    const total = Math.round((livestock + crops + energy + other) / 1000);
+    
+    carbonResults = { livestock: Math.round(livestock/1000), crops: Math.round(crops/1000), energy: Math.round(energy/1000), other: Math.round(other/1000), total };
+    
+    document.getElementById('total-carbon').textContent = total;
+    document.getElementById('livestock-emissions').textContent = carbonResults.livestock + ' t';
+    document.getElementById('crops-emissions').textContent = carbonResults.crops + ' t';
+    document.getElementById('energy-emissions').textContent = carbonResults.energy + ' t';
+    document.getElementById('other-emissions').textContent = carbonResults.other + ' t';
+    
+    const benchmark = Math.round((dairy + beef * 0.5 + sheep * 0.1));
+    if (benchmark > 0) {
+        const ratio = total / benchmark;
+        let comparison = ratio < 0.8 ? "Better than average" : ratio < 1.2 ? "Average" : "Higher than average";
+        document.getElementById('carbon-benchmark').textContent = comparison + ' for your farm type';
+    }
+}
+
+function calculateWater() {
+    const irrigatedHa = parseInt(document.getElementById('irrigated-ha').value) || 0;
+    const waterRate = parseInt(document.getElementById('water-rate').value) || 3000;
+    const dairy = parseInt(document.getElementById('water-dairy').value) || 0;
+    const beef = parseInt(document.getElementById('water-beef').value) || 0;
+    const sheep = parseInt(document.getElementById('water-sheep').value) || 0;
+    const household = parseInt(document.getElementById('household-water').value) || 0;
+    const yard = parseInt(document.getElementById('yard-water').value) || 0;
+    const mainsPercent = parseInt(document.getElementById('mains-percent').value) || 50;
+    const rainwater = parseInt(document.getElementById('rainwater').value) || 0;
+    const abstraction = parseInt(document.getElementById('abstraction').value) || 0;
+    
+    document.getElementById('mains-display').textContent = mainsPercent + '%';
+    
+    const irrigation = irrigatedHa * waterRate;
+    const livestock = dairy * waterFactors.dairy + beef * waterFactors.beef + sheep * waterFactors.sheep;
+    const domestic = household + yard;
+    const total = irrigation + livestock + domestic;
+    const mains = Math.round(total * mainsPercent / 100);
+    
+    waterResults = { irrigation, livestock, domestic, total, mains, rainwater, abstraction };
+    
+    document.getElementById('total-water').textContent = total.toLocaleString();
+    document.getElementById('mains-usage').textContent = mains.toLocaleString();
+    document.getElementById('rainwater-usage').textContent = rainwater.toLocaleString();
+    document.getElementById('abstraction-usage').textContent = abstraction.toLocaleString();
+    document.getElementById('mains-bar').style.width = mainsPercent + '%';
+    
+    const efficiency = rainwater + abstraction > 0 ? Math.round((rainwater + abstraction) / total * 100) : 0;
+    let score = efficiency < 20 ? "Poor" : efficiency < 40 ? "Fair" : efficiency < 60 ? "Good" : "Excellent";
+    document.getElementById('water-score-value').textContent = score + ' (' + efficiency + '% from non-mains)';
+}
+
+function calculateBiodiversity() {
+    const habitats = ['habitat-hedge', 'habitat-woodland', 'habitat-pasture', 'habitat-wetland', 'habitat-beetle', 'habitat-wildflower', 'habitat-scrub', 'habitat-sky'];
+    let habitatScore = 0;
+    habitats.forEach(id => { if (document.getElementById(id).checked) habitatScore += 3.75; });
+    
+    const totalHa = parseInt(document.getElementById('total-farm-ha').value) || 100;
+    const envHa = parseInt(document.getElementById('environmental-ha').value) || 5;
+    const envPercent = (envHa / totalHa) * 100;
+    habitatScore = Math.min(30, habitatScore + envPercent * 0.3);
+    
+    const birdScore = parseInt(document.getElementById('bird-score').value);
+    const pollinatorScore = parseInt(document.getElementById('pollinator-score').value);
+    const soilScore = parseInt(document.getElementById('soil-score').value);
+    const speciesScore = (birdScore + pollinatorScore + soilScore) * 2.5;
+    
+    const practices = ['practice-organic', 'practice-ipm', 'practice-cover', 'practice-buffer', 'practice-wildlife', 'practice-nesting'];
+    let practiceScore = 0;
+    practices.forEach(id => { if (document.getElementById(id).checked) practiceScore += 6.67; });
+    practiceScore = Math.min(40, practiceScore);
+    
+    const total = Math.round(habitatScore + speciesScore + practiceScore);
+    
+    biodiversityResults = { habitat: Math.round(habitatScore), species: Math.round(speciesScore), practice: Math.round(practiceScore), total };
+    
+    document.getElementById('bio-score').textContent = total;
+    document.getElementById('habitat-score').textContent = Math.round(habitatScore);
+    document.getElementById('species-score').textContent = Math.round(speciesScore);
+    document.getElementById('practice-score').textContent = Math.round(practiceScore);
+    
+    let rating = total < 25 ? "Needs Improvement" : total < 50 ? "Getting Started" : total < 70 ? "Good" : total < 85 ? "Very Good" : "Excellent";
+    document.getElementById('bio-rating').textContent = "Rating: " + rating;
+    
+    const circle = document.getElementById('bio-score-circle');
+    circle.style.background = total < 25 ? '#ef4444' : total < 50 ? '#f59e0b' : total < 70 ? '#22c55e' : '#16a34a';
+}
+
+function generateActionPlan() {
+    const carbonList = document.getElementById('carbon-action-list');
+    const waterList = document.getElementById('water-action-list');
+    const bioList = document.getElementById('biodiversity-action-list');
+    
+    let carbonActions = [];
+    if (carbonResults.livestock > 50) carbonActions.push("Consider feed additives to reduce enteric emissions");
+    if (carbonResults.crops > 20) { carbonActions.push("Use nitrification inhibitors with fertiliser"); carbonActions.push("Optimise fertiliser timing"); }
+    if (carbonResults.energy > 30) carbonActions.push("Install solar PV for farm electricity");
+    if (carbonResults.energy > 50) carbonActions.push("Apply for Farming Investment Fund for precision tech");
+    if (carbonActions.length === 0) carbonActions.push("Great job! Your carbon footprint is low.");
+    carbonList.innerHTML = carbonActions.map(a => `<li>${a}</li>`).join('');
+    
+    let waterActions = [];
+    const totalWater = waterResults.total || 0;
+    if (totalWater > 10000) { waterActions.push("Install rainwater harvesting"); waterActions.push("Install water meters to find leaks"); }
+    if ((waterResults.mains / totalWater * 100) > 60) waterActions.push("Increase rainwater/abstraction usage");
+    if (waterResults.irrigation > 5000) { waterActions.push("Switch to drip irrigation"); waterActions.push("Use soil moisture sensors"); }
+    if (waterActions.length === 0) waterActions.push("Your water usage is efficient!");
+    waterList.innerHTML = waterActions.map(a => `<li>${a}</li>`).join('');
+    
+    let bioActions = [];
+    if (biodiversityResults.habitat < 15) bioActions.push("Establish wildflower margins and beetle banks");
+    if (biodiversityResults.practice < 20) { bioActions.push("Join SFI for biodiversity payments"); bioActions.push("Create wildlife corridors"); }
+    if (biodiversityResults.species < 15) { bioActions.push("Install bird and bat boxes"); bioActions.push("Reduce pesticide use"); }
+    if (bioActions.length === 0) bioActions.push("Excellent biodiversity! Consider mentoring other farms.");
+    bioList.innerHTML = bioActions.map(a => `<li>${a}</li>`).join('');
+}
+
+function exportReport() {
+    const report = "UK Farm Sustainability Report\nDate: " + new Date().toLocaleDateString() + "\n\nCARBON: " + (carbonResults.total || 0) + " tCO2e/year\nWATER: " + (waterResults.total || 0) + " m3/year\nBIODIVERSITY: " + (biodiversityResults.total || 0) + "/100";
+    const blob = new Blob([report], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'farm-sustainability-report.txt';
+    a.click();
+}
+
+function saveLocally() {
+    const data = { carbon: carbonResults, water: waterResults, biodiversity: biodiversityResults, date: new Date().toISOString() };
+    localStorage.setItem('ukFarmSustainability', JSON.stringify(data));
+    alert('Data saved!');
+}
+
+function resetCalculator() {
+    if (confirm('Reset all fields?')) {
+        document.querySelectorAll('input, select').forEach(el => { if (el.type === 'checkbox') el.checked = false; else if (el.type === 'number') el.value = el.defaultValue || 0; else if (el.tagName === 'SELECT') el.selectedIndex = 0; });
+        calculateCarbon(); calculateWater(); calculateBiodiversity();
+    }
+}
+
+calculateCarbon(); calculateWater(); calculateBiodiversity();
+</script>
+
+<style>
+.sustainability-calculator { background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%); border: 2px solid #16a34a; border-radius: 16px; padding: 1.5rem; max-width: 900px; margin: 2rem auto; font-family: system-ui,-apple-system,sans-serif; }
+.calc-header { text-align: center; margin-bottom: 1.5rem; }
+.calc-header h2 { color: #166534; margin: 0 0 0.5rem; }
+.calc-header p { color: #15803d; margin: 0 0 1rem; }
+.tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 1rem; }
+.tab-btn { background: white; border: 2px solid #16a34a; color: #166534; padding: 0.5rem 1.25rem; border-radius: 8px; cursor: pointer; font-weight: 500; }
+.tab-btn:hover { background: #dcfce7; }
+.tab-btn.active { background: #16a34a; color: white; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.calc-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(250px,1fr)); gap: 1rem; margin-bottom: 1rem; }
+.calc-section { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); }
+.calc-section h3 { color: #166534; margin: 0 0 0.75rem; font-size: 0.95rem; border-bottom: 2px solid #dcfce7; padding-bottom: 0.4rem; }
+.form-group { margin: 0.6rem 0; }
+.form-group label { display: block; font-size: 0.85rem; color: #374151; margin-bottom: 0.2rem; }
+.form-group input[type=number], .form-group select { width: 100%; padding: 0.4rem; border: 1px solid #cbd5e1; border-radius: 4px; font-size: 0.9rem; }
+.form-group input[type=range] { width: 100%; }
+.checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+.habitat-check { display: flex; align-items: center; gap: 0.4rem; font-size: 0.8rem; cursor: pointer; }
+.results-panel { background: white; padding: 1.25rem; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-top: 1rem; }
+.results-panel h3 { color: #166534; margin: 0 0 1rem; }
+.total-emissions { margin: 1rem 0; }
+.big-number { font-size: 2.5rem; font-weight: bold; color: #166534; }
+.unit { font-size: 1rem; color: #6b7280; }
+.emissions-breakdown, .score-breakdown { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin: 1rem 0; font-size: 0.9rem; }
+.breakdown-item { display: flex; align-items: center; gap: 0.4rem; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.biodiversity-score { margin: 1rem 0; }
+.score-circle { width: 100px; height: 100px; border-radius: 50%; background: #16a34a; display: inline-flex; align-items: center; justify-content: center; flex-direction: column; color: white; }
+.bio-rating { color: #166534; font-weight: 500; }
+.action-plan-container { background: white; padding: 1.5rem; border-radius: 12px; }
+.action-category { margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; }
+.action-category h4 { color: #166534; margin: 0 0 0.5rem; }
+.action-category ul { margin: 0; padding-left: 1.2rem; }
+.action-category li { margin: 0.3rem 0; font-size: 0.9rem; }
+.export-section { display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-top: 1.5rem; }
+.export-section button { background: #16a34a; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; }
+.export-section button:hover { background: #15803d; }
+</style>
