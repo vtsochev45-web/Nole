@@ -13,12 +13,13 @@ from datetime import datetime, timezone
 from xml.sax.saxutils import escape
 
 # ── Paths ────────────────────────────────────────────────────────────────────
-REPO_ROOT   = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-CONTENT_DIR = os.path.join(REPO_ROOT, "content")
-SITE_DIR    = os.path.join(REPO_ROOT, "_site")
-CONFIG_FILE = os.path.join(REPO_ROOT, "_config.yml")
-OUTPUT_XML  = os.path.join(REPO_ROOT, "wordpress-export.xml")
-OUTPUT_ZIP  = os.path.join(REPO_ROOT, "wordpress-migration.zip")
+REPO_ROOT    = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CONTENT_DIR  = os.path.join(REPO_ROOT, "content")
+SITE_DIR     = os.path.join(REPO_ROOT, "_site")
+CONFIG_FILE  = os.path.join(REPO_ROOT, "_config.yml")
+THEME_DIR    = os.path.join(REPO_ROOT, "wordpress-theme")
+OUTPUT_XML   = os.path.join(REPO_ROOT, "wordpress-export.xml")
+OUTPUT_ZIP   = os.path.join(REPO_ROOT, "wordpress-migration.zip")
 
 SITE_URL    = "https://vtsochev45-web.github.io/Nole"
 SITE_TITLE  = "UK Farm Blog"
@@ -332,14 +333,28 @@ def build_zip(xml_path):
                 rel = os.path.relpath(full_path, REPO_ROOT)
                 zf.write(full_path, arcname=rel)
 
+        # Add the WordPress theme files
+        if os.path.isdir(THEME_DIR):
+            for dirpath, _dirs, files in os.walk(THEME_DIR):
+                for fname in files:
+                    full_path = os.path.join(dirpath, fname)
+                    rel = os.path.relpath(full_path, REPO_ROOT)
+                    zf.write(full_path, arcname=rel)
+
         # Add README with import instructions
         readme = (
             "WordPress Migration Package\n"
             "===========================\n\n"
             "Files included:\n"
             "  wordpress-export.xml  – Import via WordPress Admin > Tools > Import > WordPress\n"
+            "  wordpress-theme/      – Custom WordPress theme matching the original site design\n"
             "  _site/                – Pre-built HTML pages (can be used as static reference)\n\n"
-            "Import steps:\n"
+            "Theme installation steps:\n"
+            "  1. Copy the wordpress-theme/ folder to wp-content/themes/ on your server.\n"
+            "  2. Rename the folder to 'uk-farm-blog'.\n"
+            "  3. In Appearance > Themes, activate 'UK Farm Blog'.\n"
+            "  4. In Appearance > Menus, create a menu and assign it to Primary Menu.\n\n"
+            "Content import steps:\n"
             "  1. In your WordPress admin panel go to Tools > Import.\n"
             "  2. Choose 'WordPress' and click 'Install Now' if prompted.\n"
             "  3. Click 'Run Importer', upload wordpress-export.xml and click 'Upload file and import'.\n"
